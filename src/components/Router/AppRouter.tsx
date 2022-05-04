@@ -6,6 +6,7 @@ import BoardPage from 'pages/Board/BoardPage';
 import HomePage from 'pages/Home/HomePage';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
 import ProjectsPage from 'pages/Projects/ProjectsPage';
+import UserPage from 'pages/User/UserPage';
 
 function AppRouter() {
   return (
@@ -19,6 +20,7 @@ function AppRouter() {
             <Route index element={<SignupPage />}></Route>
             <Route path="login" element={<LoginPage />}></Route>
           </Route>
+          <Route path="user" element={<UserPage />}></Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
