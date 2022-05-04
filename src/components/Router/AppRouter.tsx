@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from 'components/App/App';
-import LoginPage from 'pages/Auth/Login/LoginPage';
-import SignupPage from 'pages/Auth/Signup/SignupPage';
 import BoardPage from 'pages/Board/BoardPage';
 import HomePage from 'pages/Home/HomePage';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
 import ProjectsPage from 'pages/Projects/ProjectsPage';
 import UserPage from 'pages/User/UserPage';
+import AuthPage from 'pages/Auth/AuthPage';
+import SignupForm from 'components/SignupForm/SignupForm';
+import LoginForm from 'components/LoginForm/LoginForm';
 
 function AppRouter() {
   return (
@@ -16,9 +17,9 @@ function AppRouter() {
           <Route index element={<HomePage />}></Route>
           <Route path="projects" element={<ProjectsPage />}></Route>
           <Route path="projects/:boardId" element={<BoardPage />} />
-          <Route path="auth">
-            <Route index element={<SignupPage />}></Route>
-            <Route path="login" element={<LoginPage />}></Route>
+          <Route element={<AuthPage />}>
+            <Route path="signup" element={<SignupForm />} />
+            <Route path="login" element={<LoginForm />} />
           </Route>
           <Route path="user" element={<UserPage />}></Route>
           <Route path="*" element={<NotFoundPage />} />

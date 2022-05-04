@@ -12,10 +12,10 @@ function HomePage() {
           <Link to="projects">Projects</Link>
         </li>
         <li>
-          <Link to="auth">Sign Up</Link>
+          <Link to="signup">Sign Up</Link>
         </li>
         <li>
-          <Link to="auth/login">Log In</Link>
+          <Link to="login">Log In</Link>
         </li>
         <li>
           <Link to="404">404</Link>
