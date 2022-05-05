@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import AppRouter from 'components/Router/AppRouter';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from 'styles/theme';
+import './localization/localization.ts';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
