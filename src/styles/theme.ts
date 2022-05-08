@@ -2,6 +2,24 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   typography: {
     fontFamily: ['Manrope', 'sans-serif'].join(','),
+    h1: {
+      fontSize: '2em',
+    },
+    h2: {
+      fontSize: '1.75em',
+    },
+    h3: {
+      fontSize: '1.5em',
+    },
+    h4: {
+      fontSize: '1.25em',
+    },
+    h5: {
+      fontSize: '1.15em',
+    },
+    h6: {
+      fontSize: '1em',
+    },
   },
   palette: {
     primary: {
@@ -14,7 +32,7 @@ export const theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          fontSize: '1rem',
+          fontSize: '0.875rem',
         },
       },
     },
