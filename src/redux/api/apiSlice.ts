@@ -28,6 +28,16 @@ const baseUrl = 'http://localhost:4000';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl }),
+  tagTypes: [
+    'USER',
+    'USERS',
+    'BOARD',
+    'BOARDS',
+    'COLUMN',
+    'COLUMNS',
+    'TASK',
+    'TASKS',
+  ],
   endpoints: (builder) => ({
     singIn: builder.mutation<Types.SignInResult, Types.SignInArg>({
       query: (arg) => ({
@@ -42,6 +52,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: arg.body,
       }),
+      invalidatesTags: ['USERS'],
     }),
     // USERS -----
     getAllUsers: builder.query<Types.GetAllUsersResult, Types.GetAllUsersArg>({
@@ -49,12 +60,14 @@ export const apiSlice = createApi({
         url: '/users',
         headers: getBasicHeaders(),
       }),
+      providesTags: ['USERS'],
     }),
     getUser: builder.query<Types.GetUserResult, Types.GetUserArg>({
       query: (arg) => ({
         url: `/users/${arg.userId ? arg.userId : getCurrentUserId()}`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['USER'],
     }),
     deleteUser: builder.mutation<Types.DeleteUserResult, Types.DeleteUserArg>({
       query: (arg) => ({
@@ -62,6 +75,7 @@ export const apiSlice = createApi({
         method: 'DELETE',
         headers: getBasicHeaders(),
       }),
+      invalidatesTags: ['USERS', 'USER'],
     }),
     updateUser: builder.mutation<Types.UpdateUserResult, Types.UpdateUserArg>({
       query: (arg) => ({
@@ -70,6 +84,7 @@ export const apiSlice = createApi({
         headers: getBasicHeaders(),
         body: arg.body,
       }),
+      invalidatesTags: ['USERS', 'USER'],
     }),
     // BOARDS -----
     getAllBoards: builder.query<
@@ -80,12 +95,14 @@ export const apiSlice = createApi({
         url: '/boards',
         headers: getBasicHeaders(),
       }),
+      providesTags: ['BOARDS'],
     }),
     getBoard: builder.query<Types.GetBoardResult, Types.GetBoardArg>({
       query: (arg) => ({
         url: `/boards/${arg.boardId}`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['BOARD'],
     }),
     createBoard: builder.mutation<
       Types.CreateBoardResult,
@@ -97,6 +114,7 @@ export const apiSlice = createApi({
         headers: getBasicHeaders(),
         body: arg.body,
       }),
+      invalidatesTags: ['BOARDS'],
     }),
     deleteBoard: builder.mutation<
       Types.DeleteBoardResult,
@@ -107,6 +125,7 @@ export const apiSlice = createApi({
         method: 'DELETE',
         headers: getBasicHeaders(),
       }),
+      invalidatesTags: ['BOARDS', 'BOARD'],
     }),
     updateBoard: builder.mutation<
       Types.UpdateBoardResult,
@@ -118,6 +137,7 @@ export const apiSlice = createApi({
         headers: getBasicHeaders(),
         body: arg.body,
       }),
+      invalidatesTags: ['BOARDS', 'BOARD'],
     }),
     // COLUMNS -----
     getAllColumns: builder.query<
@@ -128,12 +148,14 @@ export const apiSlice = createApi({
         url: `/boards/${arg.boardId}/columns`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['COLUMNS'],
     }),
     getColumn: builder.query<Types.GetColumnResult, Types.GetColumnArg>({
       query: (arg) => ({
         url: `/boards/${arg.boardId}/columns/${arg.columnId}`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['COLUMN'],
     }),
     createColumn: builder.mutation<
       Types.CreateColumnResult,
@@ -145,6 +167,7 @@ export const apiSlice = createApi({
         headers: getBasicHeaders(),
         body: arg.body,
       }),
+      invalidatesTags: ['COLUMNS', 'BOARD'],
     }),
     deleteColumn: builder.mutation<
       Types.DeleteColumnResult,
@@ -155,6 +178,7 @@ export const apiSlice = createApi({
         method: 'DELETE',
         headers: getBasicHeaders(),
       }),
+      invalidatesTags: ['COLUMNS', 'COLUMN', 'BOARD'],
     }),
     updateColumn: builder.mutation<
       Types.UpdateColumnResult,
@@ -166,6 +190,7 @@ export const apiSlice = createApi({
         headers: getBasicHeaders(),
         body: arg.body,
       }),
+      invalidatesTags: ['COLUMNS', 'COLUMN', 'BOARD'],
     }),
     // TASKS -----
     getAllTasks: builder.query<Types.GetAllTasksResult, Types.GetAllTasksArg>({
@@ -173,12 +198,14 @@ export const apiSlice = createApi({
         url: `/boards/${arg.boardId}/columns/${arg.columnId}/tasks`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['TASKS'],
     }),
     getTask: builder.query<Types.GetTaskResult, Types.GetTaskArg>({
       query: (arg) => ({
         url: `/boards/${arg.boardId}/columns/${arg.columnId}/tasks/${arg.taskId}`,
         headers: getBasicHeaders(),
       }),
+      providesTags: ['TASK'],
     }),
     createTask: builder.mutation<Types.CreateTaskResult, Types.CreateTaskArg>({
       query: (arg) => ({
@@ -189,6 +216,7 @@ export const apiSlice = createApi({
           ? arg.body
           : { ...arg.body, userId: getCurrentUserId() },
       }),
+      invalidatesTags: ['TASKS', 'COLUMN', 'BOARD'],
     }),
     deleteTask: builder.mutation<Types.DeleteTaskResult, Types.DeleteTaskArg>({
       query: (arg) => ({
@@ -196,6 +224,7 @@ export const apiSlice = createApi({
         method: 'DELETE',
         headers: getBasicHeaders(),
       }),
+      invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
     }),
     updateTask: builder.mutation<Types.UpdateTaskResult, Types.UpdateTaskArg>({
       query: (arg) => ({
@@ -206,6 +235,7 @@ export const apiSlice = createApi({
           ? arg.body
           : { ...arg.body, userId: getCurrentUserId() },
       }),
+      invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
     }),
   }),
 });
