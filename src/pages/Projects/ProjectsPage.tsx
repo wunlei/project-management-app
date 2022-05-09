@@ -20,7 +20,11 @@ function ProjectsPage() {
               rowGap: '1rem',
             }}
           >
-            <ProjectCard color={'pink'} title={'My Project #1'}></ProjectCard>
+            <ProjectCard
+              color={'pink'}
+              title={'My Project #1'}
+              description={'Project description'}
+            ></ProjectCard>
           </Box>
         </Stack>
       </Container>
