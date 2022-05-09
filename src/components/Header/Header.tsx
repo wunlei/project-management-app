@@ -7,6 +7,7 @@ import {
   MenuItem,
   Stack,
   Toolbar,
+  Tooltip,
 } from '@mui/material';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -42,7 +43,8 @@ function Header() {
       <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
         <Toolbar
           sx={{
-            justifyContent: auth ? 'space-between' : 'flex-end',
+            justifyContent:
+              location.pathname === '/projects' ? 'space-between' : 'flex-end',
           }}
         >
           {location.pathname === '/projects' && auth ? (
@@ -70,6 +72,7 @@ function Header() {
                 MenuListProps={{
                   'aria-labelledby': 'lang-menu-button',
                 }}
+                elevation={3}
               >
                 <MenuItem
                   onClick={() => {
@@ -98,23 +101,27 @@ function Header() {
               </>
             ) : (
               <>
-                <IconButton
-                  color="primary"
-                  aria-label="user"
-                  component={Link}
-                  to="/user"
-                >
-                  <UserIcon />
-                </IconButton>
-                <IconButton
-                  color="primary"
-                  aria-label="log-out"
-                  onClick={() => {
-                    // log Out and redirect to main
-                  }}
-                >
-                  <ExitIcon />
-                </IconButton>
+                <Tooltip title="Profile" arrow>
+                  <IconButton
+                    color="primary"
+                    aria-label="user"
+                    component={Link}
+                    to="/user"
+                  >
+                    <UserIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Sign Out" arrow>
+                  <IconButton
+                    color="primary"
+                    aria-label="log-out"
+                    onClick={() => {
+                      // log Out and redirect to main
+                    }}
+                  >
+                    <ExitIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             )}
           </Stack>
