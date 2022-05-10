@@ -8,7 +8,7 @@ function getCurrentUserId() {
   return userId;
 }
 
-function getToken() {
+export function getToken() {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Token is missing in local storage');
 
@@ -23,7 +23,7 @@ function getBasicHeaders() {
   };
 }
 
-const baseUrl = 'http://localhost:4000';
+export const baseUrl = 'http://localhost:4000';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -237,6 +237,24 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
     }),
+    // FILE -----
+    uploadFile: builder.mutation<string, Types.UploadFileArg>({
+      query: (arg) => {
+        const body = new FormData();
+        body.append('taskId', arg.taskId);
+        body.append('file', arg.file);
+
+        return {
+          url: '/file',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+          body,
+        };
+      },
+      invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
+    }),
   }),
 });
 
@@ -268,3 +286,4 @@ export const {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
 } = apiSlice;
+export const { useUploadFileMutation } = apiSlice;
