@@ -1,4 +1,5 @@
-import { getToken, baseUrl } from 'redux/api/apiSlice';
+import { baseUrl } from 'redux/api/apiSlice';
+import getToken from './getToken';
 
 export default function getImgUrlFromServer({
   taskId,
