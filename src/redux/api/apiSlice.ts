@@ -74,6 +74,7 @@ export const apiSlice = createApi({
         url: `users/${arg.userId ? arg.userId : getCurrentUserId()}`,
         method: 'DELETE',
         headers: getBasicHeaders(),
+        responseHandler: (response) => response.text(),
       }),
       invalidatesTags: ['USERS', 'USER'],
     }),
@@ -124,6 +125,7 @@ export const apiSlice = createApi({
         url: `boards/${arg.boardId}`,
         method: 'DELETE',
         headers: getBasicHeaders(),
+        responseHandler: (response) => response.text(),
       }),
       invalidatesTags: ['BOARDS', 'BOARD'],
     }),
@@ -177,6 +179,7 @@ export const apiSlice = createApi({
         url: `/boards/${arg.boardId}/columns/${arg.columnId}`,
         method: 'DELETE',
         headers: getBasicHeaders(),
+        responseHandler: (response) => response.text(),
       }),
       invalidatesTags: ['COLUMNS', 'COLUMN', 'BOARD'],
     }),
@@ -223,6 +226,7 @@ export const apiSlice = createApi({
         url: `/boards/${arg.boardId}/columns/${arg.columnId}/tasks/${arg.taskId}`,
         method: 'DELETE',
         headers: getBasicHeaders(),
+        responseHandler: (response) => response.text(),
       }),
       invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
     }),
@@ -238,7 +242,7 @@ export const apiSlice = createApi({
       invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
     }),
     // FILE -----
-    uploadFile: builder.mutation<string, Types.UploadFileArg>({
+    uploadFile: builder.mutation<Types.UploadFileResult, Types.UploadFileArg>({
       query: (arg) => {
         const body = new FormData();
         body.append('taskId', arg.taskId);
@@ -251,6 +255,7 @@ export const apiSlice = createApi({
             Authorization: `Bearer ${getToken()}`,
           },
           body,
+          responseHandler: (response) => response.text(),
         };
       },
       invalidatesTags: ['TASKS', 'TASK', 'COLUMN', 'BOARD'],
