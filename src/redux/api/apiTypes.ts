@@ -181,3 +181,9 @@ export type UpdateTaskArg = {
     columnId: string;
   };
 };
+
+export type UploadFileResult = void;
+export type UploadFileArg = {
+  taskId: string;
+  file: File;
+};
