@@ -7,9 +7,9 @@ function Footer({ data }: FooterProps) {
     <Stack
       justifyContent="space-between"
       alignItems="center"
+      rowGap={2}
+      padding={'0.75rem 1rem'}
       sx={{
-        padding: '0.75rem 1rem',
-        rowGap: '1rem',
         flexDirection: {
           sm: 'row',
         },
