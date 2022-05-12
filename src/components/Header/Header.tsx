@@ -11,10 +11,10 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ReactComponent as ArrowIcon } from '../../assets/icons/chevron-down.svg';
-import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
-import { ReactComponent as ExitIcon } from '../../assets/icons/log-out.svg';
-import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
+import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
+import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
+import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import HideOnScroll from './HideOnScroll';
 
 function Header() {
@@ -45,6 +45,10 @@ function Header() {
           sx={{
             justifyContent:
               location.pathname === '/projects' ? 'space-between' : 'flex-end',
+            flexDirection: {
+              xs: 'column-reverse',
+              sm: 'row',
+            },
           }}
         >
           {location.pathname === '/projects' && auth ? (
