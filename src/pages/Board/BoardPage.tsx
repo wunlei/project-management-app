@@ -24,9 +24,9 @@ function BoardPage() {
           flexWrap="wrap"
           sx={{
             padding: 1,
-            border: '1px solid',
-            borderColor: 'primary.main',
-            borderRadius: '0.875rem',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: 'primary.main',
           }}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
