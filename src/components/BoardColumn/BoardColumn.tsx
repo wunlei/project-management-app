@@ -5,11 +5,13 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
 import { grey } from '@mui/material/colors';
 
@@ -29,13 +31,14 @@ function BoardColumn({ children, title }: BoardColumnProps) {
   };
 
   return (
-    <Stack width="280px">
+    <Stack>
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         padding={1}
         paddingLeft={2}
+        maxWidth="280px"
         sx={{
           borderTopLeftRadius: '0.5rem',
           borderTopRightRadius: '0.5rem',
@@ -61,13 +64,28 @@ function BoardColumn({ children, title }: BoardColumnProps) {
               </Stack>
             </Stack>
           ) : (
-            <Typography variant="h5" fontWeight="bold" onClick={handleEdit}>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              onClick={handleEdit}
+              sx={{ overflowWrap: 'anywhere' }}
+            >
               {title}
             </Typography>
           )}
         </div>
-        <div style={{ display: editMode ? 'none' : '' }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          style={{ display: editMode ? 'none' : '' }}
+        >
+          <Tooltip title={'Add Task'} arrow>
+            <IconButton size="small">
+              <PlusIcon />
+            </IconButton>
+          </Tooltip>
           <IconButton
+            size="small"
             id="menu-button"
             aria-controls={open ? 'column-menu' : undefined}
             aria-haspopup="true"
@@ -85,15 +103,16 @@ function BoardColumn({ children, title }: BoardColumnProps) {
               'aria-labelledby': 'menu-button',
             }}
           >
-            <MenuItem onClick={handleClose}>Delete</MenuItem>
+            <MenuItem onClick={handleClose}>Delete column</MenuItem>
           </Menu>
-        </div>
+        </Stack>
       </Stack>
       <Stack
         padding={1}
         spacing={1}
         alignItems="center"
         paddingBottom="1rem"
+        width={'280px'}
         sx={{
           backgroundColor: grey[200],
           overflowX: 'hidden',

@@ -11,6 +11,7 @@ import { ReactComponent as ClipIcon } from 'assets/icons/paperclip.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
+import { Box } from '@mui/system';
 
 function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
   const isHasFile = true;
@@ -45,13 +46,17 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
       >
         <Stack direction="row" spacing={1}>
           <Typography
-            variant="h5"
+            variant="h6"
             fontWeight="bold"
             sx={{ overflowWrap: 'anywhere' }}
           >
             {title}
           </Typography>
-          {isDone && <CheckIcon style={{ color: 'green' }} />}
+          {isDone && (
+            <Box width="34px" height="34px" color="#2e7d32">
+              <CheckIcon />
+            </Box>
+          )}
         </Stack>
         <div>
           <IconButton
@@ -85,9 +90,12 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
         justifyContent="flex-end"
         spacing={1}
         padding={1.5}
+        paddingTop={0}
       >
         {isHasFile && <ClipIcon width="20px" height="20px" />}
-        <Avatar sx={{ bgcolor: 'secondary', width: '30px', height: '30px' }}>
+        <Avatar
+          sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+        >
           {user}
         </Avatar>
       </Stack>

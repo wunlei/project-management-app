@@ -20,9 +20,9 @@ function BoardPage() {
           alignItems="center"
           justifyContent="space-between"
           component="nav"
-          p="10px"
           flexWrap="wrap"
           sx={{
+            padding: 1,
             border: '1px solid',
             borderColor: 'primary.main',
             borderRadius: '0.875rem',
@@ -34,14 +34,11 @@ function BoardPage() {
                 <ArrowIcon />
               </IconButton>
             </Link>
-            <Typography variant="h3">{'Project Title'}</Typography>
+            <Typography variant="h4">{'Project Title'}</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Button variant="contained" startIcon={<PlusIcon />}>
               Add Column
-            </Button>
-            <Button variant="contained" startIcon={<PlusIcon />}>
-              Add Task
             </Button>
           </Stack>
         </Stack>
