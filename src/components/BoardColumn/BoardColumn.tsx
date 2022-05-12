@@ -13,7 +13,7 @@ import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
-import { grey } from '@mui/material/colors';
+import grey from '@mui/material/colors/grey';
 
 function BoardColumn({ children, title }: BoardColumnProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -120,6 +120,17 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           borderBottomLeftRadius: '0.5rem',
           borderBottomRightRadius: '0.5rem',
           minHeight: '2rem',
+          scrollbarColor: `${grey[400]} ${grey[200]}`,
+          scrollbarWidth: 'thin',
+          '&::-webkit-scrollbar': {
+            width: '10px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: grey[200],
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: grey[400],
+          },
         }}
       >
         {children}

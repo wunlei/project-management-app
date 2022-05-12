@@ -1,9 +1,10 @@
+import { Link } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
-import { Link } from 'react-router-dom';
+import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   return (
@@ -48,6 +49,17 @@ function BoardPage() {
           sx={{
             flexGrow: 1,
             overflowY: 'hidden',
+            scrollbarColor: `${grey[400]} ${grey[200]}`,
+            scrollbarWidth: 'thin',
+            '&::-webkit-scrollbar': {
+              height: '10px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: grey[200],
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: grey[400],
+            },
           }}
         >
           <BoardColumn title={'Column Title'}>
