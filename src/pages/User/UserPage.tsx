@@ -1,7 +1,7 @@
 import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 
-import { ReactComponent as ArrowBack } from 'assets/svg/arrow-left.svg';
-import { ReactComponent as Delete } from 'assets/svg/trash.svg';
+import { ReactComponent as ArrowBack } from 'assets/icons/arrow-left.svg';
+import { ReactComponent as Delete } from 'assets/icons/trash.svg';
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import PasswordInput from 'components/PasswordInput/PasswordInput';

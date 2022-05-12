@@ -5,8 +5,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
-import { ReactComponent as Visibility } from 'assets/svg/eye.svg';
-import { ReactComponent as VisibilityOff } from 'assets/svg/eye-off.svg';
+import { ReactComponent as Visibility } from 'assets/icons/eye.svg';
+import { ReactComponent as VisibilityOff } from 'assets/icons/eye-off.svg';
 import { Control, Controller, Path } from 'react-hook-form';
 
 interface Props<T> {
