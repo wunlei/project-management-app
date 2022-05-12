@@ -21,9 +21,9 @@ function ProjectsPage() {
             }}
           >
             <ProjectCard
-              color={'pink'}
               title={'My Project #1'}
               description={'Project description'}
+              boardId={'1'}
             ></ProjectCard>
           </Box>
         </Stack>

@@ -1,20 +1,25 @@
+import { Link } from 'react-router-dom';
 import { IconButton, Stack, Typography } from '@mui/material';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import { ProjectCardProps } from './ProjectCard.types';
 
 export default function ProjectCard({
-  color,
   title,
   description,
+  boardId,
 }: ProjectCardProps) {
   return (
     <Stack
       padding={2}
       paddingTop={1}
+      component={Link}
+      to={boardId}
+      color={'inherit'}
       sx={{
+        textDecoration: 'none',
         borderWidth: '2px',
         borderStyle: 'solid',
-        borderColor: color,
+        borderColor: 'secondary.main',
         borderLeftWidth: '7px',
         maxWidth: '300px',
         width: '100%',
@@ -33,7 +38,12 @@ export default function ProjectCard({
         <Typography variant="h5" fontWeight="bold">
           {title}
         </Typography>
-        <IconButton color="error">
+        <IconButton
+          color="error"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
           <TrashIcon />
         </IconButton>
       </Stack>
