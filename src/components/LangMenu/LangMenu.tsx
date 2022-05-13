@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
+import { useTranslation } from 'react-i18next';
+import { DEFAULT_LANG } from 'constants/appConstants';
 
 function LangMenu() {
+  const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currLang, setCurrLang] = useState<string>('en');
+  const [currLang, setCurrLang] = useState<string>(() => {
+    const initialState = localStorage.getItem('lang') || DEFAULT_LANG;
+    i18n.changeLanguage(initialState);
+    return initialState;
+  });
 
   const open = Boolean(anchorEl);
 
@@ -21,6 +28,11 @@ function LangMenu() {
     setCurrLang(lang);
     handleClose();
   };
+
+  useEffect(() => {
+    localStorage.setItem('lang', currLang);
+    i18n.changeLanguage(currLang);
+  }, [currLang]);
 
   return (
     <div>

@@ -13,10 +13,12 @@ import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
+import { useTranslation } from 'react-i18next';
 
 function Header() {
+  const { t } = useTranslation();
   const location = useLocation();
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
 
   return (
     <HideOnScroll>
@@ -33,7 +35,7 @@ function Header() {
         >
           {location.pathname === '/projects' && auth ? (
             <Button startIcon={<PlusIcon />} variant="contained">
-              Create project
+              {t('Create project')}
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
@@ -41,15 +43,15 @@ function Header() {
             {!auth ? (
               <>
                 <Button variant="outlined" component={Link} to="/login">
-                  Log In
+                  {t('Log In')}
                 </Button>
                 <Button variant="contained" component={Link} to="/signup">
-                  Sign Up
+                  {t('Sign Up')}
                 </Button>
               </>
             ) : (
               <>
-                <Tooltip title="Profile" arrow>
+                <Tooltip title={t('Profile')} arrow>
                   <IconButton
                     color="primary"
                     aria-label="user"
@@ -59,7 +61,7 @@ function Header() {
                     <UserIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Sign Out" arrow>
+                <Tooltip title={t('Sign Out')} arrow>
                   <IconButton
                     color="primary"
                     aria-label="log-out"
