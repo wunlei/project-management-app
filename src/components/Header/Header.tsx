@@ -1,42 +1,22 @@
-import React from 'react';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Button,
   IconButton,
-  Menu,
-  MenuItem,
   Stack,
   Toolbar,
   Tooltip,
 } from '@mui/material';
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
 
 function Header() {
   const location = useLocation();
   const [auth, setAuth] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currLang, setCurrLang] = useState<string>('EN');
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const getLang = (lang: string) => {
-    setCurrLang(lang);
-    handleClose();
-  };
 
   return (
     <HideOnScroll>
@@ -57,43 +37,7 @@ function Header() {
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
-            <div>
-              <Button
-                id="lang-menu-button"
-                aria-controls={open ? 'lang-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-                endIcon={<ArrowIcon />}
-              >
-                {currLang}
-              </Button>
-              <Menu
-                id="lang-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'lang-menu-button',
-                }}
-                elevation={3}
-              >
-                <MenuItem
-                  onClick={() => {
-                    getLang('EN');
-                  }}
-                >
-                  EN
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    getLang('RU');
-                  }}
-                >
-                  RU
-                </MenuItem>
-              </Menu>
-            </div>
+            <LangMenu />
             {!auth ? (
               <>
                 <Button variant="outlined" component={Link} to="/login">
