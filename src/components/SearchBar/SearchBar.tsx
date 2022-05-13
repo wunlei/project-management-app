@@ -1,16 +1,16 @@
-import { Button, IconButton, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
+import grey from '@mui/material/colors/grey';
 
 function SearchBar() {
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
       <TextField
         id="search-input"
-        label="Search"
         variant="outlined"
         type="text"
         sx={{
-          backgroundColor: 'rgba(0, 0, 0, 0.06)',
+          backgroundColor: grey[200],
           maxWidth: '300px',
           width: '100%',
         }}
