@@ -2,10 +2,6 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import { ProjectCardProps } from './ProjectCard.types';
 
-function getShortDescription(text: string) {
-  return text.length > 38 ? text.slice(0, 38) + '...' : text;
-}
-
 export default function ProjectCard({
   color,
   title,
@@ -46,9 +42,8 @@ export default function ProjectCard({
         sx={{
           wordWrap: 'break-word',
         }}
-        title={description}
       >
-        {getShortDescription(description)}
+        {description}
       </Typography>
     </Stack>
   );
