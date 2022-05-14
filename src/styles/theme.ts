@@ -27,6 +27,9 @@ export const theme = createTheme({
       light: '#4d4d4d',
       dark: '#171717',
     },
+    error: {
+      main: '#A82424',
+    },
   },
   components: {
     MuiFormHelperText: {

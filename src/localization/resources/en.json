@@ -16,5 +16,8 @@
   "Open": "Open",
   "Edit": "Edit",
   "Delete": "Delete",
-  "Back": "Back"
+  "Back": "Back",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel",
+  "Confirm Action": "Confirm Action"
 }

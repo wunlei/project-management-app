@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Dialog,
@@ -19,6 +20,7 @@ function Modal(props: ModalProps) {
     confirmBtnText: confirmText,
     rejectBtnText: rejectText,
   } = props;
+  const { t } = useTranslation();
 
   return (
     <Dialog
@@ -57,10 +59,10 @@ function Modal(props: ModalProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="error">
-          {rejectText || 'Cancel'}
+          {rejectText || t('Cancel')}
         </Button>
         <Button onClick={onConfirm} variant="outlined">
-          {confirmText || 'Save'}
+          {confirmText || t('Save')}
         </Button>
       </DialogActions>
     </Dialog>

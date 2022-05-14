@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Dialog,
@@ -9,6 +10,7 @@ import { ConfirmationDialogProps } from './ConfirmationDialog.types';
 
 function ConfirmationDialog(props: ConfirmationDialogProps) {
   const { open, dialogText, onConfirm, onReject } = props;
+  const { t } = useTranslation();
 
   return (
     <Dialog
@@ -29,17 +31,17 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
         variant="h4"
         textAlign="center"
       >
-        Confirm Action
+        {t('Confirm Action')}
       </DialogTitle>
       <DialogContent id="confirmation-dialog-description">
         {dialogText}
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-between' }}>
         <Button onClick={onConfirm} color="success" variant="outlined">
-          Confirm
+          {t('Confirm')}
         </Button>
         <Button onClick={onReject} color="error" variant="contained">
-          Cancel
+          {t('Cancel')}
         </Button>
       </DialogActions>
     </Dialog>
