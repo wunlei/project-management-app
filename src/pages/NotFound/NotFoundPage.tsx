@@ -1,28 +1,28 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 function NotFoundPage() {
+  const { t } = useTranslation();
   return (
-    <Stack height="100vh" justifyContent="space-between">
-      <Stack alignItems="center" spacing={3}>
-        <Typography variant="h2" fontSize="3rem" fontWeight="bold">
-          404
-        </Typography>
-        <Typography variant="h3" fontSize="1.5rem">
-          Page Not Found
-        </Typography>
-        <Button
-          component={Link}
-          to={'/'}
-          variant="outlined"
-          sx={{
-            fontWeight: 'bold',
-            fontSize: '1rem',
-          }}
-        >
-          Back to Home
-        </Button>
-      </Stack>
+    <Stack alignItems="center" spacing={3}>
+      <Typography variant="h2" fontSize="3rem" fontWeight="bold">
+        404
+      </Typography>
+      <Typography variant="h3" fontSize="1.5rem">
+        {t('Page Not Found')}
+      </Typography>
+      <Button
+        component={Link}
+        to={'/'}
+        variant="outlined"
+        sx={{
+          fontWeight: 'bold',
+          fontSize: '1rem',
+        }}
+      >
+        {t('Back to Home')}
+      </Button>
     </Stack>
   );
 }
