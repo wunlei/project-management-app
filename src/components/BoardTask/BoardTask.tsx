@@ -17,14 +17,17 @@ import { Box } from '@mui/system';
 function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
   const { t } = useTranslation();
 
-  const isHasFile = true;
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const hasFile = true;
+  const [taskMenuAnchorEl, setTaskMenuAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
+  const isTaskMenuOpen = Boolean(taskMenuAnchorEl);
+
+  const handleTaskMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setTaskMenuAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setTaskMenuAnchorEl(null);
   };
 
   return (
@@ -56,7 +59,7 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
             {title}
           </Typography>
           {isDone && (
-            <Box width="34px" height="34px" color="#2e7d32">
+            <Box width="34px" height="34px" color="success.main">
               <CheckIcon />
             </Box>
           )}
@@ -64,17 +67,17 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
         <div>
           <IconButton
             id="menu-button"
-            aria-controls={open ? 'card-menu' : undefined}
+            aria-controls={isTaskMenuOpen ? 'card-menu' : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            aria-expanded={isTaskMenuOpen ? 'true' : undefined}
+            onClick={handleTaskMenuClick}
           >
             <MenuIcon style={{ width: '18px', height: '18px' }} />
           </IconButton>
           <Menu
             id="card-menu"
-            anchorEl={anchorEl}
-            open={open}
+            anchorEl={taskMenuAnchorEl}
+            open={isTaskMenuOpen}
             onClose={handleClose}
             MenuListProps={{
               'aria-labelledby': 'menu-button',
@@ -95,7 +98,7 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
         padding={1.5}
         paddingTop={0}
       >
-        {isHasFile && <ClipIcon width="20px" height="20px" />}
+        {hasFile && <ClipIcon width="20px" height="20px" />}
         <Avatar
           sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
         >

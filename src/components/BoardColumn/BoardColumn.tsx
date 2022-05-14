@@ -19,17 +19,22 @@ import grey from '@mui/material/colors/grey';
 function BoardColumn({ children, title }: BoardColumnProps) {
   const { t } = useTranslation();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
   const [editMode, isEditMode] = useState<boolean>(false);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const isColumnMenuOpen = Boolean(columnMenuAnchorEl);
+
+  const handleColumnMenuClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setColumnMenuAnchorEl(event.currentTarget);
   };
 
-  const handleEdit = () => {
+  const handleColumnMenuClose = () => {
+    setColumnMenuAnchorEl(null);
+  };
+
+  const handleTitleEdit = () => {
     isEditMode(!editMode);
   };
 
@@ -58,10 +63,10 @@ function BoardColumn({ children, title }: BoardColumnProps) {
                 defaultValue={title}
               />
               <Stack direction="row" height="fit-content">
-                <IconButton color="success" onClick={handleEdit}>
+                <IconButton color="success" onClick={handleTitleEdit}>
                   <CheckIcon />
                 </IconButton>
-                <IconButton color="error" onClick={handleEdit}>
+                <IconButton color="error" onClick={handleTitleEdit}>
                   <CrossIcon />
                 </IconButton>
               </Stack>
@@ -70,7 +75,7 @@ function BoardColumn({ children, title }: BoardColumnProps) {
             <Typography
               variant="h5"
               fontWeight="bold"
-              onClick={handleEdit}
+              onClick={handleTitleEdit}
               sx={{ overflowWrap: 'anywhere' }}
             >
               {title}
@@ -90,23 +95,25 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           <IconButton
             size="small"
             id="menu-button"
-            aria-controls={open ? 'column-menu' : undefined}
+            aria-controls={isColumnMenuOpen ? 'column-menu' : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            aria-expanded={isColumnMenuOpen ? 'true' : undefined}
+            onClick={handleColumnMenuClick}
           >
             <MenuIcon />
           </IconButton>
           <Menu
             id="column-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
+            anchorEl={columnMenuAnchorEl}
+            open={isColumnMenuOpen}
+            onClose={handleColumnMenuClose}
             MenuListProps={{
               'aria-labelledby': 'menu-button',
             }}
           >
-            <MenuItem onClick={handleClose}>{t('Delete column')}</MenuItem>
+            <MenuItem onClick={handleColumnMenuClose}>
+              {t('Delete column')}
+            </MenuItem>
           </Menu>
         </Stack>
       </Stack>
