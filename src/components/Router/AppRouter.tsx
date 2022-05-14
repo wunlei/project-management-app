@@ -17,12 +17,13 @@ function AppRouter() {
           <Route index element={<HomePage />}></Route>
           <Route path="projects" element={<ProjectsPage />}></Route>
           <Route path="projects/:boardId" element={<BoardPage />} />
-          <Route element={<AuthPage />}>
-            <Route path="signup" element={<SignupForm />} />
-            <Route path="login" element={<LoginForm />} />
-          </Route>
+
           <Route path="user" element={<UserPage />}></Route>
           <Route path="*" element={<NotFoundPage />} />
+        </Route>
+        <Route element={<AuthPage />}>
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path="/login" element={<LoginForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

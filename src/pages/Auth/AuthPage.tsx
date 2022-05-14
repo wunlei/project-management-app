@@ -1,8 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
-import { Stack, Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Stack, Link, Typography, Button } from '@mui/material';
+import Footer from 'components/Footer/Footer';
+import LangMenu from 'components/LangMenu/LangMenu';
+import { team } from 'constants/appConstants';
 import bg from 'assets/img/towfiqu-barbhuiya-jOeh3Lv88xA-unsplash.jpg';
 
 function AuthPage() {
+  const { t } = useTranslation();
+
   return (
     <Stack
       height="100vh"
@@ -15,11 +22,9 @@ function AuthPage() {
       }}
     >
       <Stack
-        component="main"
         bgcolor="white"
         flex={1}
-        alignItems="center"
-        justifyContent="center"
+        justifyContent="space-between"
         width="100%"
         sx={{
           zIndex: 1,
@@ -28,7 +33,16 @@ function AuthPage() {
           },
         }}
       >
-        <Outlet />
+        <Stack justifyContent="space-between" direction="row" padding={1}>
+          <Button component={RouterLink} to="/" variant="outlined">
+            {t('Back')}
+          </Button>
+          <LangMenu />
+        </Stack>
+        <Stack alignItems="center">
+          <Outlet />
+        </Stack>
+        <Footer data={team} />
       </Stack>
       <Typography
         variant="body2"
