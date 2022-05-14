@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   IconButton,
@@ -14,6 +15,8 @@ import { BoardTaskProps } from './BoardTask.types';
 import { Box } from '@mui/system';
 
 function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
+  const { t } = useTranslation();
+
   const isHasFile = true;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -77,9 +80,9 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
               'aria-labelledby': 'menu-button',
             }}
           >
-            <MenuItem onClick={handleClose}>Open</MenuItem>
-            <MenuItem onClick={handleClose}>Edit</MenuItem>
-            <MenuItem onClick={handleClose}>Delete</MenuItem>
+            <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
+            <MenuItem onClick={handleClose}>{t('Edit')}</MenuItem>
+            <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
           </Menu>
         </div>
       </Stack>

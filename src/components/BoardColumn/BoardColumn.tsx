@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   IconButton,
   Menu,
@@ -16,6 +17,8 @@ import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
 
 function BoardColumn({ children, title }: BoardColumnProps) {
+  const { t } = useTranslation();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [editMode, isEditMode] = useState<boolean>(false);
   const open = Boolean(anchorEl);
@@ -49,7 +52,7 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           {editMode ? (
             <Stack direction="row" alignItems="center">
               <TextField
-                label="Title"
+                label={t('Title')}
                 variant="outlined"
                 required
                 defaultValue={title}
@@ -79,7 +82,7 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           alignItems="center"
           style={{ display: editMode ? 'none' : '' }}
         >
-          <Tooltip title={'Add Task'} arrow>
+          <Tooltip title={t('Add Task')} arrow>
             <IconButton size="small">
               <PlusIcon />
             </IconButton>
@@ -103,7 +106,7 @@ function BoardColumn({ children, title }: BoardColumnProps) {
               'aria-labelledby': 'menu-button',
             }}
           >
-            <MenuItem onClick={handleClose}>Delete column</MenuItem>
+            <MenuItem onClick={handleClose}>{t('Delete column')}</MenuItem>
           </Menu>
         </Stack>
       </Stack>
