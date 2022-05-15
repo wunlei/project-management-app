@@ -1,10 +1,21 @@
 import { useState } from 'react';
-import { IconButton, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
+import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
+import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardColumnProps } from './BoardColumn.types';
+import { grey } from '@mui/material/colors';
 
-function BoardColumn(props: BoardColumnProps) {
+function BoardColumn({ children, title }: BoardColumnProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [editMode, isEditMode] = useState<boolean>(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -13,23 +24,49 @@ function BoardColumn(props: BoardColumnProps) {
     setAnchorEl(null);
   };
 
+  const handleEdit = () => {
+    isEditMode(!editMode);
+  };
+
   return (
-    <Stack>
+    <Stack width="280px">
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         padding={1}
+        paddingLeft={2}
         sx={{
           borderTopLeftRadius: '0.5rem',
           borderTopRightRadius: '0.5rem',
-          backgroundColor: '#efefef',
+          backgroundColor: grey[200],
         }}
       >
-        <Typography variant="h5" fontWeight="bold">
-          Column Title
-        </Typography>
         <div>
+          {editMode ? (
+            <Stack direction="row" alignItems="center">
+              <TextField
+                label="Title"
+                variant="outlined"
+                required
+                defaultValue={title}
+              />
+              <Stack direction="row" height="fit-content">
+                <IconButton color="success" onClick={handleEdit}>
+                  <CheckIcon />
+                </IconButton>
+                <IconButton color="error" onClick={handleEdit}>
+                  <CrossIcon />
+                </IconButton>
+              </Stack>
+            </Stack>
+          ) : (
+            <Typography variant="h5" fontWeight="bold" onClick={handleEdit}>
+              {title}
+            </Typography>
+          )}
+        </div>
+        <div style={{ display: editMode ? 'none' : '' }}>
           <IconButton
             id="menu-button"
             aria-controls={open ? 'column-menu' : undefined}
@@ -56,10 +93,9 @@ function BoardColumn(props: BoardColumnProps) {
         padding={1}
         spacing={1}
         alignItems="center"
-        width="280px"
         paddingBottom="1rem"
         sx={{
-          backgroundColor: '#efefef',
+          backgroundColor: grey[200],
           overflowX: 'hidden',
           overflowY: 'auto',
           borderBottomLeftRadius: '0.5rem',
@@ -67,7 +103,7 @@ function BoardColumn(props: BoardColumnProps) {
           minHeight: '2rem',
         }}
       >
-        {props.children}
+        {children}
       </Stack>
     </Stack>
   );

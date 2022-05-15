@@ -53,7 +53,7 @@ function BoardPage() {
             overflowY: 'hidden',
           }}
         >
-          <BoardColumn>
+          <BoardColumn title={'Column Title'}>
             <BoardTask
               title={'Title'}
               description={''}
