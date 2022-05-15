@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   Avatar,
-  Chip,
   IconButton,
   Menu,
   MenuItem,
@@ -10,9 +9,11 @@ import {
 } from '@mui/material';
 import { ReactComponent as ClipIcon } from 'assets/icons/paperclip.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
+import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
 
 function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
+  const isHasFile = true;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,10 +25,8 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
 
   return (
     <Stack
-      spacing={0}
-      padding={1.5}
+      bgcolor="white"
       borderRadius={1}
-      bgcolor="#ffffff"
       sx={{
         '&:hover': {
           cursor: 'pointer',
@@ -37,16 +36,23 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
       width="250px"
       margin="5px"
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        {/* fix colors contrast */}
-        <Chip
-          label={isDone ? 'Done' : 'Not Done'}
-          color={isDone ? 'success' : 'warning'}
-          size="small"
-          sx={{
-            fontSize: '0.875rem',
-          }}
-        />
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        padding={1.5}
+        paddingRight={1}
+      >
+        <Stack direction="row" spacing={1}>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            sx={{ overflowWrap: 'anywhere' }}
+          >
+            {title}
+          </Typography>
+          {isDone && <CheckIcon style={{ color: 'green' }} />}
+        </Stack>
         <div>
           <IconButton
             id="menu-button"
@@ -55,7 +61,7 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <MenuIcon />
+            <MenuIcon style={{ width: '18px', height: '18px' }} />
           </IconButton>
           <Menu
             id="card-menu"
@@ -72,12 +78,16 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
           </Menu>
         </div>
       </Stack>
-      <Typography variant="h6" fontWeight="bold">
-        {title}
-      </Typography>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <ClipIcon width="20px" height="20px" />
-        <Avatar sx={{ bgcolor: 'orange', width: '30px', height: '30px' }}>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        spacing={1}
+        padding={1.5}
+      >
+        {isHasFile && <ClipIcon width="20px" height="20px" />}
+        <Avatar sx={{ bgcolor: 'secondary', width: '30px', height: '30px' }}>
           {user}
         </Avatar>
       </Stack>
