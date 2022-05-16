@@ -5,6 +5,7 @@ import { FooterProps } from './Footer.types';
 function Footer({ data }: FooterProps) {
   return (
     <Stack
+      component="footer"
       justifyContent="space-between"
       alignItems="center"
       rowGap={2}
