@@ -9,6 +9,7 @@ import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   const { t } = useTranslation();
+  const columns = [];
 
   return (
     <Stack
@@ -65,14 +66,22 @@ function BoardPage() {
           },
         }}
       >
-        <BoardColumn title={'Column Title'}>
-          <BoardTask
-            title={'Title'}
-            description={''}
-            isDone={false}
-            user={'W'}
-          ></BoardTask>
-        </BoardColumn>
+        {columns.length === 0 ? (
+          <Stack width="100%" textAlign="center">
+            <Typography fontSize="2rem" color="primary.light">
+              {t('No columns yet')}
+            </Typography>
+          </Stack>
+        ) : (
+          <BoardColumn title={'Column Title'}>
+            <BoardTask
+              title={'Title'}
+              description={''}
+              isDone={false}
+              user={'W'}
+            ></BoardTask>
+          </BoardColumn>
+        )}
       </Stack>
     </Stack>
   );
