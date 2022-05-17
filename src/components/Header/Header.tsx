@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -13,12 +13,12 @@ import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
-import { useTranslation } from 'react-i18next';
 
 function Header() {
   const { t } = useTranslation();
   const location = useLocation();
-  const [auth, setAuth] = useState(false);
+  const navigate = useNavigate();
+  const user = localStorage.getItem('userId');
 
   return (
     <HideOnScroll>
@@ -33,14 +33,14 @@ function Header() {
             },
           }}
         >
-          {location.pathname === '/projects' && auth ? (
+          {location.pathname === '/projects' && user ? (
             <Button startIcon={<PlusIcon />} variant="contained">
               {t('Create project')}
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
             <LangMenu />
-            {!auth ? (
+            {!user ? (
               <>
                 <Button variant="outlined" component={Link} to="/login">
                   {t('Log In')}
@@ -66,7 +66,8 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
-                      // log Out and redirect to main
+                      localStorage.removeItem('userId');
+                      navigate('/');
                     }}
                   >
                     <ExitIcon />

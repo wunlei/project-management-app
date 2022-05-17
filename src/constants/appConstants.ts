@@ -13,4 +13,4 @@ export const team = [
   },
 ];
 
-export const DEFAULT_LANG = 'EN';
+export const DEFAULT_LANG = 'en';
