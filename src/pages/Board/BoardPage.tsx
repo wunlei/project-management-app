@@ -74,12 +74,7 @@ function BoardPage() {
           </Stack>
         ) : (
           <BoardColumn title={'Column Title'}>
-            <BoardTask
-              title={'Title'}
-              description={''}
-              isDone={false}
-              user={'W'}
-            ></BoardTask>
+            <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
           </BoardColumn>
         )}
       </Stack>
