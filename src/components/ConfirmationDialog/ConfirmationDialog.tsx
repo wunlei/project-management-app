@@ -9,7 +9,7 @@ import {
 import { ConfirmationDialogProps } from './ConfirmationDialog.types';
 
 function ConfirmationDialog(props: ConfirmationDialogProps) {
-  const { open, dialogText, onConfirm, onReject } = props;
+  const { open, dialogText, title, onConfirm, onReject } = props;
   const { t } = useTranslation();
 
   return (
@@ -31,7 +31,7 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
         variant="h4"
         textAlign="center"
       >
-        {t('Confirm Action')}
+        {title || t('Confirm Action')}
       </DialogTitle>
       <DialogContent id="confirmation-dialog-description">
         {dialogText}

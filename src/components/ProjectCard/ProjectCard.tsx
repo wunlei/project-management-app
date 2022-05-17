@@ -7,6 +7,7 @@ export default function ProjectCard({
   title,
   description,
   boardId,
+  onDelete,
 }: ProjectCardProps) {
   return (
     <Stack
@@ -42,6 +43,7 @@ export default function ProjectCard({
           color="error"
           onClick={(e) => {
             e.preventDefault();
+            onDelete();
           }}
         >
           <TrashIcon />

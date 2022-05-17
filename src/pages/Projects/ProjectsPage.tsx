@@ -25,6 +25,7 @@ function ProjectsPage() {
             title={'My Project #1'}
             description={'Project description'}
             boardId={'1'}
+            onDelete={() => {}}
           ></ProjectCard>
         </Box>
       </Stack>
