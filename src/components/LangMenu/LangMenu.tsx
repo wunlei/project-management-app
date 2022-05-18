@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
-import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_LANG } from 'constants/appConstants';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import { setLanguage } from 'redux/global/globalSlice';
+import { useAppDispatch } from 'redux/hooks';
+import { Language } from 'redux/global/globalTypes';
+import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
 
 function LangMenu() {
+  const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currLang, setCurrLang] = useState<string>(() => {
-    const initialState = localStorage.getItem('lang') || DEFAULT_LANG;
-    i18n.changeLanguage(initialState);
-    return initialState;
-  });
+
+  const currLang = useSelector<RootState, string>(
+    (state) => state.global.language
+  );
 
   const open = Boolean(anchorEl);
 
@@ -24,15 +27,14 @@ function LangMenu() {
     setAnchorEl(null);
   };
 
-  const handleLangChange = (lang: string) => {
-    setCurrLang(lang);
+  const handleLangChange = (lang: Language) => {
+    dispatch(setLanguage(lang));
     handleClose();
   };
 
   useEffect(() => {
-    localStorage.setItem('lang', currLang);
     i18n.changeLanguage(currLang);
-  }, [currLang]);
+  }, [currLang, i18n]);
 
   return (
     <div>

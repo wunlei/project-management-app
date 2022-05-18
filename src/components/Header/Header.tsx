@@ -13,12 +13,19 @@ import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import { useAppDispatch } from 'redux/hooks';
+import { setUserId } from 'redux/global/globalSlice';
 
 function Header() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const user = localStorage.getItem('userId');
+  const dispatch = useAppDispatch();
+  const user = useSelector<RootState, string | null>(
+    (state) => state.global.userId
+  );
 
   return (
     <HideOnScroll>
@@ -43,7 +50,7 @@ function Header() {
             {!user ? (
               <>
                 <Button variant="outlined" component={Link} to="/login">
-                  {t('Log In')}
+                  {t('Sign In')}
                 </Button>
                 <Button variant="contained" component={Link} to="/signup">
                   {t('Sign Up')}
@@ -66,7 +73,7 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
-                      localStorage.removeItem('userId');
+                      dispatch(setUserId(null));
                       navigate('/');
                     }}
                   >
