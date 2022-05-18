@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 import { setLanguage } from 'redux/global/globalSlice';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { Language } from 'redux/global/globalTypes';
 import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-down.svg';
 
@@ -13,9 +11,7 @@ function LangMenu() {
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const currLang = useSelector<RootState, string>(
-    (state) => state.global.language
-  );
+  const currLang = useAppSelector((state) => state.global.language);
 
   const open = Boolean(anchorEl);
 

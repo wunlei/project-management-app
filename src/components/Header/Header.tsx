@@ -13,9 +13,7 @@ import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { setUserId } from 'redux/global/globalSlice';
 
 function Header() {
@@ -23,9 +21,7 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useSelector<RootState, string | null>(
-    (state) => state.global.userId
-  );
+  const user = useAppSelector((state) => state.global.userId);
 
   return (
     <HideOnScroll>
