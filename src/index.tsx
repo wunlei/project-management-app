@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from 'redux/store';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from 'styles/theme';
+import './localization/localization.ts';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

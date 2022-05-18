@@ -21,11 +21,11 @@ function AppRouter() {
             <Route path="projects/:boardId" element={<BoardPage />} />
             <Route path="user" element={<UserPage />}></Route>
           </Route>
-          <Route element={<AuthPage />}>
-            <Route path="signup" element={<SignupForm />} />
-            <Route path="login" element={<LoginForm />} />
-          </Route>
           <Route path="*" element={<NotFoundPage />} />
+        </Route>
+        <Route element={<AuthPage />}>
+          <Route path="signup" element={<SignupForm />} />
+          <Route path="login" element={<LoginForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
