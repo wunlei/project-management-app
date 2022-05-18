@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
+import { useAppSelector } from 'redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { Outlet } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
+import { Outlet, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Stack, Link, Typography, Button } from '@mui/material';
 import Footer from 'components/Footer/Footer';
 import LangMenu from 'components/LangMenu/LangMenu';
@@ -9,6 +10,15 @@ import bg from 'assets/img/towfiqu-barbhuiya-jOeh3Lv88xA-unsplash.jpg';
 
 function AuthPage() {
   const { t } = useTranslation();
+  const isLoggedIn = useAppSelector((state) => state.global.userId);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/projects');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Stack
