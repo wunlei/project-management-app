@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -7,6 +7,7 @@ import {
   Stack,
   Toolbar,
   Tooltip,
+  Link as MuiLink,
 } from '@mui/material';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
@@ -28,14 +29,38 @@ function Header() {
       <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
         <Toolbar
           sx={{
-            justifyContent:
-              location.pathname === '/projects' ? 'space-between' : 'flex-end',
+            justifyContent: user ? 'space-between' : 'flex-end',
             flexDirection: {
               xs: 'column-reverse',
               sm: 'row',
             },
           }}
         >
+          {user && (
+            <Stack direction="row" spacing={1}>
+              <MuiLink
+                component={Link}
+                to="/"
+                underline="hover"
+                sx={{
+                  fontWeight: location.pathname === '/' ? 'bold' : 'inherit',
+                }}
+              >
+                Home
+              </MuiLink>
+              <MuiLink
+                component={Link}
+                to="projects"
+                underline="hover"
+                sx={{
+                  fontWeight:
+                    location.pathname === '/projects' ? 'bold' : 'inherit',
+                }}
+              >
+                Projects
+              </MuiLink>
+            </Stack>
+          )}
           {location.pathname === '/projects' && user ? (
             <Button startIcon={<PlusIcon />} variant="contained">
               {t('Create project')}
