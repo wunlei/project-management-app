@@ -3,3 +3,8 @@ export interface EditProfile {
   login: string;
   password: string;
 }
+
+export interface AlertState {
+  color: 'error' | 'success';
+  message: string;
+}
