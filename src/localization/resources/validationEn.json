@@ -1,0 +1,15 @@
+{
+  "Name is required": "Name is required",
+  "Name should be at least 3 characters": "Name should be at least 3 characters",
+  "Name must be at most 30 characters": "Name must be at most 30 characters",
+  "Name must include only letters or punctuation marks": "Name must include only letters or punctuation",
+  "Login is required": "Login is required",
+  "Login should be at least 3 characters": "Login should be at least 3 characters",
+  "Login must be at most 30 characters": "Login must be at most 30 characters",
+  "Login must include only latin letters and digits": "Login must include only latin letters and digits",
+  "Password is required": "Password is required",
+  "Password should be at least 8 characters": "Password should be at least 8 characters",
+  "Password must include at list one digit": "Password must include at list one digit",
+  "Password must include at list one letter": "Password must include at list one letter",
+  "Password must include only latin letters and digits": "Password must include only latin letters and digits"
+}
