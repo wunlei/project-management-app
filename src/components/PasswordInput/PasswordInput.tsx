@@ -12,6 +12,7 @@ import { Control, Controller, Path } from 'react-hook-form';
 interface Props<T> {
   control: Control<T>;
   name: Path<T>;
+  required?: boolean;
 }
 
 interface State {
@@ -22,7 +23,7 @@ interface State {
  * @name should correspond to `password` key in your form type
  */
 function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
-  const { control, name } = props;
+  const { control, name, required } = props;
 
   const [values, setValues] = useState<State>({
     password: '',
@@ -56,7 +57,7 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
         field: { onChange, onBlur, name, ref },
         fieldState: { error },
       }) => (
-        <FormControl variant="outlined">
+        <FormControl variant="outlined" required={required}>
           <InputLabel error={!!error} htmlFor="password">
             Password
           </InputLabel>
