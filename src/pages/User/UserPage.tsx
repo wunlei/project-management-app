@@ -62,7 +62,7 @@ function UserPage() {
       </Button>
       <Stack spacing={1} alignItems="center" mt={3}>
         <Typography variant="h3" mb={3}>
-          {`${t('Edit')} ${t('Profile')}`}
+          {`${t('Edit')} ${t('Profile').toLowerCase()}`}
         </Typography>
         <UpdateUserForm />
         <Button
