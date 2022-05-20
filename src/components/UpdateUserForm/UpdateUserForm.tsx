@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useAppSelector } from 'redux/hooks';
 import {
   useGetUserQuery,
   useUpdateUserMutation,
 } from 'redux/api/endpoints/users';
+import { useTranslation } from 'react-i18next';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { userValidationSchema } from 'constants/validation';
 
 import { EditProfile, AlertState } from './UpdateUserForm.types';
 
@@ -20,6 +23,7 @@ import {
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 
 function UpdateUserForm() {
+  const { t } = useTranslation();
   const userId = useAppSelector((state) => state.global.userId);
 
   const [alertState, setAlertState] = useState<AlertState | null>(null);
@@ -29,7 +33,9 @@ function UpdateUserForm() {
   });
   const [updateUser, updateUserResult] = useUpdateUserMutation();
 
-  const { control, handleSubmit } = useForm<EditProfile>();
+  const { control, handleSubmit } = useForm<EditProfile>({
+    resolver: yupResolver(userValidationSchema),
+  });
 
   const onSubmit: SubmitHandler<EditProfile> = (data) => {
     updateUser({ userId: userId ?? undefined, body: data });
@@ -61,7 +67,7 @@ function UpdateUserForm() {
   return (
     <>
       <Stack
-        spacing={1}
+        spacing={3}
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         width={300}
@@ -76,7 +82,7 @@ function UpdateUserForm() {
             render={({
               field: { onChange, onBlur, value, name, ref },
               fieldState: { isTouched, isDirty, error },
-              formState,
+              formState: { errors },
             }) => (
               <TextField
                 id="edit-name"
@@ -84,7 +90,13 @@ function UpdateUserForm() {
                 error={!!error?.message}
                 name={name}
                 value={value}
-                helperText={error ? error.message : ' '}
+                helperText={
+                  errors.name?.message //errors.login?.message
+                    ? t(errors.name.message, {
+                        ns: 'validation',
+                      })
+                    : ''
+                }
                 onBlur={onBlur} // notify when input is touched
                 onChange={onChange} // send value to hook form
                 inputRef={ref}
@@ -103,7 +115,7 @@ function UpdateUserForm() {
             render={({
               field: { onChange, onBlur, value, name, ref },
               fieldState: { isTouched, isDirty, error },
-              formState,
+              formState: { errors },
             }) => (
               <TextField
                 id="edit-login"
@@ -111,7 +123,13 @@ function UpdateUserForm() {
                 type="text"
                 name={name}
                 value={value}
-                helperText={error ? error.message : ' '}
+                helperText={
+                  errors.name?.message //errors.login?.message
+                    ? t(errors.name.message, {
+                        ns: 'validation',
+                      })
+                    : ''
+                }
                 error={!!error?.message}
                 onBlur={onBlur} // notify when input is touched
                 onChange={onChange} // send value to hook form
@@ -126,7 +144,7 @@ function UpdateUserForm() {
           variant="outlined"
           sx={{ textTransform: 'capitalize' }}
         >
-          Save
+          {t('Save')}
         </Button>
       </Stack>
       <Snackbar

@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { setUserId } from 'redux/global/globalSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDeleteUserMutation } from 'redux/api/endpoints/users';
+import { useTranslation } from 'react-i18next';
 
 import {
   Box,
@@ -24,7 +25,7 @@ function UserPage() {
   const userId = useAppSelector((state) => state.global.userId);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [
     deleteUser,
     { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess },
@@ -71,7 +72,7 @@ function UserPage() {
           sx={{ textTransform: 'capitalize', maxWidth: 300 }}
           onClick={() => setIsDialogOpen(true)}
         >
-          delete profile
+          {`${t('Delete')} ${t('Profile')}`}
         </Button>
       </Stack>
       <ConfirmationDialog

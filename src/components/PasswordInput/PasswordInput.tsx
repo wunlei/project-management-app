@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import { ReactComponent as Visibility } from 'assets/icons/eye.svg';
 import { ReactComponent as VisibilityOff } from 'assets/icons/eye-off.svg';
 import { Control, Controller, Path } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 interface Props<T> {
   control: Control<T>;
@@ -24,6 +25,8 @@ interface State {
  */
 function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
   const { control, name, required } = props;
+
+  const { t } = useTranslation();
 
   const [values, setValues] = useState<State>({
     password: '',
@@ -88,7 +91,11 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
             label="Password"
           />
           <FormHelperText error={!!error}>
-            {error ? error.message : ' '}
+            {error?.message
+              ? t(error.message, {
+                  ns: 'validation',
+                })
+              : ''}
           </FormHelperText>
         </FormControl>
       )}
