@@ -128,8 +128,8 @@ function UpdateUserForm() {
                 name={name}
                 value={value}
                 helperText={
-                  errors.name?.message //errors.login?.message
-                    ? t(errors.name.message, {
+                  errors.login?.message //errors.login?.message
+                    ? t(errors.login.message, {
                         ns: 'validation',
                       })
                     : ''

@@ -73,7 +73,7 @@ function UserPage() {
           sx={{ textTransform: 'capitalize', maxWidth: 300 }}
           onClick={() => setIsDialogOpen(true)}
         >
-          {`${t('Delete')} ${t('Profile')}`}
+          {`${t('Delete')} ${t('Profile').toLowerCase()}`}
         </Button>
       </Stack>
       <ConfirmationDialog
