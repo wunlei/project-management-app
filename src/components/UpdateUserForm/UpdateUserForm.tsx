@@ -33,7 +33,12 @@ function UpdateUserForm() {
   });
   const [updateUser, updateUserResult] = useUpdateUserMutation();
 
-  const { control, handleSubmit } = useForm<EditProfile>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<EditProfile>({
+    reValidateMode: 'onSubmit',
     resolver: yupResolver(userValidationSchema),
   });
 
@@ -147,6 +152,7 @@ function UpdateUserForm() {
           type="submit"
           variant="outlined"
           sx={{ textTransform: 'capitalize' }}
+          disabled={!isDirty}
         >
           {t('Save')}
         </Button>
