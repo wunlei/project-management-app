@@ -62,7 +62,7 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
       }) => (
         <FormControl variant="outlined" required={required}>
           <InputLabel error={!!error} htmlFor="password">
-            Password
+            {t('Password')}
           </InputLabel>
           <OutlinedInput
             id="password"

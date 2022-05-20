@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { setUserId } from 'redux/global/globalSlice';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDeleteUserMutation } from 'redux/api/endpoints/users';
 import { useTranslation } from 'react-i18next';
 
@@ -51,17 +51,18 @@ function UserPage() {
   return (
     <Container sx={{ flexGrow: 1, pt: 1 }}>
       <Button
-        component={Link}
-        to={'/projects'}
+        onClick={() => {
+          navigate(-1);
+        }}
         variant="outlined"
         startIcon={<ArrowBack width={18} height={18} />}
         sx={{ textTransform: 'capitalize', alignSelf: 'flex-start' }}
       >
-        Back to projects
+        {t('Back')}
       </Button>
       <Stack spacing={1} alignItems="center" mt={3}>
         <Typography variant="h3" mb={3}>
-          Edit Profile
+          {`${t('Edit')} ${t('Profile')}`}
         </Typography>
         <UpdateUserForm />
         <Button

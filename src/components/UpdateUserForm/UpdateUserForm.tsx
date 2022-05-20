@@ -54,14 +54,18 @@ function UpdateUserForm() {
 
   useEffect(() => {
     if (updateUserResult.isSuccess) {
-      setAlertState({ color: 'success', message: 'Successfuly updated user!' });
+      setAlertState({
+        color: 'success',
+        message: t('Update User alert success'),
+      });
     }
     if (updateUserResult.isError) {
       setAlertState({
         color: 'error',
-        message: 'Something went wrong while updating user!',
+        message: t('Update User alert error'),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateUserResult]);
 
   return (
@@ -86,7 +90,7 @@ function UpdateUserForm() {
             }) => (
               <TextField
                 id="edit-name"
-                label="Name"
+                label={t('Name')}
                 error={!!error?.message}
                 name={name}
                 value={value}
@@ -119,7 +123,7 @@ function UpdateUserForm() {
             }) => (
               <TextField
                 id="edit-login"
-                label="Login"
+                label={t('Login')}
                 type="text"
                 name={name}
                 value={value}

@@ -20,5 +20,10 @@
   "Confirm": "Подтвердить",
   "Cancel": "Отменить",
   "Confirm Action": "Подтвердите действие",
-  "No columns yet": "Не создано ни одной колонки"
+  "No columns yet": "Не создано ни одной колонки",
+  "Password": "Пароль",
+  "Name": "Имя",
+  "Login": "Логин",
+  "Update User alert success": "Обновление профиля прошло успешно!",
+  "Update User alert error": "Что то пошло не так при попытке обновить профиль!"
 }
