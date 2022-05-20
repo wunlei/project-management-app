@@ -14,6 +14,8 @@ interface Props<T> {
   control: Control<T>;
   name: Path<T>;
   required?: boolean;
+  isValidateRequired?: boolean;
+  onChange?: () => void;
 }
 
 interface State {
@@ -23,8 +25,14 @@ interface State {
 /**
  * @name should correspond to `password` key in your form type
  */
-function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
-  const { control, name, required } = props;
+function PasswordInput<T>(props: Props<T>) {
+  const {
+    control,
+    name,
+    required,
+    isValidateRequired,
+    onChange: propOnChange,
+  } = props;
 
   const { t } = useTranslation();
 
@@ -56,6 +64,13 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
     <Controller
       control={control}
       name={name}
+      {...(isValidateRequired
+        ? {
+            rules: {
+              required: 'Password is required',
+            },
+          }
+        : {})}
       render={({
         field: { onChange, onBlur, name, ref },
         fieldState: { error },
@@ -71,6 +86,9 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
             onChange={(e) => {
               handleChange('password')(e);
               onChange(e);
+              if (propOnChange) {
+                propOnChange();
+              }
             }}
             error={!!error}
             onBlur={onBlur}

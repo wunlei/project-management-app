@@ -70,7 +70,7 @@ function Header() {
             <LangMenu />
             {!user ? (
               <>
-                <Button variant="outlined" component={Link} to="/login">
+                <Button variant="outlined" component={Link} to="/signin">
                   {t('Sign In')}
                 </Button>
                 <Button variant="contained" component={Link} to="/signup">
@@ -94,6 +94,7 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
+                      localStorage.removeItem('token');
                       dispatch(setUserId(null));
                       navigate('/');
                     }}
