@@ -8,6 +8,7 @@ import UserPage from 'pages/User/UserPage';
 import AuthPage from 'pages/Auth/AuthPage';
 import SignupForm from 'components/SignupForm/SignupForm';
 import LoginForm from 'components/LoginForm/LoginForm';
+import PrivateRoute from './PrivateRoute';
 
 function AppRouter() {
   return (
@@ -15,14 +16,16 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />}></Route>
-          <Route path="projects" element={<ProjectsPage />}></Route>
-          <Route path="projects/:boardId" element={<BoardPage />} />
-          <Route element={<AuthPage />}>
-            <Route path="signup" element={<SignupForm />} />
-            <Route path="login" element={<LoginForm />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="projects" element={<ProjectsPage />}></Route>
+            <Route path="projects/:boardId" element={<BoardPage />} />
+            <Route path="user" element={<UserPage />}></Route>
           </Route>
-          <Route path="user" element={<UserPage />}></Route>
           <Route path="*" element={<NotFoundPage />} />
+        </Route>
+        <Route element={<AuthPage />}>
+          <Route path="signup" element={<SignupForm />} />
+          <Route path="login" element={<LoginForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
