@@ -26,5 +26,12 @@
   "Name": "Имя",
   "Login": "Логин",
   "Update User alert success": "Обновление профиля прошло успешно!",
-  "Update User alert error": "Что-то пошло не так при попытке обновить профиль!"
+  "Update User alert error": "Что-то пошло не так при попытке обновить профиль!",
+  "Create new task": "Создать новую задачу",
+  "Task name": "Название",
+  "Task description": "Описание",
+  "Max file size": "Максимальный размер файла 1мб",
+  "Select member": "Выберите исполнителя",
+  "Upload image": "Загрузить картинку",
+  "Create": "Создать"
 }

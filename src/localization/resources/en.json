@@ -26,5 +26,12 @@
   "Name": "Name",
   "Login": "Login",
   "Update User alert success": "Successfuly updated profile!",
-  "Update User alert error": "Something went wrong while updating profile!"
+  "Update User alert error": "Something went wrong while updating profile!",
+  "Create new task": "Create new task",
+  "Task name": "Task name",
+  "Task description": "Task description",
+  "Max file size": "Max file size is 1mb",
+  "Select member": "Select member",
+  "Upload image": "Upload image",
+  "Create": "Create"
 }

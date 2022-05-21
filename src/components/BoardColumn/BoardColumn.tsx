@@ -10,8 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import Modal from 'components/Modal/Modal';
-import CreateTaskForm from 'components/CreateTaskForm/CreateTaskForm';
+import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
 
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
@@ -157,15 +156,12 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           {children}
         </Stack>
       </Stack>
-      <Modal
+      <CreateTaskFormModal
         open={isCreateTaskModalOpen}
-        dialogTitle={t('Create new task')}
-        onClose={() => {
+        handleClose={() => {
           setIsCreateTaskModalOpen(false);
         }}
-      >
-        <CreateTaskForm />
-      </Modal>
+      />
     </>
   );
 }
