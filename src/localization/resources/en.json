@@ -21,5 +21,10 @@
   "Cancel": "Cancel",
   "Confirm Action": "Confirm Action",
   "No columns yet": "No columns yet",
-  "Create new task": "Create new task"
+  "Create new task": "Create new task",
+  "Password": "Password",
+  "Name": "Name",
+  "Login": "Login",
+  "Update User alert success": "Successfuly updated profile!",
+  "Update User alert error": "Something went wrong while updating profile!"
 }
