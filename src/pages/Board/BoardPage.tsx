@@ -9,7 +9,7 @@ import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   const { t } = useTranslation();
-  const columns = [];
+  const columns = [1];
 
   return (
     <Stack
