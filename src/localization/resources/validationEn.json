@@ -11,5 +11,6 @@
   "Password should be at least 8 characters": "Password should be at least 8 characters",
   "Password must include at list one digit": "Password must include at list one digit",
   "Password must include at list one letter": "Password must include at list one letter",
-  "Password must include only latin letters and digits": "Password must include only latin letters and digits"
+  "Password must include only latin letters and digits": "Password must include only latin letters and digits",
+  "Incorrect login or password": "Incorrect login or password"
 }

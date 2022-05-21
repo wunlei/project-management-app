@@ -42,20 +42,13 @@ function LoginForm() {
     }
     if (signInResult.isError) {
       setError('login', { message: '' });
-      setError('password', { message: t('Incorrect login or password') });
+      setError('password', {
+        type: 'value',
+        message: 'Incorrect login or password',
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signInResult]);
-
-  // fix attempt works almost perfectly (still doesnt work as desired)
-  // when you clear errors on input and than change language
-  // error will come back
-  // will set error every rerender (thats not good in general)
-  // useEffect(() => {
-  //   if (signInResult.isError) {
-  //     setError('password', { message: t('Incorrect login or password') });
-  //   }
-  // });
 
   return (
     <Stack width={300} sx={{ textAlign: 'center' }}>
