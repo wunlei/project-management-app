@@ -2,9 +2,39 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ProjectCard from 'components/ProjectCard/ProjectCard';
 import SearchBar from 'components/SearchBar/SearchBar';
+import {
+  useGetAllBoardsQuery,
+  useDeleteBoardMutation,
+} from 'redux/api/endpoints/boards';
 
 function ProjectsPage() {
   const { t } = useTranslation();
+
+  const [deleteBoard, { isError: isErrorDeleteBoard }] =
+    useDeleteBoardMutation();
+  const { currentData: dataGetAllBoards, isError: isErrorGetAllBoards } =
+    useGetAllBoardsQuery();
+
+  if (isErrorDeleteBoard) {
+    throw new Error('deleting a board');
+  }
+
+  let boardsJSX: React.ReactElement[] | React.ReactElement;
+  if (dataGetAllBoards) {
+    boardsJSX = dataGetAllBoards.map(({ id, title, description }) => (
+      <ProjectCard
+        key={id}
+        title={title}
+        description={description}
+        boardId={id}
+        onDelete={() => deleteBoard({ boardId: id })}
+      ></ProjectCard>
+    ));
+  } else if (isErrorGetAllBoards) {
+    throw new Error('fetching all boards');
+  } else {
+    boardsJSX = <p>Loading</p>;
+  }
 
   return (
     <Container component="main" sx={{ flexGrow: 1 }}>
@@ -21,12 +51,7 @@ function ProjectsPage() {
             rowGap: '1rem',
           }}
         >
-          <ProjectCard
-            title={'My Project #1'}
-            description={'Project description'}
-            boardId={'1'}
-            onDelete={() => {}}
-          ></ProjectCard>
+          {boardsJSX}
         </Box>
       </Stack>
     </Container>
