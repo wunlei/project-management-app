@@ -13,6 +13,13 @@ const api = apiSlice.injectEndpoints({
     getBoard: builder.query<Types.GetBoardResult, Types.GetBoardArg>({
       query: (arg) => `/boards/${arg.boardId}`,
       providesTags: ['BOARD'],
+      transformResponse: (response: Types.GetBoardResult) => {
+        response.columns.sort((a, b) => a.order - b.order);
+        response.columns.forEach((column) =>
+          column.tasks.sort((a, b) => a.order - b.order)
+        );
+        return response;
+      },
     }),
     createBoard: builder.mutation<
       Types.CreateBoardResult,
