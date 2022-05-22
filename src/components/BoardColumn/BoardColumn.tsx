@@ -15,8 +15,17 @@ import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
+import { Droppable } from 'react-beautiful-dnd';
+import './boardColumn.css';
 
-function BoardColumn({ children, title }: BoardColumnProps) {
+function BoardColumn({
+  children,
+  title,
+  innerRef,
+  draggableProps,
+  dragHandleProps,
+  id,
+}: BoardColumnProps) {
   const { t } = useTranslation();
 
   const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
@@ -39,7 +48,7 @@ function BoardColumn({ children, title }: BoardColumnProps) {
   };
 
   return (
-    <Stack>
+    <Stack ref={innerRef} {...draggableProps} {...dragHandleProps}>
       <Stack
         direction="row"
         alignItems="center"
@@ -143,7 +152,18 @@ function BoardColumn({ children, title }: BoardColumnProps) {
           },
         }}
       >
-        {children}
+        <Droppable droppableId={id} type="task">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="tasks-wrapper"
+            >
+              {children}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </Stack>
     </Stack>
   );
