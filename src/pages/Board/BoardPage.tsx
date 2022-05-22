@@ -1,15 +1,56 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
+import { useGetBoardQuery } from 'redux/api/endpoints/boards';
 
 function BoardPage() {
   const { t } = useTranslation();
-  const columns = [];
+
+  const { boardId } = useParams();
+  if (!boardId) {
+    throw new Error('boardId (url param) is absent');
+  }
+
+  const { currentData: dataGetBoard, isError: isErrorGetBoard } =
+    useGetBoardQuery({ boardId });
+
+  let columnsJSX: React.ReactElement[] | React.ReactElement;
+  if (dataGetBoard && dataGetBoard.columns.length !== 0) {
+    columnsJSX = dataGetBoard.columns.map((column) => {
+      const tasksJSX = column.tasks.map((task) => (
+        <BoardTask
+          key={task.id}
+          title={task.title}
+          // 'done' field is absent in the new BE
+          isDone={true}
+          user={task.userId}
+        ></BoardTask>
+      ));
+
+      return (
+        <BoardColumn key={column.id} title={column.title}>
+          {tasksJSX}
+        </BoardColumn>
+      );
+    });
+  } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
+    columnsJSX = (
+      <Stack width="100%" textAlign="center">
+        <Typography fontSize="2rem" color="primary.light">
+          {t('No columns yet')}
+        </Typography>
+      </Stack>
+    );
+  } else if (isErrorGetBoard) {
+    throw new Error(`boardId is invalid`);
+  } else {
+    columnsJSX = <p>Loading</p>;
+  }
 
   return (
     <Stack
@@ -39,7 +80,9 @@ function BoardPage() {
               <ArrowIcon />
             </IconButton>
           </Link>
-          <Typography variant="h4">{'Project Title'}</Typography>
+          <Typography variant="h4">
+            {dataGetBoard && dataGetBoard.title}
+          </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Button variant="contained" startIcon={<PlusIcon />}>
@@ -66,17 +109,7 @@ function BoardPage() {
           },
         }}
       >
-        {columns.length === 0 ? (
-          <Stack width="100%" textAlign="center">
-            <Typography fontSize="2rem" color="primary.light">
-              {t('No columns yet')}
-            </Typography>
-          </Stack>
-        ) : (
-          <BoardColumn title={'Column Title'}>
-            <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
-          </BoardColumn>
-        )}
+        {columnsJSX}
       </Stack>
     </Stack>
   );
