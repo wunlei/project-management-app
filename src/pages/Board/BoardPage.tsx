@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
@@ -16,7 +17,11 @@ import {
 import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
 import { useUpdateColumnMutation } from 'redux/api/endpoints/columns';
 import './boardPage.css';
-import { TaskFromServer } from 'redux/api/apiTypes';
+import {
+  BoardFromServerExpanded,
+  TaskFromServer,
+  ColumnFromServerExpended,
+} from 'redux/api/apiTypes';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -29,8 +34,18 @@ function BoardPage() {
     throw new Error('boardId (url param) is absent');
   }
 
-  const { currentData: dataGetBoard, isError: isErrorGetBoard } =
-    useGetBoardQuery({ boardId });
+  const {
+    currentData: currentDataGetBoard,
+    isError: isErrorGetBoard,
+    isSuccess: isSuccessGetBoard,
+    isLoading: isLoadingGetBoard,
+  } = useGetBoardQuery({ boardId });
+
+  // const dataGetBoard = currentDataGetBoard;
+
+  const [dataGetBoard, setDataGetBoard] = useState<
+    undefined | BoardFromServerExpanded
+  >(currentDataGetBoard);
 
   let columnsJSX: React.ReactElement[] | React.ReactElement;
   if (dataGetBoard && dataGetBoard.columns.length !== 0) {
@@ -105,6 +120,10 @@ function BoardPage() {
       return;
     }
 
+    const cloneDataGetBoard = JSON.parse(
+      JSON.stringify(dataGetBoard)
+    ) as BoardFromServerExpanded;
+
     switch (type) {
       case 'column': {
         const relatedColumn = dataGetBoard.columns.find(
@@ -114,11 +133,32 @@ function BoardPage() {
           throw new Error(`cannot find related column by 'draggableId'`);
         }
 
+        // async change
+
         updateColumn({
           boardId: dataGetBoard.id,
           columnId: draggableId,
           body: { title: relatedColumn.title, order: destination.index + 1 },
         });
+
+        // sync change (working with a deep copy of dataGetBoard, relatedColumn)
+
+        const cloneRelatedColumn = JSON.parse(
+          JSON.stringify(relatedColumn)
+        ) as ColumnFromServerExpended;
+
+        cloneDataGetBoard.columns.splice(source.index, 1);
+        cloneDataGetBoard.columns.splice(
+          destination.index,
+          0,
+          cloneRelatedColumn
+        );
+
+        cloneDataGetBoard.columns.forEach((column, index) => {
+          column.order = index + 1;
+        });
+
+        setDataGetBoard(cloneDataGetBoard);
 
         break;
       }
@@ -134,6 +174,8 @@ function BoardPage() {
           throw new Error(`cannot find related task by 'draggableId'`);
         }
 
+        // async change
+
         updateTask({
           boardId: dataGetBoard.id,
           columnId: source.droppableId,
@@ -147,10 +189,42 @@ function BoardPage() {
           },
         });
 
+        // sync change (working with a deep copy of dataGetBoard, relatedTask)
+
+        const cloneRelatedTask = JSON.parse(
+          JSON.stringify(relatedTask)
+        ) as TaskFromServer;
+
+        const sourceColumn = cloneDataGetBoard.columns.find(
+          (column) => column.id === source.droppableId
+        );
+        const destinationColumn = cloneDataGetBoard.columns.find(
+          (column) => column.id === destination.droppableId
+        );
+        if (!sourceColumn || !destinationColumn) {
+          throw new Error('no related sourceColumn or destinationColumn');
+        }
+
+        sourceColumn.tasks.splice(source.index, 1);
+        destinationColumn.tasks.splice(destination.index, 0, cloneRelatedTask);
+
+        sourceColumn.tasks.forEach((task, index) => {
+          task.order = index + 1;
+        });
+        destinationColumn.tasks.forEach((task, index) => {
+          task.order = index + 1;
+        });
+
+        setDataGetBoard(cloneDataGetBoard);
+
         break;
       }
     }
   };
+
+  useEffect(() => {
+    setDataGetBoard(currentDataGetBoard);
+  }, [currentDataGetBoard]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
