@@ -7,6 +7,13 @@ import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg'
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
 import { useGetBoardQuery } from 'redux/api/endpoints/boards';
+import {
+  DragDropContext,
+  Droppable,
+  DropResult,
+  Draggable,
+} from 'react-beautiful-dnd';
+import './boardPage.css';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -21,23 +28,50 @@ function BoardPage() {
 
   let columnsJSX: React.ReactElement[] | React.ReactElement;
   if (dataGetBoard && dataGetBoard.columns.length !== 0) {
-    columnsJSX = dataGetBoard.columns.map((column) => {
-      const tasksJSX = column.tasks.map((task) => (
+    const columnsArr = dataGetBoard.columns.map((column, index) => {
+      const tasksArr = column.tasks.map((task, index) => (
         <BoardTask
           key={task.id}
           title={task.title}
           // 'done' field is absent in the new BE
           isDone={true}
           user={task.userId}
+          id={task.id}
+          index={index}
         ></BoardTask>
       ));
 
       return (
-        <BoardColumn key={column.id} title={column.title}>
-          {tasksJSX}
-        </BoardColumn>
+        <Draggable key={column.id} draggableId={column.id} index={index}>
+          {(provided) => (
+            <BoardColumn
+              title={column.title}
+              innerRef={provided.innerRef}
+              dragHandleProps={provided.dragHandleProps}
+              draggableProps={provided.draggableProps}
+              id={column.id}
+            >
+              {tasksArr}
+            </BoardColumn>
+          )}
+        </Draggable>
       );
     });
+
+    columnsJSX = (
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {(provided) => (
+          <div
+            className="columns-wrapper"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {columnsArr}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    );
   } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
     columnsJSX = (
       <Stack width="100%" textAlign="center">
@@ -52,66 +86,69 @@ function BoardPage() {
     columnsJSX = <p>Loading</p>;
   }
 
+  const onDragEnd = () => {
+    console.log('end');
+  };
+
   return (
-    <Stack
-      component="main"
-      spacing={1}
-      padding="1rem"
-      paddingTop="0"
-      sx={{ overflow: 'hidden' }}
-      flex={1}
-    >
+    <DragDropContext onDragEnd={onDragEnd}>
       <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        component="nav"
-        flexWrap="wrap"
-        sx={{
-          padding: 1,
-          borderBottomWidth: '1px',
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'primary.main',
-        }}
-      >
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Link to={'/projects'}>
-            <IconButton color="primary">
-              <ArrowIcon />
-            </IconButton>
-          </Link>
-          <Typography variant="h4">
-            {dataGetBoard && dataGetBoard.title}
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Button variant="contained" startIcon={<PlusIcon />}>
-            {t('Add Column')}
-          </Button>
-        </Stack>
-      </Stack>
-      <Stack
-        direction="row"
+        component="main"
         spacing={1}
-        sx={{
-          flexGrow: 1,
-          overflowY: 'hidden',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            height: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
+        padding="1rem"
+        paddingTop="0"
+        sx={{ overflow: 'hidden' }}
+        flex={1}
       >
-        {columnsJSX}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          component="nav"
+          flexWrap="wrap"
+          sx={{
+            padding: 1,
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: 'primary.main',
+          }}
+        >
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Link to={'/projects'}>
+              <IconButton color="primary">
+                <ArrowIcon />
+              </IconButton>
+            </Link>
+            <Typography variant="h4">
+              {dataGetBoard && dataGetBoard.title}
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Button variant="contained" startIcon={<PlusIcon />}>
+              {t('Add Column')}
+            </Button>
+          </Stack>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{
+            scrollbarColor: `${grey[400]} ${grey[200]}`,
+            scrollbarWidth: 'thin',
+            '&::-webkit-scrollbar': {
+              height: '10px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: grey[200],
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: grey[400],
+            },
+          }}
+        >
+          {columnsJSX}
+        </Stack>
       </Stack>
-    </Stack>
+    </DragDropContext>
   );
 }
 
