@@ -13,10 +13,16 @@ import {
   DropResult,
   Draggable,
 } from 'react-beautiful-dnd';
+import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
+import { useUpdateColumnMutation } from 'redux/api/endpoints/columns';
 import './boardPage.css';
+import { TaskFromServer } from 'redux/api/apiTypes';
 
 function BoardPage() {
   const { t } = useTranslation();
+
+  const [updateColumn] = useUpdateColumnMutation();
+  const [updateTask] = useUpdateTaskMutation();
 
   const { boardId } = useParams();
   if (!boardId) {
@@ -86,8 +92,64 @@ function BoardPage() {
     columnsJSX = <p>Loading</p>;
   }
 
-  const onDragEnd = () => {
-    console.log('end');
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId, type } = result;
+
+    if (!destination) return;
+    if (!dataGetBoard) return;
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    switch (type) {
+      case 'column': {
+        const relatedColumn = dataGetBoard.columns.find(
+          (column) => column.id === draggableId
+        );
+        if (!relatedColumn) {
+          throw new Error(`cannot find related column by 'draggableId'`);
+        }
+
+        updateColumn({
+          boardId: dataGetBoard.id,
+          columnId: draggableId,
+          body: { title: relatedColumn.title, order: destination.index + 1 },
+        });
+
+        break;
+      }
+
+      case 'task': {
+        let relatedTask: TaskFromServer | undefined;
+        dataGetBoard.columns.some((column) => {
+          return (relatedTask = column.tasks.find(
+            (task) => task.id === draggableId
+          ));
+        });
+        if (!relatedTask) {
+          throw new Error(`cannot find related task by 'draggableId'`);
+        }
+
+        updateTask({
+          boardId: dataGetBoard.id,
+          columnId: source.droppableId,
+          taskId: draggableId,
+          body: {
+            boardId: dataGetBoard.id,
+            columnId: destination.droppableId,
+            description: relatedTask.description,
+            title: relatedTask.title,
+            order: destination.index + 1,
+          },
+        });
+
+        break;
+      }
+    }
   };
 
   return (
