@@ -61,13 +61,13 @@ function UpdateUserForm() {
     if (updateUserResult.isSuccess) {
       setAlertState({
         color: 'success',
-        message: t('Update User alert success'),
+        message: t('Successfuly updated profile!'),
       });
     }
     if (updateUserResult.isError) {
       setAlertState({
         color: 'error',
-        message: t('Update User alert error'),
+        message: t('Something went wrong while updating profile!'),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

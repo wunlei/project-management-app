@@ -24,8 +24,8 @@
   "Password": "Пароль",
   "Name": "Имя",
   "Login": "Логин",
-  "Update User alert success": "Обновление профиля прошло успешно!",
-  "Update User alert error": "Что-то пошло не так при попытке обновить профиль!",
+  "Successfuly updated profile!": "Обновление профиля прошло успешно!",
+  "Something went wrong while updating profile!": "Что-то пошло не так при попытке обновить профиль!",
   "Welcome back": "Добро пожаловать",
   "Don't have an account?": "У вас еще нет аккаунта?"
 }
