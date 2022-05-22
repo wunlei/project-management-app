@@ -1,6 +1,14 @@
-import { Button, Stack, TextField, Typography, Link } from '@mui/material';
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Link,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -13,6 +21,10 @@ interface SigninData {
   password: string;
 }
 
+interface AlertState {
+  message: string;
+}
+
 function SigninForm() {
   const { control, handleSubmit, setError, clearErrors } =
     useForm<SigninData>();
@@ -22,6 +34,7 @@ function SigninForm() {
   const { t } = useTranslation();
 
   const [triggerSignIn, signInResult] = useSignInMutation();
+  const [alertState, setAlertState] = useState<AlertState | null>(null);
 
   const onSubmit = (data: SigninData) => {
     triggerSignIn({ body: data });
@@ -33,20 +46,32 @@ function SigninForm() {
     }
   };
 
+  const handleErrors = () => {
+    if (signInResult.error) {
+      const isKnownError =
+        'status' in signInResult.error && signInResult.error.status === 404;
+      if (isKnownError) {
+        setError('login', { message: '' });
+        setError('password', {
+          type: 'value',
+          message: 'Incorrect login or password',
+        });
+        setAlertState(null);
+      } else {
+        setAlertState({ message: t('Something went wrong!') });
+      }
+    }
+  };
+
   useEffect(() => {
     if (signInResult.isSuccess && signInResult.data) {
       const userId = signInResult.data.id;
-      localStorage.setItem('userId', userId);
       localStorage.setItem('token', signInResult.data.token);
       dispatch(setUserId(userId));
       navigate('/');
     }
     if (signInResult.isError) {
-      setError('login', { message: '' });
-      setError('password', {
-        type: 'value',
-        message: 'Incorrect login or password',
-      });
+      handleErrors();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signInResult]);
@@ -68,6 +93,7 @@ function SigninForm() {
         </Link>
       </Typography>
       <Stack component="form" spacing={3} onSubmit={handleSubmit(onSubmit)}>
+        {alertState ? <Alert color="error">{alertState.message}</Alert> : null}
         <Controller
           name="login"
           control={control}
@@ -86,6 +112,7 @@ function SigninForm() {
                 handleChange();
               }}
               label={t('Login')}
+              disabled={signInResult.isLoading}
               helperText={
                 error?.message
                   ? t(error.message, {
@@ -101,9 +128,19 @@ function SigninForm() {
           control={control}
           name="password"
           isValidateRequired
+          disabled={signInResult.isLoading}
           onChange={handleChange}
         />
-        <Button type="submit" variant="contained">
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={signInResult.isLoading}
+          startIcon={
+            signInResult.isLoading && (
+              <CircularProgress size={10} thickness={5} />
+            )
+          }
+        >
           {t('Sign In')}
         </Button>
       </Stack>

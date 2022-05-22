@@ -14,6 +14,7 @@ interface Props<T> {
   control: Control<T>;
   name: Path<T>;
   required?: boolean;
+  disabled?: boolean;
   isValidateRequired?: boolean;
   onChange?: () => void;
 }
@@ -30,6 +31,7 @@ function PasswordInput<T>(props: Props<T>) {
     control,
     name,
     required,
+    disabled,
     isValidateRequired,
     onChange: propOnChange,
   } = props;
@@ -75,7 +77,7 @@ function PasswordInput<T>(props: Props<T>) {
         field: { onChange, onBlur, name, ref },
         fieldState: { error },
       }) => (
-        <FormControl variant="outlined" required={required}>
+        <FormControl variant="outlined" required={required} disabled={disabled}>
           <InputLabel error={!!error} htmlFor="password">
             {t('Password')}
           </InputLabel>
