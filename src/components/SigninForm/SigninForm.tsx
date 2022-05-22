@@ -1,20 +1,21 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography, Link } from '@mui/material';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from 'redux/api/endpoints/sign';
 import { setUserId } from 'redux/global/globalSlice';
 import { useAppDispatch } from 'redux/hooks';
 
-interface LoginData {
+interface SigninData {
   login: string;
   password: string;
 }
 
-function LoginForm() {
-  const { control, handleSubmit, setError, clearErrors } = useForm<LoginData>();
+function SigninForm() {
+  const { control, handleSubmit, setError, clearErrors } =
+    useForm<SigninData>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ function LoginForm() {
 
   const [triggerSignIn, signInResult] = useSignInMutation();
 
-  const onSubmit = (data: LoginData) => {
+  const onSubmit = (data: SigninData) => {
     triggerSignIn({ body: data });
   };
 
@@ -57,18 +58,14 @@ function LoginForm() {
       </Typography>
       <Typography mb={3}>
         {t("Don't have an account?")}{' '}
-        <Typography
-          component={Link}
+        <Link
+          component={RouterLink}
           fontWeight={700}
-          sx={{
-            '&:hover': { textDecoration: 'underline' },
-            color: 'inherit',
-            textDecoration: 'none',
-          }}
+          underline="hover"
           to="/signup"
         >
           {t('Sign Up')}
-        </Typography>
+        </Link>
       </Typography>
       <Stack component="form" spacing={3} onSubmit={handleSubmit(onSubmit)}>
         <Controller
@@ -114,4 +111,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SigninForm;
