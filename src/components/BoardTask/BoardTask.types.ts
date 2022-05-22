@@ -3,4 +3,6 @@ export interface BoardTaskProps {
   description?: string;
   isDone: boolean;
   user: string;
+  id: string;
+  index: number;
 }

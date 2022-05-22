@@ -14,8 +14,16 @@ import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
 import grey from '@mui/material/colors/grey';
+import { Draggable } from 'react-beautiful-dnd';
 
-function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
+function BoardTask({
+  title,
+  description,
+  isDone,
+  user,
+  id,
+  index,
+}: BoardTaskProps) {
   const { t } = useTranslation();
 
   const hasFile = true;
@@ -32,91 +40,98 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
   };
 
   return (
-    <Stack
-      bgcolor="white"
-      borderRadius={1}
-      sx={{
-        '&:hover': {
-          cursor: 'pointer',
-          boxShadow: 2,
-        },
-      }}
-      width="250px"
-      margin="5px"
-    >
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        padding={1.5}
-        paddingRight={1}
-      >
-        <Stack direction="row" spacing={1}>
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ overflowWrap: 'anywhere' }}
-          >
-            {title}
-          </Typography>
-          {isDone && (
-            <SvgIcon sx={{ color: 'success.main' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
-        </Stack>
-        <div>
-          <IconButton
-            id="menu-button"
-            aria-controls={isTaskMenuOpen ? 'card-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={isTaskMenuOpen ? 'true' : undefined}
-            onClick={handleTaskMenuClick}
-          >
-            <MenuIcon style={{ width: '18px', height: '18px' }} />
-          </IconButton>
-          <Menu
-            id="card-menu"
-            anchorEl={taskMenuAnchorEl}
-            open={isTaskMenuOpen}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'menu-button',
-            }}
-          >
-            <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Edit')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
-          </Menu>
-        </div>
-      </Stack>
-
-      <Stack
-        direction="row"
-        alignItems="flex-end"
-        justifyContent={hasFile ? 'space-between' : 'flex-end'}
-        spacing={1}
-        padding={1.5}
-        paddingTop={0}
-      >
-        {hasFile && (
-          <SvgIcon
-            sx={{
-              width: 20,
-              height: 20,
-              color: grey[700],
-            }}
-          >
-            <ClipIcon />
-          </SvgIcon>
-        )}
-        <Avatar
-          sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <Stack
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          bgcolor="white"
+          borderRadius={1}
+          sx={{
+            '&:hover': {
+              cursor: 'pointer',
+              boxShadow: 2,
+            },
+          }}
+          width="250px"
+          margin="5px"
         >
-          {user}
-        </Avatar>
-      </Stack>
-    </Stack>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            padding={1.5}
+            paddingRight={1}
+          >
+            <Stack direction="row" spacing={1}>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ overflowWrap: 'anywhere' }}
+              >
+                {title}
+              </Typography>
+              {isDone && (
+                <SvgIcon sx={{ color: 'success.main' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+            </Stack>
+            <div>
+              <IconButton
+                id="menu-button"
+                aria-controls={isTaskMenuOpen ? 'card-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={isTaskMenuOpen ? 'true' : undefined}
+                onClick={handleTaskMenuClick}
+              >
+                <MenuIcon style={{ width: '18px', height: '18px' }} />
+              </IconButton>
+              <Menu
+                id="card-menu"
+                anchorEl={taskMenuAnchorEl}
+                open={isTaskMenuOpen}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'menu-button',
+                }}
+              >
+                <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
+                <MenuItem onClick={handleClose}>{t('Edit')}</MenuItem>
+                <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
+              </Menu>
+            </div>
+          </Stack>
+
+          <Stack
+            direction="row"
+            alignItems="flex-end"
+            justifyContent={hasFile ? 'space-between' : 'flex-end'}
+            spacing={1}
+            padding={1.5}
+            paddingTop={0}
+          >
+            {hasFile && (
+              <SvgIcon
+                sx={{
+                  width: 20,
+                  height: 20,
+                  color: grey[700],
+                }}
+              >
+                <ClipIcon />
+              </SvgIcon>
+            )}
+            <Avatar
+              sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+            >
+              {user}
+            </Avatar>
+          </Stack>
+        </Stack>
+      )}
+    </Draggable>
   );
 }
 
