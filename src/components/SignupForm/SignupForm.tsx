@@ -59,8 +59,10 @@ function SignupForm() {
   const handleInputChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    const name = event.target.name as 'name' | 'login' | 'password';
-    clearErrors(name);
+    const name = event.target.name;
+    if (name === 'name' || name === 'login' || name === 'password') {
+      clearErrors(name);
+    }
     if (Object.keys(errors).length === 0) {
       setIsHasErrors(false);
     } else {
@@ -142,7 +144,7 @@ function SignupForm() {
           name="name"
           control={control}
           defaultValue=""
-          render={({ field }) => (
+          render={({ field: { onChange, ...restField } }) => (
             <TextField
               id="name"
               label={t('Name')}
@@ -151,11 +153,11 @@ function SignupForm() {
               disabled={
                 signUpResult.isLoading || signInResult.isLoading || isDisabled
               }
-              {...field}
               onChange={(e) => {
                 handleInputChange(e);
-                field.onChange(e);
+                onChange(e);
               }}
+              {...restField}
               error={Boolean(errors.name?.message)}
               helperText={
                 errors.name?.message
@@ -171,7 +173,7 @@ function SignupForm() {
           name="login"
           control={control}
           defaultValue=""
-          render={({ field }) => (
+          render={({ field: { onChange, ...restField } }) => (
             <TextField
               id="login"
               label={t('Login')}
@@ -180,11 +182,11 @@ function SignupForm() {
               disabled={
                 signUpResult.isLoading || signInResult.isLoading || isDisabled
               }
-              {...field}
               onChange={(e) => {
                 handleInputChange(e);
-                field.onChange(e);
+                onChange(e);
               }}
+              {...restField}
               error={Boolean(errors.login?.message)}
               helperText={
                 errors.login?.message
