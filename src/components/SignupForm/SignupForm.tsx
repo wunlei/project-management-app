@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Stack,
@@ -9,6 +8,7 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSignInMutation, useSignUpMutation } from 'redux/api/endpoints/sign';
@@ -26,7 +26,7 @@ function getErrorMessage(status: FetchBaseQueryError['status']) {
 
 function SignupForm() {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const [errorCode, setErrorCode] = useState<
     FetchBaseQueryError['status'] | null
   >(null);
@@ -37,13 +37,53 @@ function SignupForm() {
   const {
     handleSubmit,
     control,
+    setError,
     formState: { errors },
   } = useForm<UserInputs>({ resolver: yupResolver(userValidationSchema) });
 
   const onSubmit: SubmitHandler<UserInputs> = (data) => {
-    // signUp({ body: { ...data } });
+    signUp({ body: { ...data } });
     console.log(data);
   };
+
+  useEffect(() => {
+    if (signUpResult.isSuccess) {
+      if (signUpResult.originalArgs) {
+        signIn({
+          body: {
+            login: signUpResult.originalArgs?.body.login,
+            password: signUpResult.originalArgs?.body.password,
+          },
+        });
+      }
+    }
+  }, [signUpResult.data, signUpResult.isSuccess, signUpResult.originalArgs]);
+
+  useEffect(() => {
+    if (signInResult.isSuccess) {
+      // update token
+      navigate('/projects');
+    }
+  }, [signInResult.isSuccess]);
+
+  useEffect(() => {
+    if (signUpResult.error) {
+      if ('data' in signUpResult.error) {
+        if (signUpResult.error.status === 409) {
+          setError('login', {
+            type: 'custom',
+            message: 'This user already exists.',
+          });
+        } else {
+          setErrorCode(signUpResult.error.status);
+        }
+      }
+    } else if (signInResult.error) {
+      if ('data' in signInResult.error) {
+        setErrorCode(signInResult.error.status);
+      }
+    }
+  }, [signUpResult.error, signInResult.error, setError]);
 
   return (
     <Stack spacing={3} width="300px" textAlign="center">
