@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { setUserId } from 'redux/global/globalSlice';
+import { setToken, setUserId } from 'redux/global/globalSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteUserMutation } from 'redux/api/endpoints/users';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +43,7 @@ function UserPage() {
   useEffect(() => {
     if (isDeleteSuccess) {
       dispatch(setUserId(null));
+      dispatch(setToken(null));
       navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +79,10 @@ function UserPage() {
       </Stack>
       <ConfirmationDialog
         open={isDialogOpen}
-        dialogText={'Confirm deleting profile'}
+        title={t('Delete profile')}
+        dialogText={t(
+          'You are about to permanently delete your profile. This action cannot be undone.'
+        )}
         onConfirm={handleDeleteProfile}
         onReject={() => {
           setIsDialogOpen(false);
