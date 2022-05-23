@@ -20,5 +20,13 @@
   "Confirm": "Confirm",
   "Cancel": "Cancel",
   "Confirm Action": "Confirm Action",
-  "No columns yet": "No columns yet"
+  "No columns yet": "No columns yet",
+  "Password": "Password",
+  "Name": "Name",
+  "Login": "Login",
+  "Successfuly updated profile!": "Successfuly updated profile!",
+  "Something went wrong while updating profile!": "Something went wrong while updating profile!",
+  "Something went wrong!": "Something went wrong!",
+  "Welcome back": "Welcome back",
+  "Don't have an account?": "Don't have an account?"
 }
