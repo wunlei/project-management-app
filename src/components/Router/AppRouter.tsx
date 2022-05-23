@@ -7,7 +7,7 @@ import ProjectsPage from 'pages/Projects/ProjectsPage';
 import UserPage from 'pages/User/UserPage';
 import AuthPage from 'pages/Auth/AuthPage';
 import SignupForm from 'components/SignupForm/SignupForm';
-import LoginForm from 'components/LoginForm/LoginForm';
+import SigninForm from 'components/SigninForm/SigninForm';
 import PrivateRoute from './PrivateRoute';
 
 function AppRouter() {
@@ -25,7 +25,7 @@ function AppRouter() {
         </Route>
         <Route element={<AuthPage />}>
           <Route path="signup" element={<SignupForm />} />
-          <Route path="login" element={<LoginForm />} />
+          <Route path="signin" element={<SigninForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

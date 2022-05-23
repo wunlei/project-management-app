@@ -25,13 +25,15 @@
   "Password": "Password",
   "Name": "Name",
   "Login": "Login",
-  "Update User alert success": "Successfuly updated profile!",
-  "Update User alert error": "Something went wrong while updating profile!",
-  "Create new task": "Create new task",
   "Task name": "Task name",
   "Task description": "Task description",
   "Max file size": "Max file size is 1mb",
   "Select member": "Select member",
   "Upload image": "Upload image",
-  "Create": "Create"
+  "Create": "Create",
+  "Successfuly updated profile!": "Successfuly updated profile!",
+  "Something went wrong while updating profile!": "Something went wrong while updating profile!",
+  "Something went wrong!": "Something went wrong!",
+  "Welcome back": "Welcome back",
+  "Don't have an account?": "Don't have an account?"
 }
