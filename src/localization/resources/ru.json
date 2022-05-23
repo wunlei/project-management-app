@@ -27,7 +27,7 @@
   "Login": "Логин",
   "Task name": "Название",
   "Task description": "Описание",
-  "Max file size": "Максимальный размер файла 1мб",
+  "Max file size is 1mb": "Максимальный размер файла 1мб",
   "Select member": "Выберите исполнителя",
   "Upload image": "Загрузить картинку",
   "Create": "Создать",
@@ -35,5 +35,7 @@
   "Something went wrong while updating profile!": "Что-то пошло не так при попытке обновить профиль!",
   "Something went wrong!": "Что-то пошло не так!",
   "Welcome back": "Добро пожаловать",
-  "Don't have an account?": "У вас еще нет аккаунта?"
+  "Don't have an account?": "У вас еще нет аккаунта?",
+  "Example: Buy milk": "Например: Купить молока",
+  "Example: Dont forget a bag": "Например: Не забыть взять пакет"
 }

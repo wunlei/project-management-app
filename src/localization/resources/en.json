@@ -27,7 +27,7 @@
   "Login": "Login",
   "Task name": "Task name",
   "Task description": "Task description",
-  "Max file size": "Max file size is 1mb",
+  "Max file size is 1mb": "Max file size is 1mb",
   "Select member": "Select member",
   "Upload image": "Upload image",
   "Create": "Create",
@@ -35,5 +35,7 @@
   "Something went wrong while updating profile!": "Something went wrong while updating profile!",
   "Something went wrong!": "Something went wrong!",
   "Welcome back": "Welcome back",
-  "Don't have an account?": "Don't have an account?"
+  "Don't have an account?": "Don't have an account?",
+  "Example: Buy milk": "Example: Buy milk",
+  "Example: Dont forget a bag": "Example: Dont forget a bag"
 }

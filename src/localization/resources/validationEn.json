@@ -12,5 +12,7 @@
   "Password must include at list one digit": "Password must include at list one digit",
   "Password must include at list one letter": "Password must include at list one letter",
   "Password must include only latin letters and digits": "Password must include only latin letters and digits",
-  "Incorrect login or password": "Incorrect login or password"
+  "Incorrect login or password": "Incorrect login or password",
+  "Task title is required": "Task title is required",
+  "You must pick a member": "You must pick a member"
 }

@@ -12,5 +12,7 @@
   "Password must include at list one digit": "Пароль должен содержать как минимум одну цифру",
   "Password must include at list one letter": "Пароль должен содержать как минимум одну букву",
   "Password must include only latin letters and digits": "Пароль должен содержать только буквы латинского алфавита и цифры",
-  "Incorrect login or password": "Неправильный логин или пароль"
+  "Incorrect login or password": "Неправильный логин или пароль",
+  "Task title is required": "Введите название задачи",
+  "You must pick a member": "Вы должны выбрать исполнителя"
 }
