@@ -1,3 +1,12 @@
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useSignInMutation } from 'redux/api/endpoints/sign';
+import { setUserId } from 'redux/global/globalSlice';
+import { useAppDispatch } from 'redux/hooks';
+import { useTranslation } from 'react-i18next';
+
+import { SigninData, AlertState } from './SigninForm.types';
+
 import {
   Button,
   Stack,
@@ -8,22 +17,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useSignInMutation } from 'redux/api/endpoints/sign';
-import { setUserId } from 'redux/global/globalSlice';
-import { useAppDispatch } from 'redux/hooks';
-
-interface SigninData {
-  login: string;
-  password: string;
-}
-
-interface AlertState {
-  message: string;
-}
 
 function SigninForm() {
   const { control, handleSubmit, setError, clearErrors } =
