@@ -12,5 +12,7 @@
   "Password must include at list one digit": "Password must include at list one digit",
   "Password must include at list one letter": "Password must include at list one letter",
   "Password must include only latin letters and digits": "Password must include only latin letters and digits",
-  "Incorrect login or password": "Incorrect login or password"
+  "Incorrect login or password": "Incorrect login or password",
+  "Title is required": "Title is required",
+  "Description must be at most 60 characters": "Description must be at most 60 characters"
 }
