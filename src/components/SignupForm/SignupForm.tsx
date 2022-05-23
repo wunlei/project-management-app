@@ -16,6 +16,8 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { useTranslation } from 'react-i18next';
 import { UserInputs, userValidationSchema } from 'constants/validation';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
+import { setToken, setUserId } from 'redux/global/globalSlice';
+import { useAppDispatch } from 'redux/hooks';
 
 function getErrorMessage(status: FetchBaseQueryError['status']) {
   switch (status) {
@@ -27,6 +29,8 @@ function getErrorMessage(status: FetchBaseQueryError['status']) {
 function SignupForm() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [errorCode, setErrorCode] = useState<
     FetchBaseQueryError['status'] | null
   >(null);
@@ -43,7 +47,6 @@ function SignupForm() {
 
   const onSubmit: SubmitHandler<UserInputs> = (data) => {
     signUp({ body: { ...data } });
-    console.log(data);
   };
 
   useEffect(() => {
@@ -61,10 +64,13 @@ function SignupForm() {
 
   useEffect(() => {
     if (signInResult.isSuccess) {
-      // update token
-      navigate('/projects');
+      if (signInResult.data) {
+        dispatch(setToken(signInResult.data.token));
+        dispatch(setUserId(signInResult.data.id));
+        navigate('/projects');
+      }
     }
-  }, [signInResult.isSuccess]);
+  }, [dispatch, navigate, signInResult.data, signInResult.isSuccess]);
 
   useEffect(() => {
     if (signUpResult.error) {

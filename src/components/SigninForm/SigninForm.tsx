@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSignInMutation } from 'redux/api/endpoints/sign';
-import { setUserId } from 'redux/global/globalSlice';
+import { setToken, setUserId } from 'redux/global/globalSlice';
 import { useAppDispatch } from 'redux/hooks';
 import { useTranslation } from 'react-i18next';
 
@@ -60,8 +60,9 @@ function SigninForm() {
   useEffect(() => {
     if (signInResult.isSuccess && signInResult.data) {
       const userId = signInResult.data.id;
-      localStorage.setItem('token', signInResult.data.token);
+      const token = signInResult.data.token;
       dispatch(setUserId(userId));
+      dispatch(setToken(token));
       navigate('/');
     }
     if (signInResult.isError) {

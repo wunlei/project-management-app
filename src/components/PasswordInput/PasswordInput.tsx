@@ -16,7 +16,9 @@ interface Props<T> {
   required?: boolean;
   disabled?: boolean;
   isValidateRequired?: boolean;
-  onChange?: () => void;
+  onChange?: (
+    event?: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
 }
 
 interface State {
@@ -89,7 +91,7 @@ function PasswordInput<T>(props: Props<T>) {
               handleChange('password')(e);
               onChange(e);
               if (propOnChange) {
-                propOnChange();
+                propOnChange(e);
               }
             }}
             error={!!error}
