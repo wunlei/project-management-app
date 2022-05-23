@@ -30,5 +30,7 @@
   "Welcome back": "Welcome back",
   "Don't have an account?": "Don't have an account?",
   "Already have an account?": "Already have an account?",
-  "This user already exists": "This user already exists"
+  "This user already exists": "This user already exists",
+  "Delete profile": "Delete profile",
+  "You are about to permanently delete your profile. This action cannot be undone.": "You are about to permanently delete your profile. This action cannot be undone."
 }

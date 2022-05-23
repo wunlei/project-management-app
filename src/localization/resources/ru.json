@@ -30,5 +30,7 @@
   "Welcome back": "Добро пожаловать",
   "Don't have an account?": "Еще нет аккаунта?",
   "Already have an account?": "Уже есть аккаунт?",
-  "This user already exists": "Пользователь с таким логином уже существует"
+  "This user already exists": "Пользователь с таким логином уже существует",
+  "Delete profile": "Удалить профиль",
+  "You are about to permanently delete your profile. This action cannot be undone.": "Вы собираетесь навсегда удалить свой профиль. Это действие невозможно отменить. "
 }

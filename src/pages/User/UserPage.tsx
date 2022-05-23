@@ -79,7 +79,10 @@ function UserPage() {
       </Stack>
       <ConfirmationDialog
         open={isDialogOpen}
-        dialogText={'Confirm deleting profile'}
+        title={t('Delete profile')}
+        dialogText={t(
+          'You are about to permanently delete your profile. This action cannot be undone.'
+        )}
         onConfirm={handleDeleteProfile}
         onReject={() => {
           setIsDialogOpen(false);
