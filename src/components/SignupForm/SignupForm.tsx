@@ -34,6 +34,8 @@ function SignupForm() {
   const [errorCode, setErrorCode] = useState<
     FetchBaseQueryError['status'] | null
   >(null);
+  const [isHasErrors, setIsHasErrors] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const [signUp, signUpResult] = useSignUpMutation();
   const [signIn, signInResult] = useSignInMutation();
@@ -42,15 +44,33 @@ function SignupForm() {
     handleSubmit,
     control,
     setError,
-    formState: { errors },
-  } = useForm<UserInputs>({ resolver: yupResolver(userValidationSchema) });
+    clearErrors,
+    formState: { errors, isDirty },
+  } = useForm<UserInputs>({
+    reValidateMode: 'onSubmit',
+    shouldFocusError: false,
+    resolver: yupResolver(userValidationSchema),
+  });
 
   const onSubmit: SubmitHandler<UserInputs> = (data) => {
     signUp({ body: { ...data } });
   };
 
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    const name = event.target.name as 'name' | 'login' | 'password';
+    clearErrors(name);
+    if (Object.keys(errors).length === 0) {
+      setIsHasErrors(false);
+    } else {
+      setIsHasErrors(true);
+    }
+  };
+
   useEffect(() => {
     if (signUpResult.isSuccess) {
+      setIsDisabled(true);
       if (signUpResult.originalArgs) {
         signIn({
           body: {
@@ -64,6 +84,7 @@ function SignupForm() {
 
   useEffect(() => {
     if (signInResult.isSuccess) {
+      setIsDisabled(true);
       if (signInResult.data) {
         dispatch(setToken(signInResult.data.token));
         dispatch(setUserId(signInResult.data.id));
@@ -74,7 +95,7 @@ function SignupForm() {
 
   useEffect(() => {
     if (signUpResult.error) {
-      if ('data' in signUpResult.error) {
+      if ('status' in signUpResult.error) {
         if (signUpResult.error.status === 409) {
           setError('login', {
             type: 'custom',
@@ -83,16 +104,22 @@ function SignupForm() {
         } else {
           setErrorCode(signUpResult.error.status);
         }
-      }
-    } else if (signInResult.error) {
-      if ('data' in signInResult.error) {
-        setErrorCode(signInResult.error.status);
+      } else if (signInResult.error) {
+        if ('status' in signInResult.error) {
+          setErrorCode(signInResult.error.status);
+        }
       }
     }
   }, [signUpResult.error, signInResult.error, setError]);
 
   return (
-    <Stack spacing={3} width="300px" textAlign="center">
+    <Stack
+      spacing={3}
+      width="300px"
+      textAlign="center"
+      component={'form'}
+      noValidate
+    >
       <Typography variant="h2" fontWeight={700} mb={1}>
         {t('Sign Up')}
       </Typography>
@@ -110,7 +137,7 @@ function SignupForm() {
           {t('Sign In')}
         </Link>
       </Typography>
-      <Stack component={'form'} noValidate spacing={2}>
+      <Stack spacing={2}>
         <Controller
           name="name"
           control={control}
@@ -121,8 +148,14 @@ function SignupForm() {
               label={t('Name')}
               variant="outlined"
               required
-              disabled={signUpResult.isLoading || signInResult.isLoading}
+              disabled={
+                signUpResult.isLoading || signInResult.isLoading || isDisabled
+              }
               {...field}
+              onChange={(e) => {
+                handleInputChange(e);
+                field.onChange(e);
+              }}
               error={Boolean(errors.name?.message)}
               helperText={
                 errors.name?.message
@@ -144,8 +177,14 @@ function SignupForm() {
               label={t('Login')}
               variant="outlined"
               required
-              disabled={signUpResult.isLoading || signInResult.isLoading}
+              disabled={
+                signUpResult.isLoading || signInResult.isLoading || isDisabled
+              }
               {...field}
+              onChange={(e) => {
+                handleInputChange(e);
+                field.onChange(e);
+              }}
               error={Boolean(errors.login?.message)}
               helperText={
                 errors.login?.message
@@ -158,16 +197,29 @@ function SignupForm() {
           )}
         />
         <PasswordInput
-          disabled={signUpResult.isLoading || signInResult.isLoading}
+          disabled={
+            signUpResult.isLoading || signInResult.isLoading || isDisabled
+          }
           control={control}
           required={true}
           name={'password'}
+          onChange={(e) => {
+            if (e) {
+              handleInputChange(e);
+            }
+          }}
         ></PasswordInput>
       </Stack>
       <Button
         type="submit"
         variant="contained"
-        disabled={signUpResult.isLoading || signInResult.isLoading}
+        disabled={
+          !isDirty ||
+          isHasErrors ||
+          isDisabled ||
+          signUpResult.isLoading ||
+          signInResult.isLoading
+        }
         onClick={handleSubmit(onSubmit)}
         startIcon={
           (signUpResult.isLoading || signInResult.isLoading) && (
