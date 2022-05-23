@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
   Stack,
@@ -8,12 +9,13 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useSignInMutation, useSignUpMutation } from 'redux/api/endpoints/sign';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { Inputs } from './SignUpForm.types';
+import { useTranslation } from 'react-i18next';
+import { UserInputs, userValidationSchema } from 'constants/validation';
+import PasswordInput from 'components/PasswordInput/PasswordInput';
 
 function getErrorMessage(status: FetchBaseQueryError['status']) {
   switch (status) {
@@ -36,9 +38,9 @@ function SignupForm() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<UserInputs>({ resolver: yupResolver(userValidationSchema) });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<UserInputs> = (data) => {
     // signUp({ body: { ...data } });
     console.log(data);
   };
@@ -109,6 +111,12 @@ function SignupForm() {
             ></TextField>
           )}
         />
+        <PasswordInput
+          disabled={signUpResult.isLoading || signInResult.isLoading}
+          control={control}
+          required={true}
+          name={'password'}
+        ></PasswordInput>
       </Stack>
       <Button
         type="submit"
