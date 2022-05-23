@@ -28,5 +28,7 @@
   "Something went wrong while updating profile!": "Что-то пошло не так при попытке обновить профиль!",
   "Something went wrong!": "Что-то пошло не так!",
   "Welcome back": "Добро пожаловать",
-  "Don't have an account?": "У вас еще нет аккаунта?"
+  "Don't have an account?": "Еще нет аккаунта?",
+  "Already have an account?": "Уже есть аккаунт?",
+  "This user already exists": "Пользователь с таким логином уже существует"
 }

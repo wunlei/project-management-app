@@ -28,5 +28,7 @@
   "Something went wrong while updating profile!": "Something went wrong while updating profile!",
   "Something went wrong!": "Something went wrong!",
   "Welcome back": "Welcome back",
-  "Don't have an account?": "Don't have an account?"
+  "Don't have an account?": "Don't have an account?",
+  "Already have an account?": "Already have an account?",
+  "This user already exists": "This user already exists"
 }

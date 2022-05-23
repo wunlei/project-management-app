@@ -20,7 +20,7 @@ import PasswordInput from 'components/PasswordInput/PasswordInput';
 function getErrorMessage(status: FetchBaseQueryError['status']) {
   switch (status) {
     default:
-      return 'Something went wrong';
+      return 'Something went wrong!';
   }
 }
 
@@ -57,7 +57,7 @@ function SignupForm() {
         });
       }
     }
-  }, [signUpResult.data, signUpResult.isSuccess, signUpResult.originalArgs]);
+  }, [signIn, signUpResult.isSuccess, signUpResult.originalArgs]);
 
   useEffect(() => {
     if (signInResult.isSuccess) {
@@ -72,7 +72,7 @@ function SignupForm() {
         if (signUpResult.error.status === 409) {
           setError('login', {
             type: 'custom',
-            message: 'This user already exists.',
+            message: 'This user already exists',
           });
         } else {
           setErrorCode(signUpResult.error.status);
@@ -88,20 +88,20 @@ function SignupForm() {
   return (
     <Stack spacing={3} width="300px" textAlign="center">
       <Typography variant="h2" fontWeight={700} mb={1}>
-        Sign Up
+        {t('Sign Up')}
       </Typography>
       {errorCode && (
-        <Alert severity="error">{getErrorMessage(errorCode)}</Alert>
+        <Alert severity="error">{t(getErrorMessage(errorCode))}</Alert>
       )}
       <Typography>
-        Already have an account?{' '}
+        {t('Already have an account?')}{' '}
         <Link
           component={RouterLink}
-          to="/login"
+          to="/signin"
           underline="hover"
           fontWeight="bold"
         >
-          Sign In
+          {t('Sign In')}
         </Link>
       </Typography>
       <Stack component={'form'} noValidate spacing={2}>
@@ -112,7 +112,7 @@ function SignupForm() {
           render={({ field }) => (
             <TextField
               id="name"
-              label="Name"
+              label={t('Name')}
               variant="outlined"
               required
               disabled={signUpResult.isLoading || signInResult.isLoading}
@@ -135,7 +135,7 @@ function SignupForm() {
           render={({ field }) => (
             <TextField
               id="login"
-              label="Login"
+              label={t('Login')}
               variant="outlined"
               required
               disabled={signUpResult.isLoading || signInResult.isLoading}
@@ -169,7 +169,7 @@ function SignupForm() {
           )
         }
       >
-        Sign Up
+        {t('Sign Up')}
       </Button>
     </Stack>
   );
