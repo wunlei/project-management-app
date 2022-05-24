@@ -1,30 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import BoardColumn from 'components/BoardColumn/BoardColumn';
-import BoardTask from 'components/BoardTask/BoardTask';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import grey from '@mui/material/colors/grey';
 import { useGetBoardQuery } from 'redux/api/endpoints/boards';
-import {
-  DragDropContext,
-  Droppable,
-  DropResult,
-  Draggable,
-} from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
 import { useUpdateColumnMutation } from 'redux/api/endpoints/columns';
-import './boardPage.css';
 import {
   BoardFromServerExpanded,
   TaskFromServer,
   ColumnFromServerExpended,
 } from 'redux/api/apiTypes';
+import createColumnsContainer from './createColumnsContainer';
 
 function BoardPage() {
   const { t } = useTranslation();
+  const textAddColumn = t('Add Column');
 
   const [updateColumn] = useUpdateColumnMutation();
   const [updateTask] = useUpdateTaskMutation();
@@ -34,78 +27,22 @@ function BoardPage() {
     throw new Error('boardId (url param) is absent');
   }
 
-  const {
-    currentData: currentDataGetBoard,
-    isError: isErrorGetBoard,
-    isSuccess: isSuccessGetBoard,
-    isLoading: isLoadingGetBoard,
-  } = useGetBoardQuery({ boardId });
-
-  // const dataGetBoard = currentDataGetBoard;
+  const { currentData: currentDataGetBoard, isError: isErrorGetBoard } =
+    useGetBoardQuery({ boardId });
 
   const [dataGetBoard, setDataGetBoard] = useState<
     undefined | BoardFromServerExpanded
   >(currentDataGetBoard);
 
-  let columnsJSX: React.ReactElement[] | React.ReactElement;
-  if (dataGetBoard && dataGetBoard.columns.length !== 0) {
-    const columnsArr = dataGetBoard.columns.map((column, index) => {
-      const tasksArr = column.tasks.map((task, index) => (
-        <BoardTask
-          key={task.id}
-          title={task.title}
-          // 'done' field is absent in the new BE
-          isDone={true}
-          user={task.userId}
-          id={task.id}
-          index={index}
-        ></BoardTask>
-      ));
-
-      return (
-        <Draggable key={column.id} draggableId={column.id} index={index}>
-          {(provided) => (
-            <BoardColumn
-              title={column.title}
-              innerRef={provided.innerRef}
-              dragHandleProps={provided.dragHandleProps}
-              draggableProps={provided.draggableProps}
-              id={column.id}
-            >
-              {tasksArr}
-            </BoardColumn>
-          )}
-        </Draggable>
-      );
-    });
-
-    columnsJSX = (
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {(provided) => (
-          <div
-            className="columns-wrapper"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {columnsArr}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    );
-  } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
-    columnsJSX = (
-      <Stack width="100%" textAlign="center">
-        <Typography fontSize="2rem" color="primary.light">
-          {t('No columns yet')}
-        </Typography>
-      </Stack>
-    );
-  } else if (isErrorGetBoard) {
-    throw new Error(`boardId is invalid`);
-  } else {
-    columnsJSX = <p>Loading</p>;
-  }
+  const columnsContainerJSX = useMemo(
+    () =>
+      createColumnsContainer({
+        dataGetBoard,
+        isErrorGetBoard,
+        textAddColumn,
+      }),
+    [dataGetBoard, isErrorGetBoard, textAddColumn]
+  );
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -265,24 +202,7 @@ function BoardPage() {
             </Button>
           </Stack>
         </Stack>
-        <Stack
-          direction="row"
-          sx={{
-            scrollbarColor: `${grey[400]} ${grey[200]}`,
-            scrollbarWidth: 'thin',
-            '&::-webkit-scrollbar': {
-              height: '10px',
-            },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: grey[200],
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: grey[400],
-            },
-          }}
-        >
-          {columnsJSX}
-        </Stack>
+        {columnsContainerJSX}
       </Stack>
     </DragDropContext>
   );

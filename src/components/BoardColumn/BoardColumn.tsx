@@ -16,7 +16,6 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
 import { Droppable } from 'react-beautiful-dnd';
-import './boardColumn.css';
 
 function BoardColumn({
   children,
@@ -126,45 +125,42 @@ function BoardColumn({
           </Menu>
         </Stack>
       </Stack>
-      <Stack
-        padding={1}
-        spacing={1}
-        alignItems="center"
-        paddingBottom="1rem"
-        width={'280px'}
-        sx={{
-          backgroundColor: grey[200],
-          overflowX: 'hidden',
-          overflowY: 'auto',
-          borderBottomLeftRadius: '0.5rem',
-          borderBottomRightRadius: '0.5rem',
-          minHeight: '2rem',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            width: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
-      >
-        <Droppable droppableId={id} type="task">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="tasks-wrapper"
-            >
-              {children}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </Stack>
+
+      <Droppable droppableId={id} type="task">
+        {(provided) => (
+          <Stack
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            padding={1}
+            spacing={1}
+            alignItems="center"
+            paddingBottom="1rem"
+            width={'280px'}
+            sx={{
+              backgroundColor: grey[200],
+              overflowX: 'hidden',
+              overflowY: 'auto',
+              borderBottomLeftRadius: '0.5rem',
+              borderBottomRightRadius: '0.5rem',
+              minHeight: '2rem',
+              scrollbarColor: `${grey[400]} ${grey[200]}`,
+              scrollbarWidth: 'thin',
+              '&::-webkit-scrollbar': {
+                width: '10px',
+              },
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: grey[200],
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: grey[400],
+              },
+            }}
+          >
+            {children}
+            {provided.placeholder}
+          </Stack>
+        )}
+      </Droppable>
     </Stack>
   );
 }
