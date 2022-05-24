@@ -6,8 +6,8 @@ import {
 export interface BoardColumnProps {
   children?: React.ReactNode;
   title: string;
-  innerRef: () => void;
-  draggableProps: DraggableProvidedDraggableProps;
-  dragHandleProps: DraggableProvidedDragHandleProps | undefined;
   id: string;
+  draggableProps?: DraggableProvidedDraggableProps;
+  dragHandleProps?: DraggableProvidedDragHandleProps | undefined;
+  innerRef?: () => void;
 }
