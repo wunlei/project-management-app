@@ -15,6 +15,13 @@ export const schema = yup.object({
       } else {
         return true;
       }
+    })
+    .test('isIncorrectType', 'You can only pick png/jpg/jpeg', (value) => {
+      if (value && value[0]) {
+        return value[0].type === 'image/jpeg' || value[0].type === 'image/png';
+      } else {
+        return true;
+      }
     }),
   description: yup.string().ensure(),
   member: yup

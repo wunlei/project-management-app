@@ -10,6 +10,8 @@ import grey from '@mui/material/colors/grey';
 function BoardPage() {
   const { t } = useTranslation();
   const columns = [1];
+  const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
+  const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
 
   return (
     <Stack
@@ -73,7 +75,11 @@ function BoardPage() {
             </Typography>
           </Stack>
         ) : (
-          <BoardColumn title={'Column Title'}>
+          <BoardColumn
+            boardId={boardId}
+            columnId={columnId}
+            title={'Column Title'}
+          >
             <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
           </BoardColumn>
         )}

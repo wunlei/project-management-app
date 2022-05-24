@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
+import { useCreateTaskMutation } from 'redux/api/endpoints/tasks';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateTaskFormValues } from './CreateTaskForm.types';
@@ -24,9 +25,13 @@ import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './CreateTaskForm.validation';
 
+import { useUploadFileMutation } from 'redux/api/endpoints/file';
+
 interface Props {
   handleClose: () => void;
   open: boolean;
+  boardId: string;
+  columnId: string;
 }
 
 const Input = styled('input')({
@@ -34,15 +39,19 @@ const Input = styled('input')({
 });
 
 function CreateTaskFormModal(props: Props) {
-  const { handleClose, open } = props;
+  const { handleClose, open, boardId, columnId } = props;
   const { t } = useTranslation();
 
   const { data: users } = useGetAllUsersQuery();
+  const [createTask, createTaskResult] = useCreateTaskMutation();
+  const [uploadFile, uploadFileResult] = useUploadFileMutation();
+
   const {
     control,
     handleSubmit,
     register,
     watch,
+    reset,
     formState: { errors },
   } = useForm<CreateTaskFormValues>({
     resolver: yupResolver(schema),
@@ -53,13 +62,43 @@ function CreateTaskFormModal(props: Props) {
   const isCorrectFileSelected =
     (fileInputValue ? !!fileInputValue[0] : false) && !errors.picture;
 
-  const onSubmit: SubmitHandler<CreateTaskFormValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
+    member,
+    title,
+    description,
+    ...restData
+  }) => {
+    createTask({
+      boardId,
+      columnId,
+      body: {
+        title,
+        description: description ? description : ' ',
+        userId: member.id,
+      },
+    });
   };
+
+  useEffect(() => {
+    const isSuccessfullyCreatedTask =
+      createTaskResult.isSuccess && createTaskResult.data;
+    const isAnyFile = fileInputValue && fileInputValue[0];
+    const shouldUploadFile = isSuccessfullyCreatedTask && isAnyFile;
+
+    if (shouldUploadFile) {
+      uploadFile({ taskId: createTaskResult.data.id, file: fileInputValue[0] });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createTaskResult.isSuccess]);
 
   return (
     <Modal
-      onClose={handleClose}
+      onClose={() => {
+        handleClose();
+        reset();
+        createTaskResult.reset();
+        uploadFileResult.reset();
+      }}
       open={open}
       dialogTitle={t('Create new task')}
       confirmBtnText={t('Create')}

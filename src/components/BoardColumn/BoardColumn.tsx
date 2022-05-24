@@ -19,7 +19,7 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
 
-function BoardColumn({ children, title }: BoardColumnProps) {
+function BoardColumn({ children, title, boardId, columnId }: BoardColumnProps) {
   const { t } = useTranslation();
 
   const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
@@ -157,6 +157,8 @@ function BoardColumn({ children, title }: BoardColumnProps) {
         </Stack>
       </Stack>
       <CreateTaskFormModal
+        boardId={boardId}
+        columnId={columnId}
         open={isCreateTaskModalOpen}
         handleClose={() => {
           setIsCreateTaskModalOpen(false);
