@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
@@ -13,11 +13,10 @@ import {
   TaskFromServer,
   ColumnFromServerExpended,
 } from 'redux/api/apiTypes';
-import createColumnsContainer from './createColumnsContainer';
+import MemoizedColumnsContainer from './MemoizedColumnsContainer';
 
 function BoardPage() {
   const { t } = useTranslation();
-  const textAddColumn = t('Add Column');
 
   const [updateColumn] = useUpdateColumnMutation();
   const [updateTask] = useUpdateTaskMutation();
@@ -33,16 +32,6 @@ function BoardPage() {
   const [dataGetBoard, setDataGetBoard] = useState<
     undefined | BoardFromServerExpanded
   >(currentDataGetBoard);
-
-  const columnsContainerJSX = useMemo(
-    () =>
-      createColumnsContainer({
-        dataGetBoard,
-        isErrorGetBoard,
-        textAddColumn,
-      }),
-    [dataGetBoard, isErrorGetBoard, textAddColumn]
-  );
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -202,7 +191,10 @@ function BoardPage() {
             </Button>
           </Stack>
         </Stack>
-        {columnsContainerJSX}
+        <MemoizedColumnsContainer
+          dataGetBoard={dataGetBoard}
+          isErrorGetBoard={isErrorGetBoard}
+        />
       </Stack>
     </DragDropContext>
   );

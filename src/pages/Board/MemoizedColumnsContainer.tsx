@@ -1,20 +1,20 @@
+import React from 'react';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import BoardTask from 'components/BoardTask/BoardTask';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import { Stack, Typography } from '@mui/material';
 import grey from '@mui/material/colors/grey';
+import { useTranslation } from 'react-i18next';
 
-export default function createColumnsContainer({
+function ColumnsContainer({
   dataGetBoard,
   isErrorGetBoard,
-  textAddColumn,
 }: {
   dataGetBoard: BoardFromServerExpanded | undefined;
   isErrorGetBoard: boolean;
-  textAddColumn: string;
 }) {
-  let JSX: React.ReactElement;
+  const { t } = useTranslation();
 
   if (dataGetBoard && dataGetBoard.columns.length !== 0) {
     const columnsJSX = dataGetBoard.columns.map((column, index) => {
@@ -48,7 +48,7 @@ export default function createColumnsContainer({
       );
     });
 
-    JSX = (
+    return (
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided) => (
           <Stack
@@ -79,7 +79,7 @@ export default function createColumnsContainer({
       </Droppable>
     );
   } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
-    JSX = (
+    return (
       <Stack
         direction="row"
         spacing={1}
@@ -101,7 +101,7 @@ export default function createColumnsContainer({
       >
         <Stack width="100%" textAlign="center">
           <Typography fontSize="2rem" color="primary.light">
-            {textAddColumn}
+            {t('No columns yet')}
           </Typography>
         </Stack>
       </Stack>
@@ -109,7 +109,7 @@ export default function createColumnsContainer({
   } else if (isErrorGetBoard) {
     throw new Error(`boardId is invalid`);
   } else {
-    JSX = (
+    return (
       <Stack
         direction="row"
         spacing={1}
@@ -133,6 +133,6 @@ export default function createColumnsContainer({
       </Stack>
     );
   }
-
-  return JSX;
 }
+
+export default React.memo(ColumnsContainer);
