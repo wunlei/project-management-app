@@ -16,9 +16,9 @@ import {
 
 function CreateProjectForm(props: CreateProjectFormProps) {
   const { open, onClose } = props;
-  const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const [createBoard, createBoardResult] = useCreateBoardMutation();
 
@@ -46,7 +46,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
     if (createBoardResult.isSuccess) {
       handleClose();
       dispatch(setAlertType('success'));
-      dispatch(setAlertMessage('Succesfully created board'));
+      dispatch(setAlertMessage('Project successfully created'));
       dispatch(setIsAlert(true));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
