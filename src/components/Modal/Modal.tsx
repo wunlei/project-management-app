@@ -7,6 +7,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { ModalProps } from './Modal.types';
 import { ReactComponent as CrossIcon } from '../../assets/icons/cross.svg';
@@ -24,16 +26,19 @@ function Modal(props: ModalProps) {
     isLoading,
   } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Dialog
+      fullScreen={fullScreen}
       onClose={onClose}
       open={open}
       PaperProps={{
         sx: {
           boxShadow: 0,
           padding: 2,
-          borderRadius: '1rem',
+          borderRadius: fullScreen ? 0 : '1rem',
         },
       }}
       aria-labelledby="dialog-title"
@@ -56,10 +61,7 @@ function Modal(props: ModalProps) {
       >
         {dialogTitle}
       </DialogTitle>
-
-      <DialogContent dividers>
-        <div>{children}</div>
-      </DialogContent>
+      <DialogContent dividers>{children}</DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="error" disabled={isLoading}>
           {rejectText || t('Cancel')}

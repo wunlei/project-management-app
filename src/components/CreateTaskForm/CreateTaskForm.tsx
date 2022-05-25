@@ -10,7 +10,7 @@ import {
   AlertState,
 } from './CreateTaskForm.types';
 
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import grey from '@mui/material/colors/grey';
 
 import {
@@ -21,6 +21,7 @@ import {
   Autocomplete,
   Snackbar,
   Alert,
+  useMediaQuery,
 } from '@mui/material';
 import Modal from 'components/Modal/Modal';
 
@@ -39,6 +40,9 @@ const Input = styled('input')({
 function CreateTaskFormModal(props: Props) {
   const { handleClose, open, boardId, columnId } = props;
   const { t } = useTranslation();
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: users } = useGetAllUsersQuery();
   const [createTask, createTaskResult] = useCreateTaskMutation();
@@ -165,6 +169,7 @@ function CreateTaskFormModal(props: Props) {
       >
         <Stack
           component="form"
+          minWidth={fullScreen ? '100%' : '300px'}
           onSubmit={handleSubmit(onSubmit)}
           sx={{ rowGap: 3 }}
         >
@@ -228,7 +233,7 @@ function CreateTaskFormModal(props: Props) {
                 helperText={
                   error?.message
                     ? t(error.message, { ns: 'validation' })
-                    : t("Example: Don't forget a bag")
+                    : t("Example: Don't forget to take a bag")
                 }
                 label={t('Task description')}
               />
