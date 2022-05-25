@@ -61,7 +61,7 @@ function UpdateUserForm() {
     if (updateUserResult.isSuccess) {
       setAlertState({
         color: 'success',
-        message: t('Successfuly updated profile!'),
+        message: t('Successfully updated profile!'),
       });
     }
     if (updateUserResult.isError) {
