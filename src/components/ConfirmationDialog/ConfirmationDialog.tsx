@@ -33,7 +33,12 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
       >
         {title || t('Confirm Action')}
       </DialogTitle>
-      <DialogContent id="confirmation-dialog-description">
+      <DialogContent
+        id="confirmation-dialog-description"
+        sx={{
+          textAlign: 'center',
+        }}
+      >
         {dialogText}
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-between' }}>

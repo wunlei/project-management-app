@@ -17,7 +17,13 @@ function Footer({ data }: FooterProps) {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <RsLogo />
+        <Link
+          href="https://rs.school/react/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <RsLogo />
+        </Link>
         <Typography variant="body1">© 2022</Typography>
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center">
