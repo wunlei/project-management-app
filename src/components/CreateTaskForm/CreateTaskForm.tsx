@@ -101,7 +101,7 @@ function CreateTaskFormModal(props: Props) {
   };
 
   const onSuccess = () => {
-    setAlertState({ message: 'Successfuly created task!', color: 'success' });
+    setAlertState({ message: 'Successfully created task!', color: 'success' });
     handleCloseAndResetForm();
   };
 

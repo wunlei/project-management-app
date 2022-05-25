@@ -31,12 +31,16 @@
   "Select member": "Select member",
   "Upload image": "Upload image",
   "Create": "Create",
-  "Successfuly updated profile!": "Successfuly updated profile!",
+  "Successfully updated profile!": "Successfully updated profile!",
   "Something went wrong while updating profile!": "Something went wrong while updating profile!",
   "Something went wrong!": "Something went wrong!",
-  "Successfuly created task!": "Successfuly created task!",
+  "Successfully created task!": "Successfully created task!",
   "Welcome back": "Welcome back",
   "Don't have an account?": "Don't have an account?",
   "Example: Buy milk": "Example: Buy milk",
-  "Example: Don't forget a bag": "Example: Don't forget a bag"
+  "Example: Don't forget a bag": "Example: Don't forget a bag",
+  "Already have an account?": "Already have an account?",
+  "This user already exists": "This user already exists",
+  "Delete profile": "Delete profile",
+  "You are about to permanently delete your profile. This action cannot be undone.": "You are about to permanently delete your profile. This action cannot be undone."
 }

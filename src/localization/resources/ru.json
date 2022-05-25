@@ -31,12 +31,16 @@
   "Select member": "Выберите исполнителя",
   "Upload image": "Загрузить картинку",
   "Create": "Создать",
-  "Successfuly updated profile!": "Обновление профиля прошло успешно!",
+  "Successfully updated profile!": "Обновление профиля прошло успешно!",
   "Something went wrong while updating profile!": "Что-то пошло не так при попытке обновить профиль!",
   "Something went wrong!": "Что-то пошло не так!",
-  "Successfuly created task!": "Задача создана успешно!",
+  "Successfully created task!": "Задача создана успешно!",
   "Welcome back": "Добро пожаловать",
-  "Don't have an account?": "У вас еще нет аккаунта?",
+  "Don't have an account?": "Еще нет аккаунта?",
   "Example: Buy milk": "Например: Купить молока",
-  "Example: Don't forget to take a bag": "Например: Не забыть взять пакет"
+  "Example: Don't forget to take a bag": "Например: Не забыть взять пакет",
+  "Already have an account?": "Уже есть аккаунт?",
+  "This user already exists": "Пользователь с таким логином уже существует",
+  "Delete profile": "Удалить профиль",
+  "You are about to permanently delete your profile. This action cannot be undone.": "Вы собираетесь навсегда удалить свой профиль. Это действие невозможно отменить. "
 }
