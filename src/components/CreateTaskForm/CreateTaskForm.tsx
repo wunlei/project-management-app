@@ -69,6 +69,9 @@ function CreateTaskFormModal(props: Props) {
   const isMutationsLoading =
     createTaskResult.isLoading || uploadFileResult.isLoading;
 
+  const isPictureTypeError =
+    errors.picture && errors.picture.type === 'isIncorrectType';
+
   const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
     member,
     title,
@@ -270,7 +273,9 @@ function CreateTaskFormModal(props: Props) {
                 opacity: errors.picture ? 1 : 0.7,
               }}
             >
-              {t('Max file size is 1mb')}
+              {errors.picture?.message && isPictureTypeError
+                ? t(errors.picture.message, { ns: 'validation' })
+                : t('Max file size is 1mb')}
             </Typography>
           </label>
           <Controller

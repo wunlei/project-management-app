@@ -15,6 +15,7 @@
   "Incorrect login or password": "Неправильный логин или пароль",
   "Task title is required": "Введите название задачи",
   "You must pick a member": "Вы должны выбрать исполнителя",
-  "Maximum is 30 symbols": "Максимум 30 символов",
-  "Maximum is 500 symbols": "Максимум 500 символов"
+  "Task title must be at most 30 characters": "Максимум 30 символов",
+  "Task description must be at most 500 characters": "Максимум 500 символов",
+  "You can only pick png/jpg/jpeg": "Можно выбрать только png/jpg/jpeg"
 }
