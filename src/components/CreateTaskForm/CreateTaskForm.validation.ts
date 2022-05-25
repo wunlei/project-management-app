@@ -1,11 +1,11 @@
 import { UserFromServer } from 'redux/api/apiTypes';
 import * as yup from 'yup';
-// import { CreateTaskFormValues } from './CreateTaskForm.types';
-
-// type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export const schema = yup.object({
-  title: yup.string().required('Task title is required'),
+  title: yup
+    .string()
+    .required('Task title is required')
+    .max(30, 'Maximum is 30 symbols'),
   picture: yup
     .mixed<FileList>()
     .nullable()
@@ -23,7 +23,7 @@ export const schema = yup.object({
         return true;
       }
     }),
-  description: yup.string().ensure(),
+  description: yup.string().ensure().max(500, 'Maximum is 500 symbols'),
   member: yup
     .mixed<UserFromServer>()
     .required('You must pick a member')

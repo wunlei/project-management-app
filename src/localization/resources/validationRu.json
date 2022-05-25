@@ -14,5 +14,7 @@
   "Password must include only latin letters and digits": "Пароль должен содержать только буквы латинского алфавита и цифры",
   "Incorrect login or password": "Неправильный логин или пароль",
   "Task title is required": "Введите название задачи",
-  "You must pick a member": "Вы должны выбрать исполнителя"
+  "You must pick a member": "Вы должны выбрать исполнителя",
+  "Maximum is 30 symbols": "Максимум 30 символов",
+  "Maximum is 500 symbols": "Максимум 500 символов"
 }

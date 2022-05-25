@@ -52,7 +52,7 @@ function CreateTaskFormModal(props: Props) {
     register,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<CreateTaskFormValues>({
     resolver: yupResolver(schema),
   });
@@ -161,6 +161,7 @@ function CreateTaskFormModal(props: Props) {
         confirmBtnText={t('Create')}
         onConfirm={handleSubmit(onSubmit)}
         isLoading={isMutationsLoading}
+        isBtnDisabled={!isDirty}
       >
         <Stack
           component="form"
@@ -181,6 +182,7 @@ function CreateTaskFormModal(props: Props) {
                 label={t('Task name')}
                 required
                 error={!!error?.message}
+                inputProps={{ maxLength: 30 }}
                 disabled={isMutationsLoading}
                 helperText={
                   error?.message
@@ -200,8 +202,9 @@ function CreateTaskFormModal(props: Props) {
             }) => (
               <TextField
                 multiline
-                minRows={3}
+                minRows={5}
                 maxRows={5}
+                inputProps={{ maxLength: 500 }}
                 disabled={isMutationsLoading}
                 sx={{
                   '.MuiInputBase-inputMultiline': {
@@ -225,7 +228,7 @@ function CreateTaskFormModal(props: Props) {
                 helperText={
                   error?.message
                     ? t(error.message, { ns: 'validation' })
-                    : t('Example: Dont forget a bag')
+                    : t("Example: Don't forget a bag")
                 }
                 label={t('Task description')}
               />
@@ -244,6 +247,7 @@ function CreateTaskFormModal(props: Props) {
               variant="contained"
               component="span"
               disabled={isMutationsLoading}
+              fullWidth
               color={
                 isCorrectFileSelected
                   ? 'success'

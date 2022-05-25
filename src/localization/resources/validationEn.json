@@ -14,5 +14,7 @@
   "Password must include only latin letters and digits": "Password must include only latin letters and digits",
   "Incorrect login or password": "Incorrect login or password",
   "Task title is required": "Task title is required",
-  "You must pick a member": "You must pick a member"
+  "You must pick a member": "You must pick a member",
+  "Maximum is 30 symbols": "Maximum is 30 symbols",
+  "Maximum is 500 symbols": "Maximum is 500 symbols"
 }
