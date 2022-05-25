@@ -8,11 +8,7 @@ import { CreateProjectFormProps } from './CreateProjectForm.types';
 import { ProjectInputs, ProjectSchema } from './CreateProjectForm.validation';
 import Modal from 'components/Modal/Modal';
 import { useAppDispatch } from 'redux/hooks';
-import {
-  setAlertMessage,
-  setAlertType,
-  setIsAlert,
-} from 'redux/global/globalSlice';
+import { setAlertState } from 'redux/global/globalSlice';
 
 function CreateProjectForm(props: CreateProjectFormProps) {
   const { open, onClose } = props;
@@ -45,9 +41,12 @@ function CreateProjectForm(props: CreateProjectFormProps) {
   useEffect(() => {
     if (createBoardResult.isSuccess) {
       handleClose();
-      dispatch(setAlertType('success'));
-      dispatch(setAlertMessage('Project successfully created'));
-      dispatch(setIsAlert(true));
+      dispatch(
+        setAlertState({
+          alertMessage: 'Project successfully created',
+          alertType: 'success',
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createBoardResult.isSuccess]);

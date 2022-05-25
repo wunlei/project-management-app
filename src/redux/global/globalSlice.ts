@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { alertType, GlobalSlice, Language } from './globalTypes';
+import { GlobalSlice, IAlertState, Language } from './globalTypes';
 
 const initialState: GlobalSlice = {
   userId: localStorage.getItem('userId'),
   token: localStorage.getItem('token'),
   language: (localStorage.getItem('language') as Language) || 'en',
-  isAlerts: false,
-  alertMessage: 'Something went wrong!',
-  alertType: 'error',
+  alertState: null,
 };
 
 const globalSlice = createSlice({
@@ -34,27 +32,14 @@ const globalSlice = createSlice({
       localStorage.setItem('language', action.payload);
       state.language = action.payload;
     },
-    setIsAlert: (state, action: PayloadAction<boolean>) => {
-      state.isAlerts = action.payload;
-    },
-    setAlertMessage: (state, action: PayloadAction<string>) => {
-      state.alertMessage = action.payload;
-    },
-    setAlertType: (state, action: PayloadAction<alertType>) => {
-      state.alertType = action.payload;
+    setAlertState: (state, action: PayloadAction<IAlertState | null>) => {
+      state.alertState = action.payload;
     },
   },
 });
 
 const { reducer, actions } = globalSlice;
 
-export const {
-  setLanguage,
-  setUserId,
-  setToken,
-  setIsAlert,
-  setAlertType,
-  setAlertMessage,
-} = actions;
+export const { setLanguage, setUserId, setToken, setAlertState } = actions;
 
 export default reducer;
