@@ -98,15 +98,20 @@ function CreateTaskFormModal(props: Props) {
   };
 
   useEffect(() => {
-    const isSuccessfullyCreatedTask =
-      createTaskResult.isSuccess && createTaskResult.data;
-    const isAnyFile = fileInputValue && fileInputValue[0];
-    const shouldUploadFile = isSuccessfullyCreatedTask && isAnyFile;
+    if (createTaskResult.isSuccess) {
+      const isSuccessfullyCreatedTask =
+        createTaskResult.isSuccess && createTaskResult.data;
+      const isAnyFile = fileInputValue && fileInputValue[0];
+      const shouldUploadFile = isSuccessfullyCreatedTask && isAnyFile;
 
-    if (shouldUploadFile) {
-      uploadFile({ taskId: createTaskResult.data.id, file: fileInputValue[0] });
-    } else {
-      onSuccess();
+      if (shouldUploadFile) {
+        uploadFile({
+          taskId: createTaskResult.data.id,
+          file: fileInputValue[0],
+        });
+      } else {
+        onSuccess();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createTaskResult.isSuccess]);
@@ -234,15 +239,7 @@ function CreateTaskFormModal(props: Props) {
                   ? 'error'
                   : 'primary'
               }
-              startIcon={
-                isCorrectFileSelected ? (
-                  <SvgIcon>
-                    <CheckIcon />
-                  </SvgIcon>
-                ) : (
-                  <FileIcon />
-                )
-              }
+              startIcon={isCorrectFileSelected ? <CheckIcon /> : <FileIcon />}
             >
               {t('Upload image')}
             </Button>
