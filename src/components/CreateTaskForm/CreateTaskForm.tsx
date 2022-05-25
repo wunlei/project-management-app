@@ -19,7 +19,6 @@ import {
   Button,
   Typography,
   Autocomplete,
-  SvgIcon,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -63,13 +62,15 @@ function CreateTaskFormModal(props: Props) {
   const isCorrectFileSelected =
     (fileInputValue ? !!fileInputValue[0] : false) && !errors.picture;
 
+  const isMutationsLoading =
+    createTaskResult.isLoading || uploadFileResult.isLoading;
+
   const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
     member,
     title,
     description,
     ...restData
   }) => {
-    // console.log({ member, title, description, ...restData });
     createTask({
       boardId,
       columnId,
@@ -95,6 +96,12 @@ function CreateTaskFormModal(props: Props) {
   const onSuccess = () => {
     setAlertState({ message: 'Successfuly created task!', color: 'success' });
     handleCloseAndResetForm();
+  };
+
+  const onClose = () => {
+    if (!isMutationsLoading) {
+      handleCloseAndResetForm();
+    }
   };
 
   useEffect(() => {
@@ -148,11 +155,12 @@ function CreateTaskFormModal(props: Props) {
         ) : undefined}
       </Snackbar>
       <Modal
-        onClose={handleCloseAndResetForm}
+        onClose={onClose}
         open={open}
         dialogTitle={t('Create new task')}
         confirmBtnText={t('Create')}
         onConfirm={handleSubmit(onSubmit)}
+        isLoading={isMutationsLoading}
       >
         <Stack
           component="form"
@@ -173,6 +181,7 @@ function CreateTaskFormModal(props: Props) {
                 label={t('Task name')}
                 required
                 error={!!error?.message}
+                disabled={isMutationsLoading}
                 helperText={
                   error?.message
                     ? t(error.message, { ns: 'validation' })
@@ -193,6 +202,7 @@ function CreateTaskFormModal(props: Props) {
                 multiline
                 minRows={3}
                 maxRows={5}
+                disabled={isMutationsLoading}
                 sx={{
                   '.MuiInputBase-inputMultiline': {
                     scrollbarColor: `${grey[400]} ${grey[200]}`,
@@ -226,12 +236,14 @@ function CreateTaskFormModal(props: Props) {
               accept=".png, .jpg, .jpeg"
               id="contained-button-file"
               multiple={false}
+              disabled={isMutationsLoading}
               type="file"
               {...register('picture')}
             />
             <Button
               variant="contained"
               component="span"
+              disabled={isMutationsLoading}
               color={
                 isCorrectFileSelected
                   ? 'success'
@@ -266,6 +278,7 @@ function CreateTaskFormModal(props: Props) {
                 onChange={(event, item) => {
                   onChange(item);
                 }}
+                disabled={isMutationsLoading}
                 value={value ?? null}
                 isOptionEqualToValue={(option, value) =>
                   option.login === value.login || value.login === ''
@@ -278,6 +291,7 @@ function CreateTaskFormModal(props: Props) {
                     name={name}
                     error={!!error?.message}
                     required
+                    disabled={isMutationsLoading}
                     helperText={
                       error?.message
                         ? t(error.message, { ns: 'validation' })
