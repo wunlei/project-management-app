@@ -45,6 +45,7 @@ function Modal(props: ModalProps) {
     >
       <IconButton
         onClick={onClose}
+        disabled={isLoading}
         sx={{
           position: 'absolute',
           top: '0.25rem',
