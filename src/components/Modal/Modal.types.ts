@@ -6,4 +6,6 @@ export interface ModalProps {
   rejectBtnText?: string;
   onClose: () => void;
   onConfirm?: () => void;
+  isBtnDisabled?: boolean;
+  isLoading?: boolean;
 }

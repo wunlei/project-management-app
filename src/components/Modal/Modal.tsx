@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -19,6 +20,8 @@ function Modal(props: ModalProps) {
     onConfirm,
     confirmBtnText: confirmText,
     rejectBtnText: rejectText,
+    isBtnDisabled,
+    isLoading,
   } = props;
   const { t } = useTranslation();
 
@@ -58,10 +61,16 @@ function Modal(props: ModalProps) {
         <div>{children}</div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="error">
+        <Button onClick={onClose} color="error" disabled={isLoading}>
           {rejectText || t('Cancel')}
         </Button>
-        <Button onClick={onConfirm} variant="outlined">
+
+        <Button
+          onClick={onConfirm}
+          variant="outlined"
+          disabled={isBtnDisabled || isLoading}
+          endIcon={isLoading && <CircularProgress size={10} thickness={5} />}
+        >
           {confirmText || t('Save')}
         </Button>
       </DialogActions>
