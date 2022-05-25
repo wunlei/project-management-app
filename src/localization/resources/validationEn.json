@@ -17,6 +17,7 @@
   "Description must be at most 60 characters": "Description must be at most 60 characters",
   "Task title is required": "Task title is required",
   "You must pick a member": "You must pick a member",
-  "Maximum is 30 symbols": "Maximum is 30 symbols",
-  "Maximum is 500 symbols": "Maximum is 500 symbols"
+  "Task title must be at most 30 characters": "Task title must be at most 30 characters",
+  "Task description must be at most 500 characters": "Task description must be at most 500 characters",
+  "You can only pick png/jpg/jpeg": "You can only pick png/jpg/jpeg"
 }

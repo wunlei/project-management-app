@@ -5,7 +5,7 @@ export const schema = yup.object({
   title: yup
     .string()
     .required('Task title is required')
-    .max(30, 'Maximum is 30 symbols'),
+    .max(30, 'Task title must be at most 30 characters'),
   picture: yup
     .mixed<FileList>()
     .nullable()
@@ -23,7 +23,10 @@ export const schema = yup.object({
         return true;
       }
     }),
-  description: yup.string().ensure().max(500, 'Maximum is 500 symbols'),
+  description: yup
+    .string()
+    .ensure()
+    .max(500, 'Task description must be at most 500 characters'),
   member: yup
     .mixed<UserFromServer>()
     .required('You must pick a member')
