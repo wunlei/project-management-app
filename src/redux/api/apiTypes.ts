@@ -21,8 +21,8 @@ export type TaskFromServerExpanded = TaskFromServer & {
 };
 export type TaskFromClient = {
   title: string;
-  order: number;
-  done: boolean;
+  order?: number;
+  done?: boolean;
   description: string;
   userId?: string;
 };
