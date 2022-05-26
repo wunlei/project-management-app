@@ -1,4 +1,4 @@
-import { Slide, useScrollTrigger } from '@mui/material';
+import { easing, Slide, useScrollTrigger } from '@mui/material';
 
 interface Props {
   children: React.ReactElement;
@@ -10,7 +10,15 @@ export default function HideOnScroll({ children }: Props) {
   });
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide
+      appear={false}
+      direction="down"
+      in={!trigger}
+      easing={{
+        enter: easing.easeOut,
+        exit: easing.easeIn,
+      }}
+    >
       {children}
     </Slide>
   );

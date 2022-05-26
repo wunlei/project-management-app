@@ -10,7 +10,6 @@ export type TaskFromServer = {
   id: string;
   title: string;
   order: number;
-  done: boolean;
   description: string;
   userId: string;
   files: Array<FileInfo>;
@@ -21,14 +20,13 @@ export type TaskFromServerExpanded = TaskFromServer & {
 };
 export type TaskFromClient = {
   title: string;
-  order?: number;
-  done?: boolean;
   description: string;
   userId?: string;
 };
-export type TaskFromClientExpanded = TaskFromClient & {
+export type UpdateTaskFromClient = TaskFromClient & {
   boardId: string;
   columnId: string;
+  order: number;
 };
 
 export type ColumnFromServer = {
@@ -39,12 +37,18 @@ export type ColumnFromServer = {
 export type ColumnFromServerExpended = ColumnFromServer & {
   tasks: Array<TaskFromServer>;
 };
-export type ColumnFromClient = { title: string; order: number };
+export type ColumnFromClient = { title: string };
+export type UpdateColumnFromClient = ColumnFromClient & { order: number };
 
-export type BoardFromServer = { id: string; title: string };
+export type BoardFromServer = {
+  id: string;
+  title: string;
+  description: string;
+};
 export type BoardFromServerExpanded = BoardFromServer & {
   columns: Array<ColumnFromServerExpended>;
 };
+export type BoardFromClient = { title: string; description: string };
 
 // Sign -----
 
@@ -77,13 +81,16 @@ export type GetBoardResult = BoardFromServerExpanded;
 export type GetBoardArg = { boardId: string };
 
 export type CreateBoardResult = BoardFromServer;
-export type CreateBoardArg = { body: { title: string } };
+export type CreateBoardArg = { body: BoardFromClient };
 
 export type DeleteBoardResult = void;
 export type DeleteBoardArg = { boardId: string };
 
 export type UpdateBoardResult = BoardFromServer;
-export type UpdateBoardArg = { boardId: string; body: { title: string } };
+export type UpdateBoardArg = {
+  boardId: string;
+  body: BoardFromClient;
+};
 
 // Columns -----
 
@@ -106,7 +113,7 @@ export type UpdateColumnResult = ColumnFromServer;
 export type UpdateColumnArg = {
   boardId: string;
   columnId: string;
-  body: ColumnFromClient;
+  body: UpdateColumnFromClient;
 };
 
 // Tasks -----
@@ -143,7 +150,7 @@ export type UpdateTaskArg = {
   boardId: string;
   columnId: string;
   taskId: string;
-  body: TaskFromClientExpanded;
+  body: UpdateTaskFromClient;
 };
 
 // File -----

@@ -7,11 +7,10 @@ import { useDeleteUserMutation } from 'redux/api/endpoints/users';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Box,
+  Backdrop,
   Button,
   CircularProgress,
   Container,
-  Modal,
   Stack,
   Typography,
 } from '@mui/material';
@@ -88,18 +87,14 @@ function UserPage() {
           setIsDialogOpen(false);
         }}
       />
-      <Modal open={isDeleteLoading}>
-        <Box
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <CircularProgress color="secondary" size={100} />
-        </Box>
-      </Modal>
+      <Backdrop
+        sx={{
+          zIndex: 2000,
+        }}
+        open={isDeleteLoading}
+      >
+        <CircularProgress color="secondary" size={100} />
+      </Backdrop>
     </Container>
   );
 }
