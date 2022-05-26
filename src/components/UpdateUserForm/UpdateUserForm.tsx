@@ -11,7 +11,13 @@ import { userValidationSchema } from 'constants/validation';
 
 import { EditProfile } from './UpdateUserForm.types';
 
-import { Button, Skeleton, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Skeleton,
+  Stack,
+  TextField,
+} from '@mui/material';
 
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import { setAlertState } from 'redux/global/globalSlice';
@@ -98,6 +104,7 @@ function UpdateUserForm() {
               <TextField
                 id="edit-name"
                 label={t('Name')}
+                disabled={updateUserResult.isLoading}
                 error={!!error?.message}
                 name={name}
                 value={value}
@@ -131,6 +138,7 @@ function UpdateUserForm() {
               <TextField
                 id="edit-login"
                 label={t('Login')}
+                disabled={updateUserResult.isLoading}
                 type="text"
                 name={name}
                 value={value}
@@ -149,12 +157,22 @@ function UpdateUserForm() {
             )}
           />
         )}
-        <PasswordInput control={control} name={'password'} required />
+        <PasswordInput
+          control={control}
+          name="password"
+          disabled={updateUserResult.isLoading}
+          required
+        />
         <Button
           type="submit"
           variant="outlined"
           sx={{ textTransform: 'capitalize' }}
-          disabled={!isDirty}
+          disabled={updateUserResult.isLoading || !isDirty}
+          startIcon={
+            updateUserResult.isLoading && (
+              <CircularProgress size={10} thickness={5} />
+            )
+          }
         >
           {t('Save')}
         </Button>
