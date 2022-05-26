@@ -13,6 +13,8 @@
   "Password must include at list one letter": "Пароль должен содержать как минимум одну букву",
   "Password must include only latin letters and digits": "Пароль должен содержать только буквы латинского алфавита и цифры",
   "Incorrect login or password": "Неправильный логин или пароль",
+  "Title is required": "Введите название",
+  "Description must be at most 60 characters": "Описание не может быть длиннее 60 символов",
   "Task title is required": "Введите название задачи",
   "You must pick a member": "Вы должны выбрать исполнителя",
   "Task title must be at most 30 characters": "Максимум 30 символов",

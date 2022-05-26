@@ -7,7 +7,12 @@ function ProjectsPage() {
   const { t } = useTranslation();
 
   return (
-    <Container component="main" sx={{ flexGrow: 1 }}>
+    <Container
+      component="main"
+      sx={{ flexGrow: 1 }}
+      fixed={false}
+      maxWidth={false}
+    >
       <Stack spacing={3}>
         <Typography variant="h3" fontWeight="bold">
           {t('Projects')}

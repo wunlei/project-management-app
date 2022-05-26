@@ -8,6 +8,7 @@ import {
   Toolbar,
   Tooltip,
   Link as MuiLink,
+  useScrollTrigger,
 } from '@mui/material';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
@@ -16,6 +17,8 @@ import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { setToken, setUserId } from 'redux/global/globalSlice';
+import { useState } from 'react';
+import CreateProjectForm from 'components/CreateProjectForm/CreateProjectForm';
 
 function Header() {
   const { t } = useTranslation();
@@ -24,9 +27,35 @@ function Header() {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.global.token);
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalClickOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    target: window ? window : undefined,
+  });
+
   return (
     <HideOnScroll>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backgroundColor: 'white',
+          boxShadow: trigger ? 3 : 0,
+        }}
+      >
+        <CreateProjectForm
+          open={isModalOpen}
+          onClose={handleModalClose}
+        ></CreateProjectForm>
         <Toolbar
           sx={{
             justifyContent: token ? 'space-between' : 'flex-end',
@@ -62,7 +91,11 @@ function Header() {
             </Stack>
           )}
           {location.pathname === '/projects' && token ? (
-            <Button startIcon={<PlusIcon />} variant="contained">
+            <Button
+              startIcon={<PlusIcon />}
+              variant="contained"
+              onClick={handleModalClickOpen}
+            >
               {t('Create project')}
             </Button>
           ) : null}

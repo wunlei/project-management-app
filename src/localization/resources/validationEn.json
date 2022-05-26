@@ -13,6 +13,8 @@
   "Password must include at list one letter": "Password must include at list one letter",
   "Password must include only latin letters and digits": "Password must include only latin letters and digits",
   "Incorrect login or password": "Incorrect login or password",
+  "Title is required": "Title is required",
+  "Description must be at most 60 characters": "Description must be at most 60 characters",
   "Task title is required": "Task title is required",
   "You must pick a member": "You must pick a member",
   "Task title must be at most 30 characters": "Task title must be at most 30 characters",

@@ -41,7 +41,11 @@ export type ColumnFromServerExpended = ColumnFromServer & {
 };
 export type ColumnFromClient = { title: string; order: number };
 
-export type BoardFromServer = { id: string; title: string };
+export type BoardFromServer = {
+  id: string;
+  title: string;
+  description: string;
+};
 export type BoardFromServerExpanded = BoardFromServer & {
   columns: Array<ColumnFromServerExpended>;
 };
@@ -77,7 +81,7 @@ export type GetBoardResult = BoardFromServerExpanded;
 export type GetBoardArg = { boardId: string };
 
 export type CreateBoardResult = BoardFromServer;
-export type CreateBoardArg = { body: { title: string } };
+export type CreateBoardArg = { body: { title: string; description: string } };
 
 export type DeleteBoardResult = void;
 export type DeleteBoardArg = { boardId: string };

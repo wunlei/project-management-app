@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'redux/hooks';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import {
   useGetUserQuery,
   useUpdateUserMutation,
@@ -9,26 +9,30 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { userValidationSchema } from 'constants/validation';
 
-import { EditProfile, AlertState } from './UpdateUserForm.types';
+import { EditProfile } from './UpdateUserForm.types';
 
 import {
-  Alert,
   Button,
+  CircularProgress,
   Skeleton,
-  Snackbar,
   Stack,
   TextField,
 } from '@mui/material';
 
 import PasswordInput from 'components/PasswordInput/PasswordInput';
+import { setAlertState } from 'redux/global/globalSlice';
 
 function UpdateUserForm() {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const userId = useAppSelector((state) => state.global.userId);
 
-  const [alertState, setAlertState] = useState<AlertState | null>(null);
-
-  const { data: user, isLoading } = useGetUserQuery({
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useGetUserQuery({
     userId: userId ?? undefined,
   });
   const [updateUser, updateUserResult] = useUpdateUserMutation();
@@ -46,32 +50,36 @@ function UpdateUserForm() {
     updateUser({ userId: userId ?? undefined, body: data });
   };
 
-  const handleAlertClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setAlertState(null);
-  };
-
   useEffect(() => {
     if (updateUserResult.isSuccess) {
-      setAlertState({
-        color: 'success',
-        message: t('Successfully updated profile!'),
-      });
+      dispatch(
+        setAlertState({
+          alertMessage: 'Successfully updated profile!',
+          alertType: 'success',
+        })
+      );
     }
     if (updateUserResult.isError) {
-      setAlertState({
-        color: 'error',
-        message: t('Something went wrong while updating profile!'),
-      });
+      dispatch(
+        setAlertState({
+          alertMessage: 'Something went wrong while updating profile!',
+          alertType: 'error',
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateUserResult]);
+  useEffect(() => {
+    if (isError) {
+      dispatch(
+        setAlertState({
+          alertMessage: 'Something went wrong while updating profile!',
+          alertType: 'error',
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   return (
     <>
@@ -96,6 +104,7 @@ function UpdateUserForm() {
               <TextField
                 id="edit-name"
                 label={t('Name')}
+                disabled={updateUserResult.isLoading}
                 error={!!error?.message}
                 name={name}
                 value={value}
@@ -129,6 +138,7 @@ function UpdateUserForm() {
               <TextField
                 id="edit-login"
                 label={t('Login')}
+                disabled={updateUserResult.isLoading}
                 type="text"
                 name={name}
                 value={value}
@@ -147,32 +157,26 @@ function UpdateUserForm() {
             )}
           />
         )}
-        <PasswordInput control={control} name={'password'} required />
+        <PasswordInput
+          control={control}
+          name="password"
+          disabled={updateUserResult.isLoading}
+          required
+        />
         <Button
           type="submit"
           variant="outlined"
           sx={{ textTransform: 'capitalize' }}
-          disabled={!isDirty}
+          disabled={updateUserResult.isLoading || !isDirty}
+          startIcon={
+            updateUserResult.isLoading && (
+              <CircularProgress size={10} thickness={5} />
+            )
+          }
         >
           {t('Save')}
         </Button>
       </Stack>
-      <Snackbar
-        open={!!alertState}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        autoHideDuration={5000}
-        onClose={handleAlertClose}
-      >
-        {alertState ? (
-          <Alert
-            onClose={handleAlertClose}
-            severity={alertState.color}
-            sx={{ width: '100%' }}
-          >
-            {alertState.message}
-          </Alert>
-        ) : undefined}
-      </Snackbar>
     </>
   );
 }
