@@ -8,6 +8,7 @@ import {
   Toolbar,
   Tooltip,
   Link as MuiLink,
+  useScrollTrigger,
 } from '@mui/material';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
@@ -36,9 +37,21 @@ function Header() {
     setIsModalOpen(false);
   };
 
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    target: window ? window : undefined,
+  });
+
   return (
     <HideOnScroll>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backgroundColor: 'white',
+          boxShadow: trigger ? 3 : 0,
+        }}
+      >
         <CreateProjectForm
           open={isModalOpen}
           onClose={handleModalClose}
