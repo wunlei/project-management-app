@@ -48,7 +48,7 @@ export default function ProjectCard({
           color="error"
           onClick={(e) => {
             e.preventDefault();
-            onDelete();
+            onDelete(boardId);
           }}
         >
           <TrashIcon />
