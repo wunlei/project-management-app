@@ -14,6 +14,11 @@ interface Props<T> {
   control: Control<T>;
   name: Path<T>;
   required?: boolean;
+  disabled?: boolean;
+  isValidateRequired?: boolean;
+  onChange?: (
+    event?: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
 }
 
 interface State {
@@ -23,8 +28,15 @@ interface State {
 /**
  * @name should correspond to `password` key in your form type
  */
-function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
-  const { control, name, required } = props;
+function PasswordInput<T>(props: Props<T>) {
+  const {
+    control,
+    name,
+    required,
+    disabled,
+    isValidateRequired,
+    onChange: propOnChange,
+  } = props;
 
   const { t } = useTranslation();
 
@@ -56,11 +68,18 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
     <Controller
       control={control}
       name={name}
+      {...(isValidateRequired
+        ? {
+            rules: {
+              required: 'Password is required',
+            },
+          }
+        : {})}
       render={({
         field: { onChange, onBlur, name, ref },
         fieldState: { error },
       }) => (
-        <FormControl variant="outlined" required={required}>
+        <FormControl variant="outlined" required={required} disabled={disabled}>
           <InputLabel error={!!error} htmlFor="password">
             {t('Password')}
           </InputLabel>
@@ -71,6 +90,9 @@ function PasswordInput<T /* extends { password: string } */>(props: Props<T>) {
             onChange={(e) => {
               handleChange('password')(e);
               onChange(e);
+              if (propOnChange) {
+                propOnChange(e);
+              }
             }}
             error={!!error}
             onBlur={onBlur}

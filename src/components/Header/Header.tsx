@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -8,6 +8,7 @@ import {
   Toolbar,
   Tooltip,
   Link as MuiLink,
+  useScrollTrigger,
 } from '@mui/material';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
@@ -15,28 +16,56 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { setUserId } from 'redux/global/globalSlice';
+import { setToken, setUserId } from 'redux/global/globalSlice';
+import { useState } from 'react';
+import CreateProjectForm from 'components/CreateProjectForm/CreateProjectForm';
 
 function Header() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.global.userId);
+  const token = useAppSelector((state) => state.global.token);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalClickOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    target: window ? window : undefined,
+  });
 
   return (
     <HideOnScroll>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backgroundColor: 'white',
+          boxShadow: trigger ? 3 : 0,
+        }}
+      >
+        <CreateProjectForm
+          open={isModalOpen}
+          onClose={handleModalClose}
+        ></CreateProjectForm>
         <Toolbar
           sx={{
-            justifyContent: user ? 'space-between' : 'flex-end',
+            justifyContent: token ? 'space-between' : 'flex-end',
             flexDirection: {
               xs: 'column-reverse',
               sm: 'row',
             },
           }}
         >
-          {user && (
+          {token && (
             <Stack direction="row" spacing={1}>
               <MuiLink
                 component={Link}
@@ -61,16 +90,20 @@ function Header() {
               </MuiLink>
             </Stack>
           )}
-          {location.pathname === '/projects' && user ? (
-            <Button startIcon={<PlusIcon />} variant="contained">
+          {location.pathname === '/projects' && token ? (
+            <Button
+              startIcon={<PlusIcon />}
+              variant="contained"
+              onClick={handleModalClickOpen}
+            >
               {t('Create project')}
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
             <LangMenu />
-            {!user ? (
+            {!token ? (
               <>
-                <Button variant="outlined" component={Link} to="/login">
+                <Button variant="outlined" component={Link} to="/signin">
                   {t('Sign In')}
                 </Button>
                 <Button variant="contained" component={Link} to="/signup">
@@ -94,6 +127,7 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
+                      dispatch(setToken(null));
                       dispatch(setUserId(null));
                       navigate('/');
                     }}

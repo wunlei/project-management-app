@@ -52,7 +52,7 @@ export type BoardFromClient = { title: string; description: string };
 
 // Sign -----
 
-export type SignInResult = { token: string };
+export type SignInResult = { token: string; id: string };
 export type SignInArg = { body: { login: string; password: string } };
 
 export type SignUpResult = UserFromServer;

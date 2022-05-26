@@ -10,7 +10,7 @@ import bg from 'assets/img/towfiqu-barbhuiya-jOeh3Lv88xA-unsplash.jpg';
 
 function AuthPage() {
   const { t } = useTranslation();
-  const isLoggedIn = useAppSelector((state) => state.global.userId);
+  const isLoggedIn = useAppSelector((state) => state.global.token);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -24,6 +24,7 @@ export default function ProjectCard({
         borderLeftWidth: '7px',
         maxWidth: '300px',
         width: '100%',
+        minHeight: 150,
         '&:hover': {
           cursor: 'pointer',
           boxShadow: 2,
@@ -32,11 +33,15 @@ export default function ProjectCard({
     >
       <Stack
         direction="row"
-        alignItems="center"
+        alignItems="flex-start"
         justifyContent="space-between"
         spacing={1}
       >
-        <Typography variant="h5" fontWeight="bold">
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ overflowWrap: 'anywhere' }}
+        >
           {title}
         </Typography>
         <IconButton
@@ -49,12 +54,7 @@ export default function ProjectCard({
           <TrashIcon />
         </IconButton>
       </Stack>
-      <Typography
-        variant="body2"
-        sx={{
-          wordWrap: 'break-word',
-        }}
-      >
+      <Typography variant="body2" sx={{ overflowWrap: 'anywhere' }}>
         {description}
       </Typography>
     </Stack>
