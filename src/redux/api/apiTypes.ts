@@ -39,7 +39,7 @@ export type ColumnFromServer = {
 export type ColumnFromServerExpended = ColumnFromServer & {
   tasks: Array<TaskFromServer>;
 };
-export type ColumnFromClient = { title: string; order: number };
+export type ColumnFromClient = { title: string; order?: number };
 
 export type BoardFromServer = {
   id: string;
