@@ -9,9 +9,11 @@ import {
   CreateColumnFormInputs,
   CreateColumnFormProps,
 } from './CreateColumnForm.types';
+import { CreateFormSchema } from './CreateColumnForm.validation';
 
 import { TextField, Alert } from '@mui/material';
 import Modal from 'components/Modal/Modal';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function CreateColumnForm(props: CreateColumnFormProps) {
   const { open, onClose, boardId } = props;
@@ -26,7 +28,9 @@ function CreateColumnForm(props: CreateColumnFormProps) {
     handleSubmit,
     reset,
     formState: { isDirty },
-  } = useForm<CreateColumnFormInputs>();
+  } = useForm<CreateColumnFormInputs>({
+    resolver: yupResolver(CreateFormSchema),
+  });
 
   const onSubmit: SubmitHandler<CreateColumnFormInputs> = ({ title }) => {
     createColumn({ boardId, body: { title } });
@@ -73,6 +77,12 @@ function CreateColumnForm(props: CreateColumnFormProps) {
             variant="outlined"
             inputProps={{ maxLength: 30 }}
             required
+            sx={{
+              minWidth: {
+                xs: '100%',
+                sm: '300px',
+              },
+            }}
             disabled={createColumnResult.isLoading}
             {...restField}
             label={t('Title')}
