@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
+import { setAlertState } from 'redux/global/globalSlice';
+import { useAppDispatch } from 'redux/hooks';
 
 interface IFilteredValues {
   url: string;
@@ -15,6 +17,7 @@ interface useSearchProps {
 }
 
 function useSearch({ boards, searchQuery }: useSearchProps) {
+  const dispatch = useAppDispatch();
   const { currentData: users } = useGetAllUsersQuery();
 
   const [filteredValues, setFilteredValues] = useState<IFilteredValues[]>([
@@ -36,7 +39,7 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
       boards.forEach((board) => {
         const regex = new RegExp(searchQuery, 'gi');
 
-        if (regex.test(board.title)) {
+        if (regex.test(board.title) || regex.test(board.description)) {
           searchResult.push({
             url: `${board.id}`,
             title: board.title,
@@ -45,8 +48,6 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
           });
           return;
         }
-
-        // const descr = regex.test(el.description)
 
         for (const column of board.columns) {
           for (const task of column.tasks) {
@@ -81,7 +82,12 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
       }
       setFilteredValues(searchResult);
     } else {
-      throw new Error();
+      dispatch(
+        setAlertState({
+          alertMessage: 'Something went wrong!',
+          alertType: 'error',
+        })
+      );
     }
   };
 

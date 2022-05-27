@@ -1,15 +1,14 @@
-import { Container, Stack, Typography } from '@mui/material';
+import { useGetAllBoardsExpandedQuery } from 'redux/api/endpoints/boards';
+import { CircularProgress, Container, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ProjectCard from 'components/ProjectCard/ProjectCard';
 import SearchBar from 'components/SearchBar/SearchBar';
-import { useGetAllBoardsExpandedQuery } from 'redux/api/endpoints/boards';
 
 function ProjectsPage() {
   const { t } = useTranslation();
 
   const {
-    data: boards,
-    isFetching,
+    currentData: boards,
     isLoading,
     isSuccess,
   } = useGetAllBoardsExpandedQuery();
@@ -27,13 +26,20 @@ function ProjectsPage() {
         </Typography>
         <SearchBar boards={boards} />
         <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">
+          {isLoading && <CircularProgress size={80} thickness={5} />}
+          {!isSuccess && !isLoading ? (
+            <Typography>{t('Something went wrong!')}</Typography>
+          ) : null}
+          {boards && boards.length === 0 ? (
+            <Typography>{t('No projects yet')}</Typography>
+          ) : null}
           {boards &&
-            boards.map((el) => (
+            boards.map((board) => (
               <ProjectCard
-                key={el.id}
-                title={el.title}
-                description={'desc'}
-                boardId={el.id}
+                key={board.id}
+                title={board.title}
+                description={board.description}
+                boardId={board.id}
                 onDelete={() => {}}
               ></ProjectCard>
             ))}
