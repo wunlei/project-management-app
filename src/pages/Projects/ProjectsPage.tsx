@@ -1,3 +1,8 @@
+import { useState } from 'react';
+import { useGetAllBoardsQuery } from 'redux/api/endpoints/boards';
+import { BoardFromServer } from 'redux/api/apiTypes';
+import SearchBar from 'components/SearchBar/SearchBar';
+import { useTranslation } from 'react-i18next';
 import {
   Backdrop,
   Box,
@@ -6,61 +11,30 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import ProjectCard from 'components/ProjectCard/ProjectCard';
-import SearchBar from 'components/SearchBar/SearchBar';
-import {
-  useDeleteBoardMutation,
-  useGetAllBoardsQuery,
-} from 'redux/api/endpoints/boards';
-import { BoardFromServer } from 'redux/api/apiTypes';
-import { useEffect, useState } from 'react';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
-import { useAppDispatch } from 'redux/hooks';
-import { setAlertState } from 'redux/global/globalSlice';
+import useProjectDelete from './useProjectDelete';
 
 function ProjectsPage() {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-
-  const { currentData: boards, isError } = useGetAllBoardsQuery();
-
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
   const [boardId, setBoardId] = useState<string | null>(null);
 
-  const [deleteBoard, deleteBoardResult] = useDeleteBoardMutation();
+  const { currentData: boards, isError } = useGetAllBoardsQuery();
 
   const handleConfirmationInit = (boardId: string) => {
     setBoardId(boardId);
     setIsConfirmationOpen(true);
   };
 
-  const handleDelete = () => {
-    if (boardId) {
-      deleteBoard({ boardId });
-      setIsConfirmationOpen(false);
-    }
+  const handleSuccessfulDelete = () => {
+    setIsConfirmationOpen(false);
   };
 
-  useEffect(() => {
-    if (deleteBoardResult.isSuccess) {
-      dispatch(
-        setAlertState({
-          alertMessage: 'Project successfully deleted',
-          alertType: 'success',
-        })
-      );
-    }
-    if (deleteBoardResult.isError) {
-      dispatch(
-        setAlertState({
-          alertMessage: 'Something went wrong!',
-          alertType: 'error',
-        })
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteBoardResult.isSuccess, deleteBoardResult.isError]);
+  const { handleDelete, deleteBoardResult } = useProjectDelete({
+    boardId,
+    handleSuccessfulDelete,
+  });
 
   return (
     <Container
