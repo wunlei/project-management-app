@@ -6,12 +6,46 @@ import BoardTask from 'components/BoardTask/BoardTask';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
+import { useState } from 'react';
+import { TaskFromServerExpanded } from 'redux/api/apiTypes';
+import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
 
 function BoardPage() {
   const { t } = useTranslation();
+
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<TaskFromServerExpanded>({
+    id: '',
+    userId: null,
+    title: '',
+    order: 0,
+    description: '',
+    files: [],
+    boardId: '',
+    columnId: '',
+  });
+
+  const handleToggleEditTaskModal = () => {
+    setIsEditTaskModalOpen(!isEditTaskModalOpen);
+  };
+
+  const handleSelectTask = (task: TaskFromServerExpanded) => {
+    setSelectedTask(task);
+  };
+
   const columns = [1];
   const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
-  const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
+  const columnId = 'b0c652d7-a226-4d9a-b3c9-d06aa60ee085';
+  const task = {
+    id: '680d0e89-5831-496a-bed1-de0789355651',
+    title: 'asdsad',
+    order: 12,
+    description: ' ',
+    userId: '3d0b6961-4f27-485e-8626-d028e7b1d147',
+    files: [],
+    boardId,
+    columnId,
+  };
 
   return (
     <Stack
@@ -22,6 +56,11 @@ function BoardPage() {
       sx={{ overflow: 'hidden' }}
       flex={1}
     >
+      <EditTaskFormModal
+        task={selectedTask}
+        handleClose={handleToggleEditTaskModal}
+        open={isEditTaskModalOpen}
+      />
       <Stack
         direction="row"
         alignItems="center"
@@ -80,7 +119,14 @@ function BoardPage() {
             columnId={columnId}
             title={'Column Title'}
           >
-            <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
+            <BoardTask
+              title={'Title'}
+              isDone={true}
+              user={'W'}
+              task={task}
+              handleSelectTask={handleSelectTask}
+              handleToggleEditTaskModal={handleToggleEditTaskModal}
+            ></BoardTask>
           </BoardColumn>
         )}
       </Stack>

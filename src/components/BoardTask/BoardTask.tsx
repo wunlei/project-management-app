@@ -15,7 +15,16 @@ import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
 import grey from '@mui/material/colors/grey';
 
-function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
+function BoardTask(props: BoardTaskProps) {
+  const {
+    title,
+    isDone,
+    user,
+    task,
+    handleSelectTask,
+    handleToggleEditTaskModal,
+  } = props;
+
   const { t } = useTranslation();
 
   const hasFile = true;
@@ -29,6 +38,12 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
   };
   const handleClose = () => {
     setTaskMenuAnchorEl(null);
+  };
+
+  const handleOpenTaskEditModal = () => {
+    handleSelectTask(task);
+    handleClose();
+    handleToggleEditTaskModal();
   };
 
   return (
@@ -85,7 +100,7 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
             }}
           >
             <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Edit')}</MenuItem>
+            <MenuItem onClick={handleOpenTaskEditModal}>{t('Edit')}</MenuItem>
             <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
           </Menu>
         </div>

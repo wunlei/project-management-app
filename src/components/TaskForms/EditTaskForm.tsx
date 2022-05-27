@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
-import { useCreateTaskMutation } from 'redux/api/endpoints/tasks';
+import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { CreateTaskFormValues, Props } from './CreateTaskForm.types';
 
 import grey from '@mui/material/colors/grey';
 
@@ -12,19 +11,24 @@ import { Stack, TextField, Autocomplete } from '@mui/material';
 import Modal from 'components/Modal/Modal';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from './CreateTaskForm.validation';
+import { CreateTaskFormValues, EditTaskFormProps } from './TaskForms.types';
+import { schema } from './TaskForms.validation';
 
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
 
-function CreateTaskFormModal(props: Props) {
-  const { handleClose, open, boardId, columnId } = props;
+function EditTaskFormModal(props: EditTaskFormProps) {
+  const {
+    handleClose,
+    open,
+    task: { id: taskId, columnId, boardId, title, description, userId, order },
+  } = props;
   const dispatch = useAppDispatch();
 
   const { t } = useTranslation();
 
   const { data: users } = useGetAllUsersQuery();
-  const [createTask, createTaskResult] = useCreateTaskMutation();
+  const [updateTask, updateTaskResult] = useUpdateTaskMutation();
 
   const {
     control,
@@ -35,21 +39,33 @@ function CreateTaskFormModal(props: Props) {
     resolver: yupResolver(schema),
   });
 
-  const isMutationsLoading = createTaskResult.isLoading;
+  const taskUser = useMemo(() => {
+    const emptyUser = { id: '', login: '', name: '' };
+    if (userId && users) {
+      const foundUser = users.find((user) => user.id === userId);
+
+      return foundUser ? foundUser : emptyUser;
+    } else {
+      return emptyUser;
+    }
+  }, [users, userId]);
 
   const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
     member,
     title,
     description,
-    ...restData
   }) => {
-    createTask({
-      boardId,
+    updateTask({
+      taskId,
       columnId,
+      boardId,
       body: {
         title,
-        description: description ? description : ' ',
+        description,
+        order,
         userId: member.id,
+        columnId,
+        boardId,
       },
     });
   };
@@ -57,20 +73,20 @@ function CreateTaskFormModal(props: Props) {
   const handleCloseAndResetForm = () => {
     handleClose();
     reset();
-    createTaskResult.reset();
+    updateTaskResult.reset();
   };
 
   const onClose = () => {
-    if (!isMutationsLoading) {
+    if (!updateTaskResult.isLoading) {
       handleCloseAndResetForm();
     }
   };
 
   useEffect(() => {
-    if (createTaskResult.isSuccess) {
+    if (updateTaskResult.isSuccess) {
       dispatch(
         setAlertState({
-          alertMessage: 'Successfully created task!',
+          alertMessage: 'Successfully updated task!',
           alertType: 'success',
         })
       );
@@ -78,10 +94,10 @@ function CreateTaskFormModal(props: Props) {
       handleCloseAndResetForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createTaskResult.isSuccess]);
+  }, [updateTaskResult.isSuccess]);
 
   useEffect(() => {
-    if (createTaskResult.isError) {
+    if (updateTaskResult.isError) {
       dispatch(
         setAlertState({
           alertMessage: 'Something went wrong!',
@@ -90,16 +106,16 @@ function CreateTaskFormModal(props: Props) {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createTaskResult.isError]);
+  }, [updateTaskResult.isError]);
 
   return (
     <Modal
       onClose={onClose}
       open={open}
-      dialogTitle={t('Create new task')}
-      confirmBtnText={t('Create')}
+      dialogTitle={t('Edit task')}
+      confirmBtnText={t('Update')}
       onConfirm={handleSubmit(onSubmit)}
-      isLoading={isMutationsLoading}
+      isLoading={updateTaskResult.isLoading}
       isBtnDisabled={!isDirty}
     >
       <Stack
@@ -116,7 +132,7 @@ function CreateTaskFormModal(props: Props) {
         <Controller
           control={control}
           name="title"
-          defaultValue=""
+          defaultValue={title}
           render={({ field: { ref, ...restField }, fieldState: { error } }) => (
             <TextField
               inputRef={ref}
@@ -125,7 +141,7 @@ function CreateTaskFormModal(props: Props) {
               required
               error={!!error?.message}
               inputProps={{ maxLength: 30 }}
-              disabled={isMutationsLoading}
+              disabled={updateTaskResult.isLoading}
               helperText={
                 error?.message
                   ? t(error.message, { ns: 'validation' })
@@ -137,14 +153,14 @@ function CreateTaskFormModal(props: Props) {
         <Controller
           control={control}
           name="description"
-          defaultValue=""
+          defaultValue={description}
           render={({ field: { ref, ...restField }, fieldState: { error } }) => (
             <TextField
               multiline
               minRows={5}
               maxRows={5}
               inputProps={{ maxLength: 500 }}
-              disabled={isMutationsLoading}
+              disabled={updateTaskResult.isLoading}
               sx={{
                 '.MuiInputBase-inputMultiline': {
                   scrollbarColor: `${grey[400]} ${grey[200]}`,
@@ -176,7 +192,7 @@ function CreateTaskFormModal(props: Props) {
         <Controller
           control={control}
           name="member"
-          defaultValue={{ id: '', name: '', login: '' }}
+          defaultValue={taskUser}
           render={({
             field: { onChange, value, name },
             fieldState: { error },
@@ -187,7 +203,7 @@ function CreateTaskFormModal(props: Props) {
               onChange={(event, item) => {
                 onChange(item);
               }}
-              disabled={isMutationsLoading}
+              disabled={updateTaskResult.isLoading}
               value={value ?? null}
               isOptionEqualToValue={(option, value) =>
                 option.login === value.login || value.login === ''
@@ -200,7 +216,7 @@ function CreateTaskFormModal(props: Props) {
                   name={name}
                   error={!!error?.message}
                   required
-                  disabled={isMutationsLoading}
+                  disabled={updateTaskResult.isLoading}
                   helperText={
                     error?.message ? t(error.message, { ns: 'validation' }) : ''
                   }
@@ -215,4 +231,4 @@ function CreateTaskFormModal(props: Props) {
   );
 }
 
-export default CreateTaskFormModal;
+export default EditTaskFormModal;

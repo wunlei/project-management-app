@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
+import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
 
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';

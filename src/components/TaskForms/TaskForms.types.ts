@@ -1,10 +1,15 @@
-import { UserFromServer } from 'redux/api/apiTypes';
+import { TaskFromServerExpanded, UserFromServer } from 'redux/api/apiTypes';
 
-export interface Props {
+export interface CreateTaskFormProps {
   handleClose: () => void;
   open: boolean;
   boardId: string;
   columnId: string;
+}
+export interface EditTaskFormProps {
+  handleClose: () => void;
+  open: boolean;
+  task: TaskFromServerExpanded;
 }
 
 export interface AlertState {
