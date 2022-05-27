@@ -1,29 +1,50 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { TaskFromServerExpanded } from 'redux/api/apiTypes';
+
 import { Link } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
+import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
+
+import { TaskCallback } from 'components/BoardTask/BoardTask.types';
+
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
 import { emptyTask } from 'constants/defautlts';
-import { TaskFromServerExpanded } from 'redux/api/apiTypes';
-import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
+import useEditTask from './useEditTask';
+import useDeleteTask from './useDeleteTask';
 
 function BoardPage() {
   const { t } = useTranslation();
 
-  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] =
     useState<TaskFromServerExpanded>(emptyTask);
 
-  const handleToggleEditTaskModal = () => {
-    setIsEditTaskModalOpen(!isEditTaskModalOpen);
+  const handleSelectTask = (task: TaskFromServerExpanded) => {};
+
+  const { isEditTaskModalOpen, handleToggleEditTaskModal } = useEditTask();
+
+  const {
+    handleToggleDeleteDialog,
+    handleDeleteTask,
+    isConfirmationDialogOpen,
+  } = useDeleteTask(selectedTask);
+
+  const handleOpenEditModal: TaskCallback = (task) => {
+    setSelectedTask(task);
+    handleToggleEditTaskModal();
   };
 
-  const handleSelectTask = (task: TaskFromServerExpanded) => {
-    setSelectedTask(task);
+  const handleOpenDeleteConfirmation: TaskCallback = (
+    task: TaskFromServerExpanded
+  ) => {
+    handleSelectTask(task);
+    handleToggleDeleteDialog();
   };
 
   const columns = [1];
@@ -49,6 +70,19 @@ function BoardPage() {
       sx={{ overflow: 'hidden' }}
       flex={1}
     >
+      <ConfirmationDialog
+        open={isConfirmationDialogOpen}
+        dialogText={t(
+          'You are about to permanently delete task. This action cannot be undone.'
+        )}
+        title={t('Delete task')}
+        onConfirm={() => {
+          handleDeleteTask();
+          handleToggleDeleteDialog();
+          handleSelectTask(emptyTask);
+        }}
+        onReject={handleToggleDeleteDialog}
+      />
       <EditTaskFormModal
         task={selectedTask}
         handleClose={handleToggleEditTaskModal}
@@ -117,8 +151,8 @@ function BoardPage() {
               isDone={true}
               user={'W'}
               task={task}
-              handleSelectTask={handleSelectTask}
-              handleToggleEditTaskModal={handleToggleEditTaskModal}
+              handleOpenEditModal={handleOpenEditModal}
+              handleOpenDeleteConfirmation={handleOpenDeleteConfirmation}
             ></BoardTask>
           </BoardColumn>
         )}

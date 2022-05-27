@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
   Avatar,
   IconButton,
@@ -21,8 +22,8 @@ function BoardTask(props: BoardTaskProps) {
     isDone,
     user,
     task,
-    handleSelectTask,
-    handleToggleEditTaskModal,
+    handleOpenDeleteConfirmation,
+    handleOpenEditModal,
   } = props;
 
   const { t } = useTranslation();
@@ -41,9 +42,13 @@ function BoardTask(props: BoardTaskProps) {
   };
 
   const handleOpenTaskEditModal = () => {
-    handleSelectTask(task);
+    handleOpenEditModal(task);
     handleClose();
-    handleToggleEditTaskModal();
+  };
+
+  const handleOpenTaskDeleteDialog = () => {
+    handleOpenDeleteConfirmation(task);
+    handleClose();
   };
 
   return (
@@ -101,7 +106,9 @@ function BoardTask(props: BoardTaskProps) {
           >
             <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
             <MenuItem onClick={handleOpenTaskEditModal}>{t('Edit')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
+            <MenuItem onClick={handleOpenTaskDeleteDialog}>
+              {t('Delete')}
+            </MenuItem>
           </Menu>
         </div>
       </Stack>
