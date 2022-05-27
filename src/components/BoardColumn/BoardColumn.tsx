@@ -8,12 +8,14 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import grey from '@mui/material/colors/grey';
 import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
 import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
-import { BoardColumnProps } from './BoardColumn.types';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import { BoardColumnProps } from './BoardColumn.types';
+import grey from '@mui/material/colors/grey';
+import useColumnDelete from './useColumnDelete';
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
 
 function BoardColumn({ children, columnData }: BoardColumnProps) {
   const {
@@ -27,8 +29,20 @@ function BoardColumn({ children, columnData }: BoardColumnProps) {
   const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
     useState<null | HTMLElement>(null);
   const [editMode, isEditMode] = useState<boolean>(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
+
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const isColumnMenuOpen = Boolean(columnMenuAnchorEl);
+
+  const handleSuccessfulDelete = () => {
+    setIsConfirmationOpen(false);
+  };
+
+  const { handleDelete, deleteColumnResult } = useColumnDelete({
+    boardId,
+    columnId,
+    handleSuccessfulDelete,
+  });
 
   const handleColumnMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -58,6 +72,8 @@ function BoardColumn({ children, columnData }: BoardColumnProps) {
             borderTopLeftRadius: '0.5rem',
             borderTopRightRadius: '0.5rem',
             backgroundColor: grey[200],
+            opacity: deleteColumnResult.isLoading ? 0.5 : 1,
+            pointerEvents: deleteColumnResult.isLoading ? 'none' : 'auto',
           }}
         >
           <div>
@@ -111,10 +127,27 @@ function BoardColumn({ children, columnData }: BoardColumnProps) {
                 'aria-labelledby': 'menu-button',
               }}
             >
-              <MenuItem onClick={handleColumnMenuClose}>
+              <MenuItem
+                onClick={() => {
+                  handleColumnMenuClose();
+                  setIsConfirmationOpen(true);
+                }}
+              >
                 {t('Delete column')}
               </MenuItem>
             </Menu>
+
+            <ConfirmationDialog
+              open={isConfirmationOpen}
+              dialogText={t(
+                'You are about to permanently delete column. This action cannot be undone.'
+              )}
+              title={t('Delete column')}
+              onReject={() => {
+                setIsConfirmationOpen(false);
+              }}
+              onConfirm={handleDelete}
+            />
           </Stack>
         </Stack>
         <Stack
@@ -125,6 +158,8 @@ function BoardColumn({ children, columnData }: BoardColumnProps) {
           width={'280px'}
           sx={{
             backgroundColor: grey[200],
+            opacity: deleteColumnResult.isLoading ? 0.5 : 1,
+            pointerEvents: deleteColumnResult.isLoading ? 'none' : 'auto',
             overflowX: 'hidden',
             overflowY: 'auto',
             borderBottomLeftRadius: '0.5rem',
@@ -146,6 +181,7 @@ function BoardColumn({ children, columnData }: BoardColumnProps) {
           {children}
         </Stack>
       </Stack>
+
       <CreateTaskFormModal
         boardId={boardId}
         columnId={columnId}
