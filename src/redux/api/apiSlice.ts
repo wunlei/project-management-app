@@ -5,6 +5,7 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query';
 import getToken from 'utils/api/getToken';
+import UserDeletedLocalStorageError from 'utils/errors/UserDeletedLocalStorageError';
 import { setUserId } from '../global/globalSlice';
 
 export const baseUrl = 'http://localhost:4000';
@@ -28,14 +29,23 @@ const baseQueryWithErrorHandlers: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const result = await baseQuery(args, api, extraOptions);
+  try {
+    const result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
-    api.dispatch(setUserId(null));
-    localStorage.removeItem('token');
+    if (result.error && result.error.status === 401) {
+      api.dispatch(setUserId(null));
+      localStorage.removeItem('token');
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof UserDeletedLocalStorageError) {
+      api.dispatch(setUserId(null));
+      localStorage.removeItem('token');
+      throw new UserDeletedLocalStorageError();
+    }
+    throw new Error('Arbitrary error');
   }
-
-  return result;
 };
 
 export const apiSlice = createApi({
