@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
@@ -6,7 +7,7 @@ import BoardTask from 'components/BoardTask/BoardTask';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
-import { useState } from 'react';
+import { emptyTask } from 'constants/defautlts';
 import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
 
@@ -14,16 +15,8 @@ function BoardPage() {
   const { t } = useTranslation();
 
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<TaskFromServerExpanded>({
-    id: '',
-    userId: null,
-    title: '',
-    order: 0,
-    description: '',
-    files: [],
-    boardId: '',
-    columnId: '',
-  });
+  const [selectedTask, setSelectedTask] =
+    useState<TaskFromServerExpanded>(emptyTask);
 
   const handleToggleEditTaskModal = () => {
     setIsEditTaskModalOpen(!isEditTaskModalOpen);
