@@ -1,4 +1,5 @@
 import { apiSlice } from '../apiSlice';
+import { setUserId } from 'redux/global/globalSlice';
 import * as Types from '../apiTypes';
 
 const api = apiSlice.injectEndpoints({
@@ -12,33 +13,43 @@ const api = apiSlice.injectEndpoints({
     }),
     getAllBoardsExpanded: builder.query<Types.GetBoardResult[], void>({
       async queryFn(args, { dispatch }) {
-        const getAllBoardsData = await dispatch(
-          api.endpoints.getAllBoards.initiate(args)
-        ).unwrap();
-
-        const arrOfPromises: Promise<Types.GetBoardResult>[] = [];
-
-        getAllBoardsData.forEach((board) => {
-          const promise = dispatch(
-            api.endpoints.getBoard.initiate({ boardId: board.id })
+        try {
+          const getAllBoardsData = await dispatch(
+            api.endpoints.getAllBoards.initiate(args)
           ).unwrap();
-          arrOfPromises.push(promise);
-        });
 
-        const result = await Promise.all(arrOfPromises);
+          const arrOfPromises: Promise<Types.GetBoardResult>[] = [];
 
-        const resultCopy = JSON.parse(
-          JSON.stringify(result)
-        ) as Types.GetBoardResult[];
+          getAllBoardsData.forEach((board) => {
+            const promise = dispatch(
+              api.endpoints.getBoard.initiate({ boardId: board.id })
+            ).unwrap();
+            arrOfPromises.push(promise);
+          });
 
-        resultCopy.forEach((board) => {
-          board.columns.sort((a, b) => a.order - b.order);
-          board.columns.forEach((column) =>
-            column.tasks.sort((a, b) => a.order - b.order)
-          );
-        });
+          const result = await Promise.all(arrOfPromises);
 
-        return { data: resultCopy };
+          return { data: result };
+        } catch (error: unknown) {
+          if (
+            error &&
+            typeof error === 'object' &&
+            error.hasOwnProperty('status')
+          ) {
+            const errorWithStatus = error as { status: number };
+
+            if (errorWithStatus.status === 401) {
+              dispatch(setUserId(null));
+              localStorage.removeItem('token');
+
+              throw new Error(`
+              Expired token detected.
+              You will be logged out
+              `);
+            }
+          }
+          throw new Error('Server responded with an error');
+        }
       },
       providesTags: ['BOARDS', 'BOARD'],
     }),
