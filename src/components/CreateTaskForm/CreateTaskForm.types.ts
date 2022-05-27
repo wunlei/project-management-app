@@ -15,6 +15,5 @@ export interface AlertState {
 export interface CreateTaskFormValues {
   title: string;
   description: string;
-  picture: FileList;
   member: UserFromServer;
 }
