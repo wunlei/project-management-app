@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
 import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
+import useColumnDelete from 'components/hooks/useColumnDelete';
+import { BoardColumnProps } from './BoardColumn.types';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
-import useColumnDelete from './useColumnDelete';
-import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
 
 function BoardColumn({ children, columnData }: BoardColumnProps) {
   const {

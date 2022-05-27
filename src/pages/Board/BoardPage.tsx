@@ -87,7 +87,7 @@ function BoardPage() {
             // columnId={columnId}
             // title={'Column Title'}
           >
-            <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
+            <BoardTask title={'Title'} user={'W'}></BoardTask>
           </BoardColumn>
         )}
       </Stack>

@@ -11,11 +11,10 @@ import {
 } from '@mui/material';
 import { ReactComponent as ClipIcon } from 'assets/icons/paperclip.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
 import grey from '@mui/material/colors/grey';
 
-function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
+function BoardTask({ title, description, user }: BoardTaskProps) {
   const { t } = useTranslation();
 
   const hasFile = true;
@@ -51,20 +50,13 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
         padding={1.5}
         paddingRight={1}
       >
-        <Stack direction="row" spacing={1}>
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ overflowWrap: 'anywhere' }}
-          >
-            {title}
-          </Typography>
-          {isDone && (
-            <SvgIcon sx={{ color: 'success.main' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
-        </Stack>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ overflowWrap: 'anywhere' }}
+        >
+          {title}
+        </Typography>
         <div>
           <IconButton
             id="menu-button"
