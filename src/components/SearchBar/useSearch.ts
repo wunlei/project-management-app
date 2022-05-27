@@ -6,7 +6,7 @@ interface IFilteredValues {
   url: string;
   title: string;
   type: string;
-  where: string;
+  boardName: string;
 }
 
 interface useSearchProps {
@@ -15,32 +15,37 @@ interface useSearchProps {
 }
 
 function useSearch({ boards, searchQuery }: useSearchProps) {
-  const [filteredValues, setFilteredValues] = useState<
-    null | IFilteredValues[]
-  >(null);
-  const { data: users } = useGetAllUsersQuery();
+  const { currentData: users } = useGetAllUsersQuery();
 
-  //todo: user names by id
+  const [filteredValues, setFilteredValues] = useState<IFilteredValues[]>([
+    {
+      url: `#`,
+      title: 'nothing found',
+      type: 'none',
+      boardName: '',
+    },
+  ]);
+
   //loader and errors
   //add task view
 
   const handleQueryUpdate = () => {
-    if (searchQuery === '') {
-      return;
-    }
     if (boards && users) {
-      const array: IFilteredValues[] = [];
+      const searchResult: IFilteredValues[] = [];
+
       boards.forEach((board) => {
         const regex = new RegExp(searchQuery, 'gi');
+
         if (regex.test(board.title)) {
-          array.push({
+          searchResult.push({
             url: `${board.id}`,
             title: board.title,
             type: 'board',
-            where: '',
+            boardName: '',
           });
           return;
         }
+
         // const descr = regex.test(el.description)
 
         for (const column of board.columns) {
@@ -54,11 +59,11 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
               regex.test(username) ||
               regex.test(userlogin)
             ) {
-              array.push({
+              searchResult.push({
                 url: `task/${task.id}`,
                 title: task.title,
                 type: 'task',
-                where: board.title,
+                boardName: board.title,
               });
               return;
             }
@@ -66,16 +71,15 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
         }
       });
 
-      console.log(array);
-      if (array.length === 0) {
-        array.push({
+      if (searchResult.length === 0) {
+        searchResult.push({
           url: `#`,
           title: 'nothing found',
           type: 'none',
-          where: '',
+          boardName: '',
         });
       }
-      setFilteredValues(array);
+      setFilteredValues(searchResult);
     } else {
       throw new Error();
     }

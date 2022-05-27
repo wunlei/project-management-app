@@ -1,6 +1,5 @@
+import { BoardFromServerExpanded } from 'redux/api/apiTypes';
+
 export interface SearchBarProps {
-  query: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
-  menuRef: React.RefObject<HTMLInputElement>;
+  boards: BoardFromServerExpanded[] | undefined;
 }
