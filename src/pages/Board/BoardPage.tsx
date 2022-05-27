@@ -76,9 +76,16 @@ function BoardPage() {
           </Stack>
         ) : (
           <BoardColumn
-            boardId={boardId}
-            columnId={columnId}
-            title={'Column Title'}
+            columnData={{
+              boardId,
+              columnId,
+              body: {
+                title: 'ColumnTitle',
+                order: 1,
+              },
+            }} // boardId={boardId}
+            // columnId={columnId}
+            // title={'Column Title'}
           >
             <BoardTask title={'Title'} isDone={true} user={'W'}></BoardTask>
           </BoardColumn>

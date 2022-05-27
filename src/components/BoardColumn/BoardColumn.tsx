@@ -5,21 +5,23 @@ import {
   Menu,
   MenuItem,
   Stack,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
-
-import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
-
-import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
-import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
+import CreateTaskFormModal from 'components/CreateTaskForm/CreateTaskForm';
+import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
+import { BoardColumnProps } from './BoardColumn.types';
+import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 
-function BoardColumn({ children, title, boardId, columnId }: BoardColumnProps) {
+function BoardColumn({ children, columnData }: BoardColumnProps) {
+  const {
+    body: { title },
+    boardId,
+    columnId,
+  } = columnData;
+
   const { t } = useTranslation();
 
   const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
@@ -60,22 +62,10 @@ function BoardColumn({ children, title, boardId, columnId }: BoardColumnProps) {
         >
           <div>
             {editMode ? (
-              <Stack direction="row" alignItems="center">
-                <TextField
-                  label={t('Title')}
-                  variant="outlined"
-                  required
-                  defaultValue={title}
-                />
-                <Stack direction="row" height="fit-content">
-                  <IconButton color="success" onClick={handleTitleEdit}>
-                    <CheckIcon />
-                  </IconButton>
-                  <IconButton color="error" onClick={handleTitleEdit}>
-                    <CrossIcon />
-                  </IconButton>
-                </Stack>
-              </Stack>
+              <TitleEditor
+                handleClose={handleTitleEdit}
+                columnData={columnData}
+              />
             ) : (
               <Typography
                 variant="h5"
