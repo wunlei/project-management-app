@@ -17,13 +17,17 @@ import { Link } from 'react-router-dom';
 
 import { ReactComponent as BoardIcon } from 'assets/icons/clipboard.svg';
 import { ReactComponent as TaskIcon } from 'assets/icons/file-text.svg';
-import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
+import useSearch from './useSearch';
 
-interface IFilteredValues {
-  url: string;
-  title: string;
-  type: string;
-  where: string;
+function getMenuItemIcon(type: string) {
+  switch (type) {
+    case 'task':
+      return <TaskIcon />;
+    case 'board':
+      return <BoardIcon />;
+    case 'none':
+      return null;
+  }
 }
 
 function ProjectsPage() {
@@ -41,10 +45,6 @@ function ProjectsPage() {
     setAnchorEl(null);
   };
 
-  const [filteredValues, setFilteredValues] = useState<
-    null | IFilteredValues[]
-  >(null);
-
   const {
     data: boards,
     isFetching,
@@ -52,68 +52,10 @@ function ProjectsPage() {
     isSuccess,
   } = useGetAllBoardsExpandedQuery();
 
-  const { data: users } = useGetAllUsersQuery();
-
-  //todo: user names by id
-  //loader and errors
-  //add task view
-
-  const handleQueryUpdate = () => {
-    if (searchQuery === '') {
-      return;
-    }
-    if (boards && users) {
-      const array: IFilteredValues[] = [];
-      boards.forEach((board) => {
-        const regex = new RegExp(searchQuery, 'gi');
-        if (regex.test(board.title)) {
-          array.push({
-            url: `${board.id}`,
-            title: board.title,
-            type: 'board',
-            where: '',
-          });
-          return;
-        }
-        // const descr = regex.test(el.description)
-
-        for (const column of board.columns) {
-          for (const task of column.tasks) {
-            const user = users.find((el) => el.id === task.userId);
-            const username = user?.name || '';
-            const userlogin = user?.login || '';
-            if (
-              regex.test(task.title) ||
-              regex.test(task.description) ||
-              regex.test(username) ||
-              regex.test(userlogin)
-            ) {
-              array.push({
-                url: `task/${task.id}`,
-                title: task.title,
-                type: 'task',
-                where: board.title,
-              });
-              return;
-            }
-          }
-        }
-      });
-
-      console.log(array);
-      if (array.length === 0) {
-        array.push({
-          url: ``,
-          title: 'nothing found',
-          type: '',
-          where: '',
-        });
-      }
-      setFilteredValues(array);
-    } else {
-      throw new Error();
-    }
-  };
+  const { filteredValues, handleQueryUpdate } = useSearch({
+    boards,
+    searchQuery,
+  });
 
   return (
     <Container
@@ -163,12 +105,18 @@ function ProjectsPage() {
                 to={el.url}
               >
                 <Stack direction={'row'} spacing={3}>
-                  <SvgIcon>
-                    {el.type === 'board' ? <BoardIcon /> : null}
-                    {el.type === 'task' ? <TaskIcon /> : null}
-                  </SvgIcon>
-                  <Typography fontWeight={700}>{el.title}</Typography>
-                  <Typography>{el.where}</Typography>
+                  <SvgIcon>{getMenuItemIcon(el.type)}</SvgIcon>
+                  <Typography
+                    fontWeight={700}
+                    sx={{ overflowWrap: 'anywhere', whiteSpace: 'normal' }}
+                  >
+                    {el.title}
+                  </Typography>
+                  <Typography
+                    sx={{ overflowWrap: 'anywhere', whiteSpace: 'normal' }}
+                  >
+                    {el.where}
+                  </Typography>
                 </Stack>
               </MenuItem>
             ))}
