@@ -67,8 +67,8 @@ function UpdateUserForm() {
         })
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateUserResult]);
+  }, [dispatch, updateUserResult.isError, updateUserResult.isSuccess]);
+
   useEffect(() => {
     if (isError) {
       dispatch(
@@ -78,106 +78,103 @@ function UpdateUserForm() {
         })
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError]);
+  }, [dispatch, isError]);
 
   return (
-    <>
-      <Stack
-        spacing={3}
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        width={300}
-      >
-        {isLoading ? (
-          <Skeleton height={83} />
-        ) : (
-          <Controller
-            name="name"
-            control={control}
-            defaultValue={user?.name}
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { isTouched, isDirty, error },
-              formState: { errors },
-            }) => (
-              <TextField
-                id="edit-name"
-                label={t('Name')}
-                disabled={updateUserResult.isLoading}
-                error={!!error?.message}
-                name={name}
-                value={value}
-                helperText={
-                  errors.name?.message //errors.login?.message
-                    ? t(errors.name.message, {
-                        ns: 'validation',
-                      })
-                    : ''
-                }
-                onBlur={onBlur} // notify when input is touched
-                onChange={onChange} // send value to hook form
-                inputRef={ref}
-              />
-            )}
-          />
-        )}
-
-        {isLoading ? (
-          <Skeleton height={83} />
-        ) : (
-          <Controller
-            name="login"
-            control={control}
-            defaultValue={user?.login}
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { isTouched, isDirty, error },
-              formState: { errors },
-            }) => (
-              <TextField
-                id="edit-login"
-                label={t('Login')}
-                disabled={updateUserResult.isLoading}
-                type="text"
-                name={name}
-                value={value}
-                helperText={
-                  errors.login?.message //errors.login?.message
-                    ? t(errors.login.message, {
-                        ns: 'validation',
-                      })
-                    : ''
-                }
-                error={!!error?.message}
-                onBlur={onBlur} // notify when input is touched
-                onChange={onChange} // send value to hook form
-                inputRef={ref}
-              />
-            )}
-          />
-        )}
-        <PasswordInput
+    <Stack
+      spacing={3}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      width={300}
+    >
+      {isLoading ? (
+        <Skeleton height={83} />
+      ) : (
+        <Controller
+          name="name"
           control={control}
-          name="password"
-          disabled={updateUserResult.isLoading}
-          required
+          defaultValue={user?.name}
+          render={({
+            field: { onChange, onBlur, value, name, ref },
+            fieldState: { error },
+            formState: { errors },
+          }) => (
+            <TextField
+              id="edit-name"
+              label={t('Name')}
+              disabled={updateUserResult.isLoading}
+              error={!!error?.message}
+              name={name}
+              value={value}
+              helperText={
+                errors.name?.message
+                  ? t(errors.name.message, {
+                      ns: 'validation',
+                    })
+                  : ''
+              }
+              onBlur={onBlur} // notify when input is touched
+              onChange={onChange} // send value to hook form
+              inputRef={ref}
+            />
+          )}
         />
-        <Button
-          type="submit"
-          variant="outlined"
-          sx={{ textTransform: 'capitalize' }}
-          disabled={updateUserResult.isLoading || !isDirty}
-          startIcon={
-            updateUserResult.isLoading && (
-              <CircularProgress size={10} thickness={5} />
-            )
-          }
-        >
-          {t('Save')}
-        </Button>
-      </Stack>
-    </>
+      )}
+
+      {isLoading ? (
+        <Skeleton height={83} />
+      ) : (
+        <Controller
+          name="login"
+          control={control}
+          defaultValue={user?.login}
+          render={({
+            field: { onChange, onBlur, value, name, ref },
+            fieldState: { error },
+            formState: { errors },
+          }) => (
+            <TextField
+              id="edit-login"
+              label={t('Login')}
+              disabled={updateUserResult.isLoading}
+              type="text"
+              name={name}
+              value={value}
+              helperText={
+                errors.login?.message
+                  ? t(errors.login.message, {
+                      ns: 'validation',
+                    })
+                  : ''
+              }
+              error={!!error?.message}
+              onBlur={onBlur} // notify when input is touched
+              onChange={onChange} // send value to hook form
+              inputRef={ref}
+            />
+          )}
+        />
+      )}
+      <PasswordInput
+        control={control}
+        name="password"
+        disabled={updateUserResult.isLoading}
+        required
+      />
+      <Button
+        type="submit"
+        variant="outlined"
+        sx={{ textTransform: 'capitalize' }}
+        disabled={updateUserResult.isLoading || !isDirty}
+        startIcon={
+          updateUserResult.isLoading && (
+            <CircularProgress size={10} thickness={5} />
+          )
+        }
+      >
+        {t('Save')}
+      </Button>
+    </Stack>
   );
 }
 
