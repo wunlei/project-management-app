@@ -18,5 +18,6 @@
   "Task title is required": "Введите название задачи",
   "You must pick a member": "Вы должны выбрать исполнителя",
   "Task title must be at most 30 characters": "Максимум 30 символов",
-  "Task description must be at most 500 characters": "Максимум 500 символов"
+  "Task description must be at most 500 characters": "Максимум 500 символов",
+  "Title must be at most 30 characters": "Название не может быть длиннее 30 символов"
 }

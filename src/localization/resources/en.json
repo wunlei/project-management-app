@@ -49,5 +49,7 @@
   "You are about to permanently delete task. This action cannot be undone.": "You are about to permanently delete task. This action cannot be undone.",
   "Create New Project": "Create New Project",
   "Description": "Description",
-  "Project successfully created": "Project successfully created"
+  "Project successfully created": "Project successfully created",
+  "Column successfully created": "Column successfully created",
+  "Create new column": "Create new column"
 }

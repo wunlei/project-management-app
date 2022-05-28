@@ -11,6 +11,7 @@ import BoardTask from 'components/BoardTask/BoardTask';
 import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
 
 import { TaskCallback } from 'components/BoardTask/BoardTask.types';
+import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
 
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
@@ -53,6 +54,7 @@ function BoardPage() {
     setSelectedTask(task);
     handleToggleDeleteDialog();
   };
+  const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
 
   const columns = [1];
   const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
@@ -123,7 +125,13 @@ function BoardPage() {
           <Typography variant="h4">{'Project Title'}</Typography>
         </Stack>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Button variant="contained" startIcon={<PlusIcon />}>
+          <Button
+            variant="contained"
+            startIcon={<PlusIcon />}
+            onClick={() => {
+              setIsCreateColumnModalOpen(true);
+            }}
+          >
             {t('Add Column')}
           </Button>
         </Stack>
@@ -171,6 +179,13 @@ function BoardPage() {
           </BoardColumn>
         )}
       </Stack>
+      <CreateColumnForm
+        open={isCreateColumnModalOpen}
+        onClose={() => {
+          setIsCreateColumnModalOpen(false);
+        }}
+        boardId={boardId}
+      />
     </Stack>
   );
 }
