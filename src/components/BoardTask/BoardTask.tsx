@@ -9,16 +9,13 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { ReactComponent as ClipIcon } from 'assets/icons/paperclip.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { BoardTaskProps } from './BoardTask.types';
-import grey from '@mui/material/colors/grey';
 
 function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
   const { t } = useTranslation();
 
-  const hasFile = true;
   const [taskMenuAnchorEl, setTaskMenuAnchorEl] = useState<null | HTMLElement>(
     null
   );
@@ -94,22 +91,11 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
       <Stack
         direction="row"
         alignItems="flex-end"
-        justifyContent={hasFile ? 'space-between' : 'flex-end'}
+        justifyContent="flex-end"
         spacing={1}
         padding={1.5}
         paddingTop={0}
       >
-        {hasFile && (
-          <SvgIcon
-            sx={{
-              width: 20,
-              height: 20,
-              color: grey[700],
-            }}
-          >
-            <ClipIcon />
-          </SvgIcon>
-        )}
         <Avatar
           sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
         >

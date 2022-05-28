@@ -1,14 +1,19 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
+import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
+
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   const { t } = useTranslation();
+  const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
+
   const columns = [1];
   const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
   const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
@@ -44,7 +49,13 @@ function BoardPage() {
           <Typography variant="h4">{'Project Title'}</Typography>
         </Stack>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Button variant="contained" startIcon={<PlusIcon />}>
+          <Button
+            variant="contained"
+            startIcon={<PlusIcon />}
+            onClick={() => {
+              setIsCreateColumnModalOpen(true);
+            }}
+          >
             {t('Add Column')}
           </Button>
         </Stack>
@@ -84,6 +95,13 @@ function BoardPage() {
           </BoardColumn>
         )}
       </Stack>
+      <CreateColumnForm
+        open={isCreateColumnModalOpen}
+        onClose={() => {
+          setIsCreateColumnModalOpen(false);
+        }}
+        boardId={boardId}
+      />
     </Stack>
   );
 }
