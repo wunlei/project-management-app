@@ -162,7 +162,6 @@ function CreateTaskFormModal(props: Props) {
             sm: '300px',
           },
         }}
-        onSubmit={handleSubmit(onSubmit)}
       >
         <Controller
           control={control}
