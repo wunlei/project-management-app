@@ -11,9 +11,9 @@ import {
 } from '@mui/material';
 
 import { useTranslation } from 'react-i18next';
-import grey from '@mui/material/colors/grey';
-import useSearch from 'components/SearchBar/useSearch';
 import { SearchBarProps } from './SearchBar.types';
+import useSearch from 'components/SearchBar/useSearch';
+import grey from '@mui/material/colors/grey';
 
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
 import { ReactComponent as BoardIcon } from 'assets/icons/clipboard.svg';
@@ -54,6 +54,15 @@ function SearchBar({ boards }: SearchBarProps) {
     setMenuAnchorEl(null);
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    if (e.code === 'Enter') {
+      if (searchQuery) {
+        handleQueryUpdate();
+        setMenuAnchorEl(menuRefEl.current);
+      }
+    }
+  };
+
   return (
     <>
       <Stack direction="row" justifyContent="center" spacing={1} width="100%">
@@ -67,6 +76,7 @@ function SearchBar({ boards }: SearchBarProps) {
           onChange={(e) => {
             setSearchQuery(e.target.value.trim());
           }}
+          onKeyUp={handleKeyUp}
           sx={{
             backgroundColor: grey[200],
             maxWidth: '300px',

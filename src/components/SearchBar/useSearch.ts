@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import { setAlertState } from 'redux/global/globalSlice';
@@ -17,20 +18,19 @@ interface useSearchProps {
 }
 
 function useSearch({ boards, searchQuery }: useSearchProps) {
+  const { t } = useTranslation();
+
   const dispatch = useAppDispatch();
   const { currentData: users } = useGetAllUsersQuery();
 
   const [filteredValues, setFilteredValues] = useState<IFilteredValues[]>([
     {
       url: `#`,
-      title: 'nothing found',
+      title: t('Nothing found'),
       type: 'none',
       boardName: '',
     },
   ]);
-
-  //loader and errors
-  //add task view
 
   const handleQueryUpdate = () => {
     if (boards && users) {
@@ -61,7 +61,7 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
               regex.test(userlogin)
             ) {
               searchResult.push({
-                url: `task/${task.id}`,
+                url: `${board.id}`,
                 title: task.title,
                 type: 'task',
                 boardName: board.title,
@@ -75,7 +75,7 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
       if (searchResult.length === 0) {
         searchResult.push({
           url: `#`,
-          title: 'nothing found',
+          title: t('Nothing found'),
           type: 'none',
           boardName: '',
         });

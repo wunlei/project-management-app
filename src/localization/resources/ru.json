@@ -45,5 +45,6 @@
   "You are about to permanently delete your profile. This action cannot be undone.": "Вы собираетесь навсегда удалить свой профиль. Это действие невозможно отменить. ",
   "Create New Project": "Создать новый проект",
   "Description": "Описание",
-  "Project successfully created": "Проект создан успешно"
+  "Project successfully created": "Проект создан успешно",
+  "Nothing found": "Ничего не найдено"
 }
