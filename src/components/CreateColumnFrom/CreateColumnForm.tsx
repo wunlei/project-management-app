@@ -65,11 +65,19 @@ function CreateColumnForm(props: CreateColumnFormProps) {
       isBtnDisabled={!isDirty}
     >
       {createColumnResult.error && (
-        <Alert severity="error">{t('Something went wrong!')}</Alert>
+        <Alert
+          severity="error"
+          sx={{
+            marginBottom: 2,
+          }}
+        >
+          {t('Something went wrong!')}
+        </Alert>
       )}
       <Controller
         name="title"
         control={control}
+        defaultValue=""
         render={({ field: { ref, ...restField }, fieldState: { error } }) => (
           <TextField
             inputRef={ref}
