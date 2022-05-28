@@ -7,6 +7,8 @@ const api = apiSlice.injectEndpoints({
     getAllTasks: builder.query<Types.GetAllTasksResult, Types.GetAllTasksArg>({
       query: (arg) => `/boards/${arg.boardId}/columns/${arg.columnId}/tasks`,
       providesTags: ['TASKS'],
+      transformResponse: (response: Types.GetAllTasksResult) =>
+        response.sort((a, b) => a.order - b.order),
     }),
     getTask: builder.query<Types.GetTaskResult, Types.GetTaskArg>({
       query: (arg) =>
