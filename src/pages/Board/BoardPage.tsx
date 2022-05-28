@@ -18,6 +18,8 @@ import grey from '@mui/material/colors/grey';
 import { emptyTask } from 'constants/defautlts';
 import useEditTask from './useEditTask';
 import useDeleteTask from './useDeleteTask';
+import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
+import useCreateTask from './useCreateTask';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -25,7 +27,12 @@ function BoardPage() {
   const [selectedTask, setSelectedTask] =
     useState<TaskFromServerExpanded>(emptyTask);
 
-  const handleSelectTask = (task: TaskFromServerExpanded) => {};
+  const {
+    handleSelectColumnId,
+    selectedColumnId,
+    handleToggleCreateTaskModal,
+    isCreateTaskModalOpen,
+  } = useCreateTask();
 
   const { isEditTaskModalOpen, handleToggleEditTaskModal } = useEditTask();
 
@@ -43,7 +50,7 @@ function BoardPage() {
   const handleOpenDeleteConfirmation: TaskCallback = (
     task: TaskFromServerExpanded
   ) => {
-    handleSelectTask(task);
+    setSelectedTask(task);
     handleToggleDeleteDialog();
   };
 
@@ -79,7 +86,7 @@ function BoardPage() {
         onConfirm={() => {
           handleDeleteTask();
           handleToggleDeleteDialog();
-          handleSelectTask(emptyTask);
+          setSelectedTask(emptyTask);
         }}
         onReject={handleToggleDeleteDialog}
       />
@@ -87,6 +94,12 @@ function BoardPage() {
         task={selectedTask}
         handleClose={handleToggleEditTaskModal}
         open={isEditTaskModalOpen}
+      />
+      <CreateTaskFormModal
+        open={isCreateTaskModalOpen}
+        handleClose={handleToggleCreateTaskModal}
+        columnId={selectedColumnId}
+        boardId={boardId}
       />
       <Stack
         direction="row"
@@ -145,6 +158,7 @@ function BoardPage() {
             boardId={boardId}
             columnId={columnId}
             title={'Column Title'}
+            handleSelectColumnId={handleSelectColumnId}
           >
             <BoardTask
               title={'Title'}
