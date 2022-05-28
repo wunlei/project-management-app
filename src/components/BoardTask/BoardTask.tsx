@@ -110,11 +110,13 @@ function BoardTask({ title, description, isDone, user }: BoardTaskProps) {
             <ClipIcon />
           </SvgIcon>
         )}
-        <Avatar
-          sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
-        >
-          {user}
-        </Avatar>
+        {user && (
+          <Avatar
+            sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+          >
+            {user}
+          </Avatar>
+        )}
       </Stack>
     </Stack>
   );
