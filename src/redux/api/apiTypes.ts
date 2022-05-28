@@ -87,7 +87,10 @@ export type DeleteBoardResult = void;
 export type DeleteBoardArg = { boardId: string };
 
 export type UpdateBoardResult = BoardFromServer;
-export type UpdateBoardArg = { boardId: string; body: { title: string } };
+export type UpdateBoardArg = {
+  boardId: string;
+  body: { title: string; description: string };
+};
 
 // Columns -----
 

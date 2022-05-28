@@ -41,7 +41,7 @@ const api = apiSlice.injectEndpoints({
       Types.UpdateBoardArg
     >({
       query: (arg) => ({
-        url: `users/${arg.boardId}`,
+        url: `boards/${arg.boardId}`,
         method: 'PUT',
         body: arg.body,
       }),

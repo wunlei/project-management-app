@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetAllBoardsQuery } from 'redux/api/endpoints/boards';
 import { BoardFromServer } from 'redux/api/apiTypes';
 import SearchBar from 'components/SearchBar/SearchBar';
@@ -12,15 +12,36 @@ import {
   Typography,
 } from '@mui/material';
 import ProjectCard from 'components/ProjectCard/ProjectCard';
+import EditProjectForm from 'components/EditProjectForm/EditProjectForm';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
-import useProjectDelete from './useProjectDelete';
+import useProjectDelete from '../../hooks/useProjectDelete';
+import { ProjectCardData } from 'components/ProjectCard/ProjectCard.types';
 
 function ProjectsPage() {
   const { t } = useTranslation();
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
-  const [boardId, setBoardId] = useState<string | null>(null);
 
   const { currentData: boards, isError } = useGetAllBoardsQuery();
+
+  const [boardId, setBoardId] = useState<string | null>(null);
+  const [projectData, setProjectData] = useState<ProjectCardData | null>(null);
+  const [isDeleteConfirmationOpen, setIsConfirmationOpen] =
+    useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+
+  const handleEditModalInit = (project: ProjectCardData) => {
+    setProjectData(project);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isEditModalOpen) {
+      setProjectData(null);
+    }
+  }, [isEditModalOpen]);
 
   const handleConfirmationInit = (boardId: string) => {
     setBoardId(boardId);
@@ -28,6 +49,7 @@ function ProjectsPage() {
   };
 
   const handleSuccessfulDelete = () => {
+    setBoardId(null);
     setIsConfirmationOpen(false);
   };
 
@@ -53,7 +75,7 @@ function ProjectsPage() {
       </Backdrop>
 
       <ConfirmationDialog
-        open={isConfirmationOpen}
+        open={isDeleteConfirmationOpen}
         dialogText={t(
           'You are about to permanently delete project. This action cannot be undone.'
         )}
@@ -62,6 +84,11 @@ function ProjectsPage() {
           setIsConfirmationOpen(false);
         }}
         onConfirm={handleDelete}
+      />
+      <EditProjectForm
+        open={isEditModalOpen}
+        onClose={handleEditModalClose}
+        projectData={projectData}
       />
       <Stack spacing={3}>
         <Typography variant="h3" fontWeight="bold">
@@ -84,7 +111,8 @@ function ProjectsPage() {
                 description={el.description}
                 boardId={el.id}
                 onDelete={handleConfirmationInit}
-              ></ProjectCard>
+                onEdit={handleEditModalInit}
+              />
             ))}
         </Box>
       </Stack>
