@@ -7,7 +7,6 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateTaskFormValues, Props } from './CreateTaskForm.types';
 
 import { styled } from '@mui/material/styles';
-import grey from '@mui/material/colors/grey';
 
 import {
   Stack,
@@ -27,6 +26,7 @@ import { schema } from './CreateTaskForm.validation';
 import { useUploadFileMutation } from 'redux/api/endpoints/file';
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
+import scrollStyle from 'styles/scrollStyle';
 
 const Input = styled('input')({
   display: 'none',
@@ -197,19 +197,12 @@ function CreateTaskFormModal(props: Props) {
               inputProps={{ maxLength: 500 }}
               disabled={isMutationsLoading}
               sx={{
-                '.MuiInputBase-inputMultiline': {
-                  scrollbarColor: `${grey[400]} ${grey[200]}`,
-                  scrollbarWidth: 'thin',
-                  '&::-webkit-scrollbar': {
-                    width: '10px',
-                    left: '-10px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    backgroundColor: grey[200],
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: grey[400],
-                  },
+                '& .MuiInputBase-inputMultiline': {
+                  ...scrollStyle,
+                  paddingRight: 1,
+                },
+                '& .MuiInputBase-root': {
+                  paddingRight: 0,
                 },
               }}
               inputRef={ref}

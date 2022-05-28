@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useGetBoardQuery } from 'redux/api/endpoints/boards';
+import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import {
   Button,
   CircularProgress,
@@ -7,14 +10,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
+import BoardColumn from 'components/BoardColumn/BoardColumn';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import grey from '@mui/material/colors/grey';
-import { useGetBoardQuery } from 'redux/api/endpoints/boards';
-import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
-import { useEffect } from 'react';
+import scrollStyle from 'styles/scrollStyle';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -92,21 +92,13 @@ function BoardPage() {
         <Stack
           direction="row"
           spacing={1}
-          sx={{
-            flexGrow: 1,
-            overflowY: 'hidden',
-            scrollbarColor: `${grey[400]} ${grey[200]}`,
-            scrollbarWidth: 'thin',
-            '&::-webkit-scrollbar': {
-              height: '10px',
+          sx={[
+            {
+              flexGrow: 1,
+              overflowY: 'hidden',
             },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: grey[200],
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: grey[400],
-            },
-          }}
+            ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+          ]}
         >
           {columns.length === 0 ? (
             <Stack width="100%" textAlign="center">

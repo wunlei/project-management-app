@@ -18,6 +18,7 @@ import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { BoardColumnProps } from './BoardColumn.types';
 import grey from '@mui/material/colors/grey';
+import scrollStyle from 'styles/scrollStyle';
 
 function BoardColumn({ children, title, boardId, columnId }: BoardColumnProps) {
   const { t } = useTranslation();
@@ -133,25 +134,17 @@ function BoardColumn({ children, title, boardId, columnId }: BoardColumnProps) {
           alignItems="center"
           paddingBottom="1rem"
           width={'280px'}
-          sx={{
-            backgroundColor: grey[200],
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            borderBottomLeftRadius: '0.5rem',
-            borderBottomRightRadius: '0.5rem',
-            minHeight: '2rem',
-            scrollbarColor: `${grey[400]} ${grey[200]}`,
-            scrollbarWidth: 'thin',
-            '&::-webkit-scrollbar': {
-              width: '10px',
-            },
-            '&::-webkit-scrollbar-track': {
+          sx={[
+            {
               backgroundColor: grey[200],
+              overflowX: 'hidden',
+              overflowY: 'auto',
+              borderBottomLeftRadius: '0.5rem',
+              borderBottomRightRadius: '0.5rem',
+              minHeight: '2rem',
             },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: grey[400],
-            },
-          }}
+            ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+          ]}
         >
           {children}
         </Stack>
