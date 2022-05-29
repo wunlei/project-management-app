@@ -20,11 +20,12 @@ function ColumnsContainer({
     const columnsJSX = dataGetBoard.columns.map((column, index) => {
       const tasksJSX = column.tasks.map((task, index) => (
         <Draggable key={task.id} draggableId={task.id} index={index}>
-          {(provided) => (
+          {(provided, snapshot) => (
             <BoardTask
               task={task}
               draggableProps={provided.draggableProps}
               dragHandleProps={provided.dragHandleProps}
+              isDragging={snapshot.isDragging}
               innerRef={provided.innerRef}
             ></BoardTask>
           )}

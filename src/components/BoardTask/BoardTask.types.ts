@@ -8,5 +8,6 @@ export interface BoardTaskProps {
   task: TaskFromServer;
   draggableProps?: DraggableProvidedDraggableProps;
   dragHandleProps?: DraggableProvidedDragHandleProps | undefined;
+  isDragging?: boolean;
   innerRef?: () => void;
 }

@@ -20,6 +20,7 @@ function BoardTask({
   draggableProps,
   dragHandleProps,
   innerRef,
+  isDragging,
 }: BoardTaskProps) {
   // ... 'done' prop doesn't exist in the BE
   const isDone = true;
@@ -52,6 +53,7 @@ function BoardTask({
           cursor: 'pointer',
           boxShadow: 2,
         },
+        boxShadow: isDragging ? 2 : 'unset',
       }}
       width="250px"
       margin="5px"
