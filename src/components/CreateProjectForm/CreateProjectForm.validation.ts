@@ -6,8 +6,8 @@ export interface ProjectInputs {
 }
 
 export const ProjectSchema: SchemaOf<ProjectInputs> = object({
-  title: string().trim().required('Title is required'),
-  description: string()
-    .trim()
-    .max(60, 'Description must be at most 60 characters'),
+  title: string()
+    .required('Title is required')
+    .max(30, 'Title must be at most 30 characters'),
+  description: string().max(60, 'Description must be at most 60 characters'),
 });

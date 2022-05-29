@@ -6,18 +6,22 @@ import { useAppDispatch } from 'redux/hooks';
 interface Props {
   boardId: string | null;
   columnId: string | null;
-  handleSuccessfulDelete: () => void;
+  handleColumnDeleteSuccess: () => void;
 }
 
-function useColumnDelete({ boardId, columnId, handleSuccessfulDelete }: Props) {
+function useColumnDelete({
+  boardId,
+  columnId,
+  handleColumnDeleteSuccess,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const [deleteColumn, deleteColumnResult] = useDeleteColumnMutation();
 
-  const handleDelete = () => {
+  const handleColumnDelete = () => {
     if (boardId && columnId) {
       deleteColumn({ boardId, columnId });
-      handleSuccessfulDelete();
+      handleColumnDeleteSuccess();
     }
   };
 
@@ -41,7 +45,7 @@ function useColumnDelete({ boardId, columnId, handleSuccessfulDelete }: Props) {
   }, [deleteColumnResult.isSuccess, deleteColumnResult.isError, dispatch]);
 
   return {
-    handleDelete,
+    handleColumnDelete,
     deleteColumnResult,
   };
 }
