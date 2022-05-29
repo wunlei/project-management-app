@@ -16,7 +16,7 @@ function ProjectsPage() {
   const { currentData: dataGetAllBoards, isError: isErrorGetAllBoards } =
     useGetAllBoardsQuery();
 
-  if (!isErrorDeleteBoard) {
+  if (isErrorDeleteBoard) {
     throw new ServerError();
   }
 
