@@ -1,22 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import BoardColumn from 'components/BoardColumn/BoardColumn';
-import BoardTask from 'components/BoardTask/BoardTask';
-import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
-import useColumnDelete from 'components/hooks/useColumnDelete';
-import grey from '@mui/material/colors/grey';
-import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
-import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
-import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
-import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 import useCreateTask from 'hooks/useCreateTask';
 import useEditTask from 'hooks/useEditTask';
 import useDeleteTask from 'hooks/useDeleteTask';
+import useColumnDelete from 'hooks/useColumnDelete';
+import BoardTask from 'components/BoardTask/BoardTask';
+import BoardColumn from 'components/BoardColumn/BoardColumn';
+import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
+import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
+import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
+import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 import { TaskCallback } from 'components/BoardTask/BoardTask.types';
+import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -33,6 +33,8 @@ function BoardPage() {
     boardId,
     columnId,
   };
+
+  const [isLoadingAction, setIsLoadingAction] = useState(false);
 
   const [selectedTask, setSelectedTask] =
     useState<TaskFromServerExpanded | null>(null);
@@ -88,6 +90,10 @@ function BoardPage() {
     isCreateTaskModalOpen,
   } = useCreateTask();
 
+  useEffect(() => {
+    setIsLoadingAction(isDeleteTaskLoading || deleteColumnResult.isLoading);
+  }, [isDeleteTaskLoading, deleteColumnResult.isLoading]);
+
   return (
     <Stack
       component="main"
@@ -118,25 +124,22 @@ function BoardPage() {
           </Link>
           <Typography variant="h4">{'Project Title'}</Typography>
         </Stack>
-        {/* //why stack */}
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Button
-            variant="contained"
-            startIcon={<PlusIcon />}
-            onClick={() => {
-              setIsCreateColumnModalOpen(true);
-            }}
-          >
-            {t('Add Column')}
-          </Button>
-        </Stack>
+        <Button
+          variant="contained"
+          startIcon={<PlusIcon />}
+          onClick={() => {
+            setIsCreateColumnModalOpen(true);
+          }}
+        >
+          {t('Add Column')}
+        </Button>
       </Stack>
       <Stack
         direction="row"
         spacing={1}
         sx={{
-          opacity: deleteColumnResult.isLoading ? 0.5 : 1,
-          pointerEvents: deleteColumnResult.isLoading ? 'none' : 'auto',
+          opacity: isLoadingAction ? 0.5 : 1,
+          pointerEvents: isLoadingAction ? 'none' : 'auto',
           flexGrow: 1,
           overflowY: 'hidden',
           scrollbarColor: `${grey[400]} ${grey[200]}`,
