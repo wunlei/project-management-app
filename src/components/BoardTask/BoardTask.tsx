@@ -70,11 +70,13 @@ function BoardTask(props: BoardTaskProps) {
         padding={1.5}
         paddingTop={0}
       >
-        <Avatar
-          sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
-        >
-          {user}
-        </Avatar>
+        {user && (
+          <Avatar
+            sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+          >
+            {user}
+          </Avatar>
+        )}
       </Stack>
     </Stack>
   );
