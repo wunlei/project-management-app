@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
-
 import { Avatar, IconButton, Stack, Typography, Tooltip } from '@mui/material';
-
-import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
 import { BoardTaskProps } from './BoardTask.types';
+import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
 
 function BoardTask(props: BoardTaskProps) {
   const {
@@ -64,7 +62,6 @@ function BoardTask(props: BoardTaskProps) {
           </IconButton>
         </Tooltip>
       </Stack>
-
       <Stack
         direction="row"
         alignItems="flex-end"

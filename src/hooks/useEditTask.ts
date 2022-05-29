@@ -3,13 +3,13 @@ import { useState } from 'react';
 function useEditTask() {
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
 
-  const handleToggleEditTaskModal = () => {
+  const handleTaskEditModalToggle = () => {
     setIsEditTaskModalOpen(!isEditTaskModalOpen);
   };
 
   return {
     isEditTaskModalOpen,
-    handleToggleEditTaskModal,
+    handleTaskEditModalToggle,
   };
 }
 

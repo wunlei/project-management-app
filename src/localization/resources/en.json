@@ -51,6 +51,8 @@
   "Create New Project": "Create New Project",
   "Description": "Description",
   "Project successfully created": "Project successfully created",
+  "Column title successfully updated": "Column title successfully updated",
+  "You are about to permanently delete column. This action cannot be undone.": "You are about to permanently delete column. This action cannot be undone.",
   "Project successfully deleted": "Project successfully deleted",
   "Project successfully updated": "Project successfully updated",
   "Delete project": "Delete project",

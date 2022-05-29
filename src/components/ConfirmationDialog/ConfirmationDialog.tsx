@@ -42,11 +42,21 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
         {dialogText}
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-between' }}>
-        <Button onClick={onConfirm} color="success" variant="outlined">
-          {t('Confirm')}
-        </Button>
-        <Button onClick={onReject} color="error" variant="contained">
+        <Button
+          onClick={onReject}
+          color="primary"
+          variant="outlined"
+          sx={{ fontWeight: 'bold' }}
+        >
           {t('Cancel')}
+        </Button>
+        <Button
+          onClick={onConfirm}
+          color="error"
+          variant="contained"
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t('Confirm')}
         </Button>
       </DialogActions>
     </Dialog>
