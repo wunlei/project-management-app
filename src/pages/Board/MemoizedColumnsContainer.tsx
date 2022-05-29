@@ -3,7 +3,7 @@ import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import BoardTask from 'components/BoardTask/BoardTask';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, CircularProgress } from '@mui/material';
 import grey from '@mui/material/colors/grey';
 import { useTranslation } from 'react-i18next';
 
@@ -77,7 +77,11 @@ function ColumnsContainer({
   } else if (isErrorGetBoard) {
     throw new Error(`boardId is invalid`);
   } else {
-    return <p>Loading</p>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </div>
+    );
   }
 }
 
