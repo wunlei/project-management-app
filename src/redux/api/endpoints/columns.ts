@@ -9,10 +9,16 @@ const api = apiSlice.injectEndpoints({
     >({
       query: (arg) => `/boards/${arg.boardId}/columns`,
       providesTags: ['COLUMNS'],
+      transformResponse: (response: Types.GetAllColumnsResult) =>
+        response.sort((a, b) => a.order - b.order),
     }),
     getColumn: builder.query<Types.GetColumnResult, Types.GetColumnArg>({
       query: (arg) => `/boards/${arg.boardId}/columns/${arg.columnId}`,
       providesTags: ['COLUMN'],
+      transformResponse: (response: Types.GetColumnResult) => {
+        response.tasks.sort((a, b) => a.order - b.order);
+        return response;
+      },
     }),
     createColumn: builder.mutation<
       Types.CreateColumnResult,

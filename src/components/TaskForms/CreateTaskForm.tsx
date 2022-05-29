@@ -4,35 +4,20 @@ import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import { useCreateTaskMutation } from 'redux/api/endpoints/tasks';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { CreateTaskFormValues, Props } from './CreateTaskForm.types';
 
-import { styled } from '@mui/material/styles';
 import grey from '@mui/material/colors/grey';
 
-import {
-  Stack,
-  TextField,
-  Button,
-  Typography,
-  Autocomplete,
-} from '@mui/material';
+import { Stack, TextField, Autocomplete } from '@mui/material';
 import Modal from 'components/Modal/Modal';
 
-import { ReactComponent as FileIcon } from 'assets/icons/file-plus.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
-
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from './CreateTaskForm.validation';
+import { CreateTaskFormValues, CreateTaskFormProps } from './TaskForms.types';
+import { schema } from './TaskForms.validation';
 
-import { useUploadFileMutation } from 'redux/api/endpoints/file';
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
 
-const Input = styled('input')({
-  display: 'none',
-});
-
-function CreateTaskFormModal(props: Props) {
+function CreateTaskFormModal(props: CreateTaskFormProps) {
   const { handleClose, open, boardId, columnId } = props;
   const dispatch = useAppDispatch();
 
@@ -40,29 +25,15 @@ function CreateTaskFormModal(props: Props) {
 
   const { data: users } = useGetAllUsersQuery();
   const [createTask, createTaskResult] = useCreateTaskMutation();
-  const [uploadFile, uploadFileResult] = useUploadFileMutation();
 
   const {
     control,
     handleSubmit,
-    register,
-    watch,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = useForm<CreateTaskFormValues>({
     resolver: yupResolver(schema),
   });
-
-  const fileInputValue = watch('picture');
-
-  const isCorrectFileSelected =
-    (fileInputValue ? !!fileInputValue[0] : false) && !errors.picture;
-
-  const isMutationsLoading =
-    createTaskResult.isLoading || uploadFileResult.isLoading;
-
-  const isPictureTypeError =
-    errors.picture && errors.picture.type === 'isIncorrectType';
 
   const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
     member,
@@ -85,54 +56,30 @@ function CreateTaskFormModal(props: Props) {
     handleClose();
     reset();
     createTaskResult.reset();
-    uploadFileResult.reset();
-  };
-
-  const onSuccess = () => {
-    dispatch(
-      setAlertState({
-        alertMessage: 'Successfully created task!',
-        alertType: 'success',
-      })
-    );
-
-    handleCloseAndResetForm();
   };
 
   const onClose = () => {
-    if (!isMutationsLoading) {
+    if (!createTaskResult.isLoading) {
       handleCloseAndResetForm();
     }
   };
 
   useEffect(() => {
     if (createTaskResult.isSuccess) {
-      const isSuccessfullyCreatedTask =
-        createTaskResult.isSuccess && createTaskResult.data;
-      const isAnyFile = fileInputValue && fileInputValue[0];
-      const shouldUploadFile = isSuccessfullyCreatedTask && isAnyFile;
+      dispatch(
+        setAlertState({
+          alertMessage: 'Successfully created task!',
+          alertType: 'success',
+        })
+      );
 
-      if (shouldUploadFile) {
-        uploadFile({
-          taskId: createTaskResult.data.id,
-          file: fileInputValue[0],
-        });
-      } else {
-        onSuccess();
-      }
+      handleCloseAndResetForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createTaskResult.isSuccess]);
 
   useEffect(() => {
-    if (uploadFileResult.isSuccess) {
-      onSuccess();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uploadFileResult.isSuccess]);
-
-  useEffect(() => {
-    if (uploadFileResult.isError || createTaskResult.isError) {
+    if (createTaskResult.isError) {
       dispatch(
         setAlertState({
           alertMessage: 'Something went wrong!',
@@ -141,7 +88,7 @@ function CreateTaskFormModal(props: Props) {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uploadFileResult.isError, createTaskResult.isError]);
+  }, [createTaskResult.isError]);
 
   return (
     <Modal
@@ -150,7 +97,7 @@ function CreateTaskFormModal(props: Props) {
       dialogTitle={t('Create new task')}
       confirmBtnText={t('Create')}
       onConfirm={handleSubmit(onSubmit)}
-      isLoading={isMutationsLoading}
+      isLoading={createTaskResult.isLoading}
       isBtnDisabled={!isDirty}
     >
       <Stack
@@ -162,7 +109,6 @@ function CreateTaskFormModal(props: Props) {
             sm: '300px',
           },
         }}
-        onSubmit={handleSubmit(onSubmit)}
       >
         <Controller
           control={control}
@@ -176,7 +122,7 @@ function CreateTaskFormModal(props: Props) {
               required
               error={!!error?.message}
               inputProps={{ maxLength: 30 }}
-              disabled={isMutationsLoading}
+              disabled={createTaskResult.isLoading}
               helperText={
                 error?.message
                   ? t(error.message, { ns: 'validation' })
@@ -195,7 +141,7 @@ function CreateTaskFormModal(props: Props) {
               minRows={5}
               maxRows={5}
               inputProps={{ maxLength: 500 }}
-              disabled={isMutationsLoading}
+              disabled={createTaskResult.isLoading}
               sx={{
                 '.MuiInputBase-inputMultiline': {
                   scrollbarColor: `${grey[400]} ${grey[200]}`,
@@ -224,42 +170,6 @@ function CreateTaskFormModal(props: Props) {
             />
           )}
         />
-        <label htmlFor="contained-button-file">
-          <Input
-            accept=".png, .jpg, .jpeg"
-            id="contained-button-file"
-            multiple={false}
-            disabled={isMutationsLoading}
-            type="file"
-            {...register('picture')}
-          />
-          <Button
-            variant="contained"
-            component="span"
-            disabled={isMutationsLoading}
-            fullWidth
-            color={
-              isCorrectFileSelected
-                ? 'success'
-                : errors.picture
-                ? 'error'
-                : 'primary'
-            }
-            startIcon={isCorrectFileSelected ? <CheckIcon /> : <FileIcon />}
-          >
-            {t('Upload image')}
-          </Button>
-          <Typography
-            color={errors.picture ? 'error' : 'primary'}
-            sx={{
-              opacity: errors.picture ? 1 : 0.7,
-            }}
-          >
-            {errors.picture?.message && isPictureTypeError
-              ? t(errors.picture.message, { ns: 'validation' })
-              : t('Max file size is 1mb')}
-          </Typography>
-        </label>
         <Controller
           control={control}
           name="member"
@@ -274,7 +184,7 @@ function CreateTaskFormModal(props: Props) {
               onChange={(event, item) => {
                 onChange(item);
               }}
-              disabled={isMutationsLoading}
+              disabled={createTaskResult.isLoading}
               value={value ?? null}
               isOptionEqualToValue={(option, value) =>
                 option.login === value.login || value.login === ''
@@ -287,7 +197,7 @@ function CreateTaskFormModal(props: Props) {
                   name={name}
                   error={!!error?.message}
                   required
-                  disabled={isMutationsLoading}
+                  disabled={createTaskResult.isLoading}
                   helperText={
                     error?.message ? t(error.message, { ns: 'validation' }) : ''
                   }

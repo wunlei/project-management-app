@@ -1,4 +1,5 @@
 import { apiSlice } from '../apiSlice';
+import { setUserId } from 'redux/global/globalSlice';
 import * as Types from '../apiTypes';
 
 const api = apiSlice.injectEndpoints({
@@ -10,9 +11,58 @@ const api = apiSlice.injectEndpoints({
       query: () => '/boards',
       providesTags: ['BOARDS'],
     }),
+    getAllBoardsExpanded: builder.query<Types.GetBoardResult[], void>({
+      async queryFn(args, { dispatch }) {
+        try {
+          const getAllBoardsData = await dispatch(
+            api.endpoints.getAllBoards.initiate(args)
+          ).unwrap();
+
+          const arrOfPromises: Promise<Types.GetBoardResult>[] = [];
+
+          getAllBoardsData.forEach((board) => {
+            const promise = dispatch(
+              api.endpoints.getBoard.initiate({ boardId: board.id })
+            ).unwrap();
+            arrOfPromises.push(promise);
+          });
+
+          const result = await Promise.all(arrOfPromises);
+
+          return { data: result };
+        } catch (error: unknown) {
+          if (
+            error &&
+            typeof error === 'object' &&
+            error.hasOwnProperty('status')
+          ) {
+            const errorWithStatus = error as { status: number };
+
+            if (errorWithStatus.status === 401) {
+              dispatch(setUserId(null));
+              localStorage.removeItem('token');
+
+              throw new Error(`
+              Expired token detected.
+              You will be logged out
+              `);
+            }
+          }
+          throw new Error('Server responded with an error');
+        }
+      },
+      providesTags: ['BOARDS', 'BOARD'],
+    }),
     getBoard: builder.query<Types.GetBoardResult, Types.GetBoardArg>({
       query: (arg) => `/boards/${arg.boardId}`,
       providesTags: ['BOARD'],
+      transformResponse: (response: Types.GetBoardResult) => {
+        response.columns.sort((a, b) => a.order - b.order);
+        response.columns.forEach((column) =>
+          column.tasks.sort((a, b) => a.order - b.order)
+        );
+        return response;
+      },
     }),
     createBoard: builder.mutation<
       Types.CreateBoardResult,
@@ -53,6 +103,7 @@ const api = apiSlice.injectEndpoints({
 export const {
   useGetAllBoardsQuery,
   useGetBoardQuery,
+  useGetAllBoardsExpandedQuery,
   useCreateBoardMutation,
   useDeleteBoardMutation,
   useUpdateBoardMutation,

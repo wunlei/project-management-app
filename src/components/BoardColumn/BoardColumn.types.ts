@@ -3,4 +3,5 @@ export interface BoardColumnProps {
   title: string;
   columnId: string;
   boardId: string;
+  handleSelectColumnId: (columnId: string) => void;
 }
