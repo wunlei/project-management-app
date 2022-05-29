@@ -1,23 +1,8 @@
-import React, { Component } from 'react';
-import Modal from 'components/Modal/Modal';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { setUserId } from 'redux/global/globalSlice';
+import { Component } from 'react';
 import { Props, State } from './ErrorBoundary.types';
-import ServerError from 'utils/errors/ServerError';
+import { Navigate } from 'react-router-dom';
 
-function HooksProvider({ children }: { children: React.ReactElement }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  return (
-    <ErrorBoundary dispatch={dispatch} navigate={navigate}>
-      {children}
-    </ErrorBoundary>
-  );
-}
-
-class ErrorBoundary extends Component<Props, State> {
+export default class ErrorBoundary extends Component<Props, State> {
   state: State = {
     error: null,
   };
@@ -31,26 +16,8 @@ class ErrorBoundary extends Component<Props, State> {
 
     if (!error) return this.props.children;
 
-    if (error instanceof ServerError) {
-      const onClose = () => {
-        this.setState({ error: null });
-        this.props.navigate('/');
-        // this.props.dispatch(setUserId(null));
-        // localStorage.removeItem('token');
-      };
+    this.setState({ error: null });
 
-      return (
-        <Modal
-          open={!!error}
-          dialogTitle={error.message}
-          onClose={onClose}
-          onConfirm={onClose}
-        />
-      );
-    } else {
-      throw new Error(error.message);
-    }
+    return <Navigate to="/404" />;
   }
 }
-
-export default HooksProvider;
