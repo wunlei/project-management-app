@@ -10,7 +10,7 @@ import grey from '@mui/material/colors/grey';
 function BoardColumn({
   children,
   columnData,
-  setIsConfirmationOpen,
+  setIsColumnDeleteConfirmOpen: setIsConfirmationOpen,
   handleSelectColumnId,
 }: BoardColumnProps) {
   const {

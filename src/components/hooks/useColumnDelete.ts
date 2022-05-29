@@ -29,7 +29,7 @@ function useColumnDelete({
     if (deleteColumnResult.isSuccess) {
       dispatch(
         setAlertState({
-          alertMessage: 'Project successfully deleted',
+          alertMessage: 'Column successfully deleted',
           alertType: 'success',
         })
       );

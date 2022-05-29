@@ -168,7 +168,7 @@ function BoardPage() {
                 order: 1,
               },
             }}
-            setIsConfirmationOpen={(value) => {
+            setIsColumnDeleteConfirmOpen={(value) => {
               setIsColumnDeleteConfirmOpen(value);
             }}
             handleSelectColumnId={handleSelectColumnId}

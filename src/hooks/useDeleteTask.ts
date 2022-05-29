@@ -38,7 +38,7 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
       dispatch(
         setAlertState({
           alertMessage: 'Something went wrong!',
-          alertType: 'success',
+          alertType: 'error',
         })
       );
     }
