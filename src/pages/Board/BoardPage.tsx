@@ -15,10 +15,11 @@ function BoardPage() {
   const columns = [1];
   const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
   const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState<boolean>(false);
 
   const handleSuccessfulDelete = () => {
-    setIsConfirmationOpen(false);
+    setIsDeleteConfirmationOpen(false);
   };
 
   const { handleDelete, deleteColumnResult } = useColumnDelete({
@@ -101,7 +102,7 @@ function BoardPage() {
               },
             }}
             setIsConfirmationOpen={(value) => {
-              setIsConfirmationOpen(value);
+              setIsDeleteConfirmationOpen(value);
             }}
           >
             <BoardTask title={'Title'} user={'W'}></BoardTask>
@@ -109,13 +110,13 @@ function BoardPage() {
         )}
       </Stack>
       <ConfirmationDialog
-        open={isConfirmationOpen}
+        open={isDeleteConfirmationOpen}
         dialogText={t(
           'You are about to permanently delete column. This action cannot be undone.'
         )}
         title={t('Delete column')}
         onReject={() => {
-          setIsConfirmationOpen(false);
+          setIsDeleteConfirmationOpen(false);
         }}
         onConfirm={handleDelete}
       />
