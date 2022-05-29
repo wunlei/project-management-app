@@ -15,22 +15,29 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route
+          path="/"
+          element={
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          }
+        >
           <Route index element={<HomePage />}></Route>
-          <Route
-            element={
-              <ErrorBoundary>
-                <PrivateRoute />
-              </ErrorBoundary>
-            }
-          >
+          <Route element={<PrivateRoute />}>
             <Route path="projects" element={<ProjectsPage />}></Route>
             <Route path="projects/:boardId" element={<BoardPage />} />
             <Route path="user" element={<UserPage />}></Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route element={<AuthPage />}>
+        <Route
+          element={
+            <ErrorBoundary>
+              <AuthPage />
+            </ErrorBoundary>
+          }
+        >
           <Route path="signup" element={<SignupForm />} />
           <Route path="login" element={<LoginForm />} />
         </Route>
