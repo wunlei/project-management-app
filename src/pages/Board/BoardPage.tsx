@@ -9,6 +9,7 @@ import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
 import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
+import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
 
 import { TaskCallback } from 'components/BoardTask/BoardTask.types';
 import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
@@ -17,10 +18,9 @@ import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg'
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
 import { emptyTask } from 'constants/defautlts';
-import useEditTask from './useEditTask';
-import useDeleteTask from './useDeleteTask';
-import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
-import useCreateTask from './useCreateTask';
+import useEditTask from 'hooks/useEditTask';
+import useDeleteTask from 'hooks/useDeleteTask';
+import useCreateTask from 'hooks/useCreateTask';
 
 function BoardPage() {
   const { t } = useTranslation();
