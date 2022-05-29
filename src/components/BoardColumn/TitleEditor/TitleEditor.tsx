@@ -101,10 +101,18 @@ function TitleEditor(props: TitleEditorProps) {
         )}
       />
       <Stack direction="row" height="fit-content">
-        <IconButton type="submit" color="success">
+        <IconButton
+          type="submit"
+          color="success"
+          disabled={updateColumnResult.isLoading}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton color="error" onClick={handleClose}>
+        <IconButton
+          color="error"
+          onClick={handleClose}
+          disabled={updateColumnResult.isLoading}
+        >
           <CrossIcon />
         </IconButton>
       </Stack>
