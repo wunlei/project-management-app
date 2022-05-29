@@ -42,8 +42,10 @@
   "Already have an account?": "Уже есть аккаунт?",
   "This user already exists": "Пользователь с таким логином уже существует",
   "Delete profile": "Удалить профиль",
-  "You are about to permanently delete your profile. This action cannot be undone.": "Вы собираетесь навсегда удалить свой профиль. Это действие невозможно отменить. ",
+  "You are about to permanently delete your profile. This action cannot be undone.": "Вы собираетесь навсегда удалить свой профиль. Это действие невозможно отменить.",
   "Create New Project": "Создать новый проект",
   "Description": "Описание",
-  "Project successfully created": "Проект создан успешно"
+  "Project successfully created": "Проект создан успешно",
+  "Column title successfully updated": "Название колонки успешно обновлено",
+  "You are about to permanently delete column. This action cannot be undone.": "Вы собираетесь навсегда удалить колонку. Это действие невозможно отменить."
 }
