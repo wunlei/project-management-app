@@ -47,7 +47,7 @@ function BoardPage() {
   const {
     handleToggleDeleteDialog,
     handleDeleteTask,
-    isConfirmationDialogOpen,
+    isTaskDeleteDialogOpen,
     isDeleteTaskLoading,
   } = useDeleteTask(selectedTask);
 
@@ -96,7 +96,7 @@ function BoardPage() {
         <CircularProgress color="secondary" size={100} />
       </Backdrop>
       <ConfirmationDialog
-        open={isConfirmationDialogOpen}
+        open={isTaskDeleteDialogOpen}
         dialogText={t(
           'You are about to permanently delete task. This action cannot be undone.'
         )}
