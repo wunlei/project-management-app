@@ -47,6 +47,8 @@
   "Description": "Описание",
   "Project successfully created": "Проект создан успешно",
   "Project successfully deleted": "Проект удален успешно",
+  "Project successfully updated": "Проект успешно обновлен",
   "Delete project": "Удалить проект",
+  "Edit Project": "Редактировать проект",
   "You are about to permanently delete project. This action cannot be undone.": "Вы собираетесь навсегда удалить проект. Это действие невозможно отменить."
 }

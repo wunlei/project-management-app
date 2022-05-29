@@ -47,6 +47,8 @@
   "Description": "Description",
   "Project successfully created": "Project successfully created",
   "Project successfully deleted": "Project successfully deleted",
-  "Delete project": "Delete Board",
+  "Project successfully updated": "Project successfully updated",
+  "Delete project": "Delete project",
+  "Edit Project": "Edit project",
   "You are about to permanently delete project. This action cannot be undone.": "You are about to permanently delete project. This action cannot be undone."
 }
