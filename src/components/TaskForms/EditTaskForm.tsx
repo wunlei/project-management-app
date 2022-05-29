@@ -18,11 +18,7 @@ import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
 
 function EditTaskFormModal(props: EditTaskFormProps) {
-  const {
-    handleClose,
-    open,
-    task: { id: taskId, columnId, boardId, title, description, userId, order },
-  } = props;
+  const { handleClose, open, task } = props;
   const dispatch = useAppDispatch();
 
   const { t } = useTranslation();
@@ -41,33 +37,35 @@ function EditTaskFormModal(props: EditTaskFormProps) {
 
   const taskUser = useMemo(() => {
     const emptyUser = { id: '', login: '', name: '' };
-    if (userId && users) {
-      const foundUser = users.find((user) => user.id === userId);
+    if (task && task.userId && users) {
+      const foundUser = users.find((user) => user.id === task.userId);
 
       return foundUser ? foundUser : emptyUser;
     } else {
       return emptyUser;
     }
-  }, [users, userId]);
+  }, [users, task]);
 
   const onSubmit: SubmitHandler<CreateTaskFormValues> = ({
     member,
     title,
     description,
   }) => {
-    updateTask({
-      taskId,
-      columnId,
-      boardId,
-      body: {
-        title,
-        description,
-        order,
-        userId: member.id,
-        columnId,
-        boardId,
-      },
-    });
+    if (task) {
+      updateTask({
+        taskId: task.id,
+        columnId: task.columnId,
+        boardId: task.boardId,
+        body: {
+          title,
+          description,
+          order: task.order,
+          userId: member.id,
+          columnId: task.columnId,
+          boardId: task.boardId,
+        },
+      });
+    }
   };
 
   const handleCloseAndResetForm = () => {
@@ -108,6 +106,10 @@ function EditTaskFormModal(props: EditTaskFormProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateTaskResult.isError]);
 
+  useEffect(() => {
+    reset();
+  }, [reset, task]);
+
   return (
     <Modal
       onClose={onClose}
@@ -132,7 +134,7 @@ function EditTaskFormModal(props: EditTaskFormProps) {
         <Controller
           control={control}
           name="title"
-          defaultValue={title}
+          defaultValue={task ? task.title : ''}
           render={({ field: { ref, ...restField }, fieldState: { error } }) => (
             <TextField
               inputRef={ref}
@@ -153,7 +155,7 @@ function EditTaskFormModal(props: EditTaskFormProps) {
         <Controller
           control={control}
           name="description"
-          defaultValue={description}
+          defaultValue={task ? task.description : ''}
           render={({ field: { ref, ...restField }, fieldState: { error } }) => (
             <TextField
               multiline

@@ -24,7 +24,7 @@ import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
-import { emptyTask } from 'constants/defautlts';
+
 import useEditTask from 'hooks/useEditTask';
 import useDeleteTask from 'hooks/useDeleteTask';
 import useCreateTask from 'hooks/useCreateTask';
@@ -33,7 +33,7 @@ function BoardPage() {
   const { t } = useTranslation();
 
   const [selectedTask, setSelectedTask] =
-    useState<TaskFromServerExpanded>(emptyTask);
+    useState<TaskFromServerExpanded | null>(null);
 
   const {
     handleSelectColumnId,
@@ -53,6 +53,11 @@ function BoardPage() {
 
   const handleOpenEditModal: TaskCallback = (task) => {
     setSelectedTask(task);
+    handleToggleEditTaskModal();
+  };
+
+  const handleCloseEditModal = () => {
+    setSelectedTask(null);
     handleToggleEditTaskModal();
   };
 
@@ -77,7 +82,6 @@ function BoardPage() {
     boardId,
     columnId,
   };
-
   return (
     <Stack
       component="main"
@@ -104,13 +108,13 @@ function BoardPage() {
         onConfirm={() => {
           handleDeleteTask();
           handleToggleDeleteDialog();
-          setSelectedTask(emptyTask);
+          setSelectedTask(null);
         }}
         onReject={handleToggleDeleteDialog}
       />
       <EditTaskFormModal
         task={selectedTask}
-        handleClose={handleToggleEditTaskModal}
+        handleClose={handleCloseEditModal}
         open={isEditTaskModalOpen}
       />
       <CreateTaskFormModal
@@ -191,7 +195,7 @@ function BoardPage() {
               task={task}
               handleOpenEditModal={handleOpenEditModal}
               handleOpenDeleteConfirmation={handleOpenDeleteConfirmation}
-            ></BoardTask>
+            />
           </BoardColumn>
         )}
       </Stack>

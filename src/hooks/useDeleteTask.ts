@@ -5,8 +5,8 @@ import { setAlertState } from 'redux/global/globalSlice';
 
 import { useDeleteTaskMutation } from 'redux/api/endpoints/tasks';
 
-function useDeleteTask(task: TaskFromServerExpanded) {
-  const { boardId, id: taskId, columnId } = task;
+function useDeleteTask(task: TaskFromServerExpanded | null) {
+  // const { boardId, id: taskId, columnId } = task;
 
   const dispatch = useAppDispatch();
   const [deleteTask, deleteTaskResult] = useDeleteTaskMutation();
@@ -14,7 +14,13 @@ function useDeleteTask(task: TaskFromServerExpanded) {
     useState(false);
 
   const handleDeleteTask = () => {
-    deleteTask({ boardId, columnId, taskId });
+    if (task) {
+      deleteTask({
+        boardId: task.boardId,
+        columnId: task.columnId,
+        taskId: task.id,
+      });
+    }
   };
 
   const handleToggleDeleteDialog = () => {

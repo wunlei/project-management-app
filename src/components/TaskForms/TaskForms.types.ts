@@ -9,7 +9,7 @@ export interface CreateTaskFormProps {
 export interface EditTaskFormProps {
   handleClose: () => void;
   open: boolean;
-  task: TaskFromServerExpanded;
+  task: TaskFromServerExpanded | null;
 }
 
 export interface AlertState {
