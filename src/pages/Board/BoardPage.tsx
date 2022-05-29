@@ -23,8 +23,11 @@ function BoardPage() {
     throw new Error('boardId (url param) is absent');
   }
 
-  const { currentData: currentDataGetBoard, isError: isErrorGetBoard } =
-    useGetBoardQuery({ boardId });
+  const {
+    currentData: currentDataGetBoard,
+    isError: isErrorGetBoard,
+    isFetching: isFetchingGetBoard,
+  } = useGetBoardQuery({ boardId });
 
   const [dataGetBoard, setDataGetBoard] = useState<
     undefined | BoardFromServerExpanded
@@ -111,6 +114,7 @@ function BoardPage() {
         <MemoizedColumnsContainer
           dataGetBoard={dataGetBoard}
           isErrorGetBoard={isErrorGetBoard}
+          isFetchingGetBoard={isFetchingGetBoard}
         />
       </Stack>
     </DragDropContext>

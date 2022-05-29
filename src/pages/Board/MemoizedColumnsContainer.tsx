@@ -8,9 +8,11 @@ import ServerError from '../../utils/errors/ServerError';
 function ColumnsContainer({
   dataGetBoard,
   isErrorGetBoard,
+  isFetchingGetBoard,
 }: {
   dataGetBoard: BoardFromServerExpanded | undefined;
   isErrorGetBoard: boolean;
+  isFetchingGetBoard: boolean;
 }) {
   const { t } = useTranslation();
 
@@ -22,7 +24,7 @@ function ColumnsContainer({
         {t('No columns yet')}
       </Typography>
     );
-  } else if (isErrorGetBoard) {
+  } else if (isErrorGetBoard && !isFetchingGetBoard) {
     throw new ServerError();
   } else {
     return (

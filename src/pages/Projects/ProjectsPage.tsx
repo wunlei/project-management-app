@@ -13,8 +13,11 @@ function ProjectsPage() {
 
   const [deleteBoard, { isError: isErrorDeleteBoard }] =
     useDeleteBoardMutation();
-  const { currentData: dataGetAllBoards, isError: isErrorGetAllBoards } =
-    useGetAllBoardsQuery();
+  const {
+    currentData: dataGetAllBoards,
+    isError: isErrorGetAllBoards,
+    isFetching: isFetchingGetAllBoards,
+  } = useGetAllBoardsQuery();
 
   if (isErrorDeleteBoard) {
     throw new ServerError();
@@ -31,7 +34,7 @@ function ProjectsPage() {
         onDelete={() => deleteBoard({ boardId: id })}
       ></ProjectCard>
     ));
-  } else if (isErrorGetAllBoards) {
+  } else if (isErrorGetAllBoards && !isFetchingGetAllBoards) {
     throw new ServerError();
   } else {
     boardsJSX = <p>Loading</p>;
