@@ -1,6 +1,8 @@
+import { UpdateColumnArg } from 'redux/api/apiTypes';
+
 export interface BoardColumnProps {
   children?: React.ReactNode;
-  title: string;
-  columnId: string;
-  boardId: string;
+  columnData: UpdateColumnArg;
+  setIsColumnDeleteConfirmOpen: (value: boolean) => void;
+  handleSelectColumnId: (columnId: string) => void;
 }

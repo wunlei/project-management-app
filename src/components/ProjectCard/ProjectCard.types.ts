@@ -1,6 +1,10 @@
-export interface ProjectCardProps {
+export interface ProjectCardData {
   title: string;
   description: string;
   boardId: string;
-  onDelete: () => void;
+}
+
+export interface ProjectCardProps extends ProjectCardData {
+  onDelete: (boardId: string) => void;
+  onEdit: ({ title, description, boardId }: ProjectCardData) => void;
 }
