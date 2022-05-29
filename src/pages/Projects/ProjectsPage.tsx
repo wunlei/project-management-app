@@ -6,6 +6,7 @@ import {
   useGetAllBoardsQuery,
   useDeleteBoardMutation,
 } from 'redux/api/endpoints/boards';
+import ServerError from 'utils/errors/ServerError';
 
 function ProjectsPage() {
   const { t } = useTranslation();
@@ -15,8 +16,8 @@ function ProjectsPage() {
   const { currentData: dataGetAllBoards, isError: isErrorGetAllBoards } =
     useGetAllBoardsQuery();
 
-  if (isErrorDeleteBoard) {
-    throw new Error('deleting a board');
+  if (!isErrorDeleteBoard) {
+    throw new ServerError();
   }
 
   let boardsJSX: React.ReactElement[] | React.ReactElement;
@@ -31,7 +32,7 @@ function ProjectsPage() {
       ></ProjectCard>
     ));
   } else if (isErrorGetAllBoards) {
-    throw new Error('fetching all boards');
+    throw new ServerError();
   } else {
     boardsJSX = <p>Loading</p>;
   }

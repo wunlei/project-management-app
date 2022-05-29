@@ -3,6 +3,7 @@ import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SuccessColumnsContainer from './SuccessColumnsContainer';
+import ServerError from '../../utils/errors/ServerError';
 
 function ColumnsContainer({
   dataGetBoard,
@@ -22,7 +23,7 @@ function ColumnsContainer({
       </Typography>
     );
   } else if (isErrorGetBoard) {
-    throw new Error(`boardId is invalid`);
+    throw new ServerError();
   } else {
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
