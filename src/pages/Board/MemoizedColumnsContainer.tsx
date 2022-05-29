@@ -22,7 +22,7 @@ function ColumnsContainer({
         <Draggable key={task.id} draggableId={task.id} index={index}>
           {(provided, snapshot) => (
             <BoardTask
-              task={task}
+              task={{ ...task, boardId: dataGetBoard.id, columnId: column.id }}
               draggableProps={provided.draggableProps}
               dragHandleProps={provided.dragHandleProps}
               isDragging={snapshot.isDragging}

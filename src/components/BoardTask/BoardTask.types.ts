@@ -2,10 +2,10 @@ import {
   DraggableProvidedDraggableProps,
   DraggableProvidedDragHandleProps,
 } from 'react-beautiful-dnd';
-import { TaskFromServer } from 'redux/api/apiTypes';
+import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 
 export interface BoardTaskProps {
-  task: TaskFromServer;
+  task: TaskFromServerExpanded;
   draggableProps?: DraggableProvidedDraggableProps;
   dragHandleProps?: DraggableProvidedDragHandleProps | undefined;
   isDragging?: boolean;
