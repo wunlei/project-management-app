@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { IconButton, Stack, Typography } from '@mui/material';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
+import { ReactComponent as EditIcon } from 'assets/icons/edit.svg';
 import { ProjectCardProps } from './ProjectCard.types';
 
 export default function ProjectCard({
@@ -8,11 +9,13 @@ export default function ProjectCard({
   description,
   boardId,
   onDelete,
+  onEdit,
 }: ProjectCardProps) {
   return (
     <Stack
       padding={2}
       paddingTop={1}
+      spacing={1}
       component={Link}
       to={boardId}
       color={'inherit'}
@@ -44,15 +47,31 @@ export default function ProjectCard({
         >
           {title}
         </Typography>
-        <IconButton
-          color="error"
-          onClick={(e) => {
-            e.preventDefault();
-            onDelete();
-          }}
-        >
-          <TrashIcon />
-        </IconButton>
+        <Stack direction="row" spacing={1}>
+          <IconButton
+            sx={{
+              padding: '2px',
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              onEdit({ title, description, boardId });
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            sx={{
+              padding: '2px',
+            }}
+            color="error"
+            onClick={(e) => {
+              e.preventDefault();
+              onDelete(boardId);
+            }}
+          >
+            <TrashIcon />
+          </IconButton>
+        </Stack>
       </Stack>
       <Typography variant="body2" sx={{ overflowWrap: 'anywhere' }}>
         {description}

@@ -31,7 +31,7 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
     if (deleteTaskResult.isSuccess) {
       dispatch(
         setAlertState({
-          alertMessage: 'Task deleted successfuly!',
+          alertMessage: 'Task deleted successfully!',
           alertType: 'success',
         })
       );

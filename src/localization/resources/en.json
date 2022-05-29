@@ -22,6 +22,7 @@
   "Cancel": "Cancel",
   "Confirm Action": "Confirm Action",
   "No columns yet": "No columns yet",
+  "No boards yet": "No boards yet",
   "Create new task": "Create new task",
   "Edit task": "Edit task",
   "Password": "Password",
@@ -36,7 +37,7 @@
   "Something went wrong!": "Something went wrong!",
   "Successfully created task!": "Successfully created task!",
   "Successfully updated task!": "Successfully updated task!",
-  "Task deleted successfuly!": "Task deleted successfuly!",
+  "Task deleted successfully!": "Task deleted successfully!",
   "Welcome back": "Welcome back",
   "Don't have an account?": "Don't have an account?",
   "Example: Buy milk": "Example: Buy milk",
@@ -50,6 +51,11 @@
   "Create New Project": "Create New Project",
   "Description": "Description",
   "Project successfully created": "Project successfully created",
+  "Project successfully deleted": "Project successfully deleted",
+  "Project successfully updated": "Project successfully updated",
+  "Delete project": "Delete project",
+  "Edit Project": "Edit project",
+  "You are about to permanently delete project. This action cannot be undone.": "You are about to permanently delete project. This action cannot be undone.",
   "Column successfully created": "Column successfully created",
   "Create new column": "Create new column"
 }
