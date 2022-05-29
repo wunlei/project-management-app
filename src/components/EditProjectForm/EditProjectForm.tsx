@@ -4,8 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert, Stack, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useUpdateBoardMutation } from 'redux/api/endpoints/boards';
-
-import Modal from 'components/Modal/Modal';
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
 import { EditProjectFormProps } from './EditProjectForm.types';
@@ -13,6 +11,7 @@ import {
   ProjectInputs,
   ProjectSchema,
 } from 'components/CreateProjectForm/CreateProjectForm.validation';
+import Modal from 'components/Modal/Modal';
 
 function EditProjectForm(props: EditProjectFormProps) {
   const { open, onClose, projectData } = props;
@@ -60,6 +59,10 @@ function EditProjectForm(props: EditProjectFormProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, updateBoardResult.isSuccess]);
+
+  useEffect(() => {
+    reset();
+  }, [projectData, reset]);
 
   return (
     <Modal

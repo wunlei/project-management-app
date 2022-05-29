@@ -103,6 +103,13 @@ function ProjectsPage() {
             rowGap: '1rem',
           }}
         >
+          {boards && boards.length === 0 ? (
+            <Stack width="100%" textAlign="center">
+              <Typography fontSize="2rem" color="primary.light">
+                {t('No boards yet')}
+              </Typography>
+            </Stack>
+          ) : null}
           {boards &&
             boards.map((el: BoardFromServer) => (
               <ProjectCard
