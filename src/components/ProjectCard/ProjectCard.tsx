@@ -50,7 +50,7 @@ export default function ProjectCard({
         <Stack direction="row" spacing={1}>
           <IconButton
             sx={{
-              padding: 0,
+              padding: '2px',
             }}
             onClick={(e) => {
               e.preventDefault();
@@ -61,7 +61,7 @@ export default function ProjectCard({
           </IconButton>
           <IconButton
             sx={{
-              padding: 0,
+              padding: '2px',
             }}
             color="error"
             onClick={(e) => {
