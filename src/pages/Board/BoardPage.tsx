@@ -67,7 +67,7 @@ function BoardPage() {
           body: { title: relatedColumn.title, order: destination.index + 1 },
         });
 
-        // sync change (working with a deep copy of dataGetBoard, relatedColumn)
+        // sync change
 
         const cloneRelatedColumn = JSON.parse(
           JSON.stringify(relatedColumn)
@@ -115,7 +115,7 @@ function BoardPage() {
           },
         });
 
-        // sync change (working with a deep copy of dataGetBoard, relatedTask)
+        // sync change
 
         const cloneRelatedTask = JSON.parse(
           JSON.stringify(relatedTask)
@@ -157,8 +157,6 @@ function BoardPage() {
       <Stack
         component="main"
         padding="1rem"
-        // paddingTop="121px"
-        // paddingBottom="54px"
         sx={{
           paddingTop: {
             xs: '165px',
