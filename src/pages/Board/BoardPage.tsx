@@ -1,17 +1,31 @@
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
+import useColumnDelete from 'components/hooks/useColumnDelete';
+import grey from '@mui/material/colors/grey';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import grey from '@mui/material/colors/grey';
 
 function BoardPage() {
   const { t } = useTranslation();
   const columns = [1];
   const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
   const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
+
+  const handleSuccessfulDelete = () => {
+    setIsConfirmationOpen(false);
+  };
+
+  const { handleDelete, deleteColumnResult } = useColumnDelete({
+    boardId,
+    columnId,
+    handleSuccessfulDelete,
+  });
 
   return (
     <Stack
@@ -53,6 +67,8 @@ function BoardPage() {
         direction="row"
         spacing={1}
         sx={{
+          opacity: deleteColumnResult.isLoading ? 0.5 : 1,
+          pointerEvents: deleteColumnResult.isLoading ? 'none' : 'auto',
           flexGrow: 1,
           overflowY: 'hidden',
           scrollbarColor: `${grey[400]} ${grey[200]}`,
@@ -83,14 +99,26 @@ function BoardPage() {
                 title: 'ColumnTitle',
                 order: 1,
               },
-            }} // boardId={boardId}
-            // columnId={columnId}
-            // title={'Column Title'}
+            }}
+            setIsConfirmationOpen={(value) => {
+              setIsConfirmationOpen(value);
+            }}
           >
             <BoardTask title={'Title'} user={'W'}></BoardTask>
           </BoardColumn>
         )}
       </Stack>
+      <ConfirmationDialog
+        open={isConfirmationOpen}
+        dialogText={t(
+          'You are about to permanently delete column. This action cannot be undone.'
+        )}
+        title={t('Delete column')}
+        onReject={() => {
+          setIsConfirmationOpen(false);
+        }}
+        onConfirm={handleDelete}
+      />
     </Stack>
   );
 }
