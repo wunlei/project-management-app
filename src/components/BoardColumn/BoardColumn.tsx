@@ -6,6 +6,7 @@ import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import grey from '@mui/material/colors/grey';
+import scrollStyle from 'styles/scrollStyle';
 
 function BoardColumn({
   children,
@@ -83,25 +84,17 @@ function BoardColumn({
         alignItems="center"
         paddingBottom="1rem"
         width={'280px'}
-        sx={{
-          backgroundColor: grey[200],
-          overflowX: 'hidden',
-          overflowY: 'auto',
-          borderBottomLeftRadius: '0.5rem',
-          borderBottomRightRadius: '0.5rem',
-          minHeight: '2rem',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            width: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
+        sx={[
+          {
             backgroundColor: grey[200],
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            borderBottomLeftRadius: '0.5rem',
+            borderBottomRightRadius: '0.5rem',
+            minHeight: '2rem',
           },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
+          ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+        ]}
       >
         {children}
       </Stack>

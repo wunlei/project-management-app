@@ -17,6 +17,7 @@ import { TaskCallback } from 'components/BoardTask/BoardTask.types';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import grey from '@mui/material/colors/grey';
+import scrollStyle from 'styles/scrollStyle';
 
 function BoardPage() {
   const { t } = useTranslation();
@@ -137,23 +138,15 @@ function BoardPage() {
       <Stack
         direction="row"
         spacing={1}
-        sx={{
-          opacity: isLoadingAction ? 0.5 : 1,
-          pointerEvents: isLoadingAction ? 'none' : 'auto',
-          flexGrow: 1,
-          overflowY: 'hidden',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            height: '10px',
+        sx={[
+          {
+            opacity: isLoadingAction ? 0.5 : 1,
+            pointerEvents: isLoadingAction ? 'none' : 'auto',
+            flexGrow: 1,
+            overflowY: 'hidden',
           },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
+          ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+        ]}
       >
         {columns.length === 0 ? (
           <Stack width="100%" textAlign="center">
