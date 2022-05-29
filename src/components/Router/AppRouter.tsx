@@ -9,6 +9,7 @@ import AuthPage from 'pages/Auth/AuthPage';
 import SignupForm from 'components/SignupForm/SignupForm';
 import LoginForm from 'components/LoginForm/LoginForm';
 import PrivateRoute from './PrivateRoute';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 function AppRouter() {
   return (
@@ -16,7 +17,13 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />}></Route>
-          <Route element={<PrivateRoute />}>
+          <Route
+            element={
+              <ErrorBoundary>
+                <PrivateRoute />
+              </ErrorBoundary>
+            }
+          >
             <Route path="projects" element={<ProjectsPage />}></Route>
             <Route path="projects/:boardId" element={<BoardPage />} />
             <Route path="user" element={<UserPage />}></Route>
