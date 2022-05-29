@@ -1,30 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useGetAllBoardsQuery } from 'redux/api/endpoints/boards';
-import { BoardFromServer } from 'redux/api/apiTypes';
-import SearchBar from 'components/SearchBar/SearchBar';
 import { useTranslation } from 'react-i18next';
+import { useGetAllBoardsExpandedQuery } from 'redux/api/endpoints/boards';
+import useProjectDelete from 'hooks/useProjectDelete';
 import {
   Backdrop,
-  Box,
   CircularProgress,
   Container,
   Stack,
   Typography,
 } from '@mui/material';
+import SearchBar from 'components/SearchBar/SearchBar';
 import ProjectCard from 'components/ProjectCard/ProjectCard';
 import EditProjectForm from 'components/EditProjectForm/EditProjectForm';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
-import useProjectDelete from '../../hooks/useProjectDelete';
 import { ProjectCardData } from 'components/ProjectCard/ProjectCard.types';
 
 function ProjectsPage() {
   const { t } = useTranslation();
 
-  const { currentData: boards, isError } = useGetAllBoardsQuery();
+  const {
+    currentData: boards,
+    isLoading,
+    isSuccess,
+  } = useGetAllBoardsExpandedQuery();
 
   const [boardId, setBoardId] = useState<string | null>(null);
   const [projectData, setProjectData] = useState<ProjectCardData | null>(null);
-  const [isDeleteConfirmationOpen, setIsConfirmationOpen] =
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
@@ -37,26 +39,26 @@ function ProjectsPage() {
     setIsEditModalOpen(false);
   };
 
-  useEffect(() => {
-    if (!isEditModalOpen) {
-      setProjectData(null);
-    }
-  }, [isEditModalOpen]);
-
-  const handleConfirmationInit = (boardId: string) => {
+  const handleDeleteConfirmInit = (boardId: string) => {
     setBoardId(boardId);
-    setIsConfirmationOpen(true);
+    setIsDeleteConfirmationOpen(true);
   };
 
   const handleSuccessfulDelete = () => {
     setBoardId(null);
-    setIsConfirmationOpen(false);
+    setIsDeleteConfirmationOpen(false);
   };
 
   const { handleDelete, deleteBoardResult } = useProjectDelete({
     boardId,
     handleSuccessfulDelete,
   });
+
+  useEffect(() => {
+    if (!isEditModalOpen) {
+      setProjectData(null);
+    }
+  }, [isEditModalOpen]);
 
   return (
     <Container
@@ -81,7 +83,7 @@ function ProjectsPage() {
         )}
         title={t('Delete project')}
         onReject={() => {
-          setIsConfirmationOpen(false);
+          setIsDeleteConfirmationOpen(false);
         }}
         onConfirm={handleDelete}
       />
@@ -91,37 +93,30 @@ function ProjectsPage() {
         projectData={projectData}
       />
       <Stack spacing={3}>
-        <Typography variant="h3" fontWeight="bold">
+        <Typography variant="h3" fontWeight="bold" paddingLeft={2}>
           {t('Projects')}
         </Typography>
-        <SearchBar />
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            columnGap: '1rem',
-            rowGap: '1rem',
-          }}
-        >
+        <SearchBar boards={boards} />
+        <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">
+          {isLoading && <CircularProgress size={80} thickness={5} />}
+          {!isSuccess && !isLoading ? (
+            <Typography>{t('Something went wrong!')}</Typography>
+          ) : null}
           {boards && boards.length === 0 ? (
-            <Stack width="100%" textAlign="center">
-              <Typography fontSize="2rem" color="primary.light">
-                {t('No boards yet')}
-              </Typography>
-            </Stack>
+            <Typography>{t('No projects yet')}</Typography>
           ) : null}
           {boards &&
-            boards.map((el: BoardFromServer) => (
+            boards.map((board) => (
               <ProjectCard
-                key={el.id}
-                title={el.title}
-                description={el.description}
-                boardId={el.id}
-                onDelete={handleConfirmationInit}
+                key={board.id}
+                title={board.title}
+                description={board.description}
+                boardId={board.id}
+                onDelete={handleDeleteConfirmInit}
                 onEdit={handleEditModalInit}
               />
             ))}
-        </Box>
+        </Stack>
       </Stack>
     </Container>
   );
