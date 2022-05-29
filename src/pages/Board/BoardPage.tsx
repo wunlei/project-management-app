@@ -4,7 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 
 import { Link } from 'react-router-dom';
-import { Button, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
 import BoardTask from 'components/BoardTask/BoardTask';
@@ -41,6 +48,7 @@ function BoardPage() {
     handleToggleDeleteDialog,
     handleDeleteTask,
     isConfirmationDialogOpen,
+    isDeleteTaskLoading,
   } = useDeleteTask(selectedTask);
 
   const handleOpenEditModal: TaskCallback = (task) => {
@@ -57,10 +65,10 @@ function BoardPage() {
   const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
 
   const columns = [1];
-  const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
-  const columnId = 'b0c652d7-a226-4d9a-b3c9-d06aa60ee085';
+  const boardId = '2bc55381-8502-4ed3-987d-c6b0972c0c7d';
+  const columnId = 'e9c9f088-952b-4c7b-af11-ad4ce0b06d7e';
   const task = {
-    id: '680d0e89-5831-496a-bed1-de0789355651',
+    id: '2c83ad14-9703-4d44-a654-32758f71e957',
     title: 'asdsad',
     order: 12,
     description: ' ',
@@ -79,6 +87,14 @@ function BoardPage() {
       sx={{ overflow: 'hidden' }}
       flex={1}
     >
+      <Backdrop
+        sx={{
+          zIndex: 2000,
+        }}
+        open={isDeleteTaskLoading}
+      >
+        <CircularProgress color="secondary" size={100} />
+      </Backdrop>
       <ConfirmationDialog
         open={isConfirmationDialogOpen}
         dialogText={t(

@@ -46,6 +46,7 @@ function useDeleteTask(task: TaskFromServerExpanded) {
     handleDeleteTask,
     handleToggleDeleteDialog,
     isConfirmationDialogOpen,
+    isDeleteTaskLoading: deleteTaskResult.isLoading,
   };
 }
 
