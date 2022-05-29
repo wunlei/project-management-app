@@ -156,10 +156,20 @@ function BoardPage() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Stack
         component="main"
-        spacing={1}
         padding="1rem"
-        paddingTop="0"
-        sx={{ overflow: 'hidden' }}
+        // paddingTop="121px"
+        // paddingBottom="54px"
+        sx={{
+          paddingTop: {
+            xs: '165px',
+            sm: '120px',
+          },
+          paddingBottom: {
+            xs: '94px',
+            sm: '54px',
+          },
+        }}
+        height={'calc(100vh - 17px)'}
         flex={1}
       >
         <Stack
@@ -169,10 +179,19 @@ function BoardPage() {
           component="nav"
           flexWrap="wrap"
           sx={{
-            padding: 1,
+            position: 'fixed',
+            top: '64px',
+            left: 0,
+            width: '100%',
+            padding: '0.5rem 0.625rem',
+            backgroundColor: 'white',
             borderBottomWidth: '1px',
             borderBottomStyle: 'solid',
             borderBottomColor: 'primary.main',
+            flexDirection: {
+              xs: 'column',
+              sm: 'row',
+            },
           }}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -181,7 +200,18 @@ function BoardPage() {
                 <ArrowIcon />
               </IconButton>
             </Link>
-            <Typography variant="h4">
+            <Typography
+              title={dataGetBoard && dataGetBoard.title}
+              variant="h4"
+              sx={{
+                maxWidth: {
+                  xs: '250px',
+                  sm: '380px',
+                },
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {dataGetBoard && dataGetBoard.title}
             </Typography>
           </Stack>

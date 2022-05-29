@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -8,6 +8,7 @@ import {
   Toolbar,
   Tooltip,
   Link as MuiLink,
+  useScrollTrigger,
 } from '@mui/material';
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg';
 import { ReactComponent as ExitIcon } from 'assets/icons/log-out.svg';
@@ -19,31 +20,48 @@ import { setUserId } from 'redux/global/globalSlice';
 
 function Header() {
   const { t } = useTranslation();
-  const location = useLocation();
   const navigate = useNavigate();
+  const isOnBoard = useMatch('/projects/:id');
+  const isOnHome = useMatch('/');
+  const isOnProjects = useMatch('/projects');
+
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.global.userId);
+  const userId = useAppSelector((state) => state.global.userId);
+
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    target: window ? window : undefined,
+  });
 
   return (
     <HideOnScroll>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'white' }}>
+      <AppBar
+        position={isOnBoard ? 'fixed' : 'sticky'}
+        sx={{
+          top: isOnBoard ? 0 : 'unset',
+          left: isOnBoard ? 0 : 'unset',
+          backgroundColor: 'white',
+          boxShadow: trigger ? 3 : 0,
+        }}
+        elevation={0}
+      >
         <Toolbar
           sx={{
-            justifyContent: user ? 'space-between' : 'flex-end',
+            justifyContent: userId ? 'space-between' : 'flex-end',
             flexDirection: {
               xs: 'column-reverse',
               sm: 'row',
             },
           }}
         >
-          {user && (
+          {userId && (
             <Stack direction="row" spacing={1}>
               <MuiLink
                 component={Link}
                 to="/"
                 underline="hover"
                 sx={{
-                  fontWeight: location.pathname === '/' ? 'bold' : 'inherit',
+                  fontWeight: isOnHome ? 'bold' : 'inherit',
                 }}
               >
                 Home
@@ -53,24 +71,23 @@ function Header() {
                 to="projects"
                 underline="hover"
                 sx={{
-                  fontWeight:
-                    location.pathname === '/projects' ? 'bold' : 'inherit',
+                  fontWeight: isOnProjects ? 'bold' : 'inherit',
                 }}
               >
                 Projects
               </MuiLink>
             </Stack>
           )}
-          {location.pathname === '/projects' && user ? (
+          {isOnProjects && userId ? (
             <Button startIcon={<PlusIcon />} variant="contained">
               {t('Create project')}
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
             <LangMenu />
-            {!user ? (
+            {!userId ? (
               <>
-                <Button variant="outlined" component={Link} to="/login">
+                <Button variant="outlined" component={Link} to="/signin">
                   {t('Sign In')}
                 </Button>
                 <Button variant="contained" component={Link} to="/signup">
@@ -94,6 +111,7 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
+                      localStorage.removeItem('token');
                       dispatch(setUserId(null));
                       navigate('/');
                     }}

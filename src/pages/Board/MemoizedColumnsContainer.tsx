@@ -57,19 +57,8 @@ function ColumnsContainer({
             direction="row"
             spacing={1}
             sx={{
-              flexGrow: 1,
+              width: 'fit-content',
               overflowY: 'hidden',
-              scrollbarColor: `${grey[400]} ${grey[200]}`,
-              scrollbarWidth: 'thin',
-              '&::-webkit-scrollbar': {
-                height: '10px',
-              },
-              '&::-webkit-scrollbar-track': {
-                backgroundColor: grey[200],
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: grey[400],
-              },
             }}
           >
             {columnsJSX}
@@ -80,58 +69,14 @@ function ColumnsContainer({
     );
   } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
     return (
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{
-          flexGrow: 1,
-          overflowY: 'hidden',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            height: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
-      >
-        <Stack width="100%" textAlign="center">
-          <Typography fontSize="2rem" color="primary.light">
-            {t('No columns yet')}
-          </Typography>
-        </Stack>
-      </Stack>
+      <Typography fontSize="2rem" color="primary.light">
+        {t('No columns yet')}
+      </Typography>
     );
   } else if (isErrorGetBoard) {
     throw new Error(`boardId is invalid`);
   } else {
-    return (
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{
-          flexGrow: 1,
-          overflowY: 'hidden',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            height: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
-      >
-        <p>Loading</p>
-      </Stack>
-    );
+    return <p>Loading</p>;
   }
 }
 

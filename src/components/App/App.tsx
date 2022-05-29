@@ -5,12 +5,14 @@ import Stack from '@mui/material/Stack';
 import { team } from 'constants/appConstants';
 
 function App() {
-  const match = useMatch('/projects/:id');
+  const isOnBoard = useMatch('/projects/:id');
   return (
     <div className="App">
       <Stack
         sx={{
-          [match ? 'height' : 'minHeight']: '100vh',
+          minHeight: isOnBoard ? 'unset' : '100vh',
+          height: isOnBoard ? 'calc(100vh - 17px)' : 'unset',
+          marginTop: isOnBoard ? '8.5px' : 'unset',
         }}
         justifyContent="space-between"
       >
