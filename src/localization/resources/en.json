@@ -45,5 +45,6 @@
   "You are about to permanently delete your profile. This action cannot be undone.": "You are about to permanently delete your profile. This action cannot be undone.",
   "Create New Project": "Create New Project",
   "Description": "Description",
-  "Project successfully created": "Project successfully created"
+  "Project successfully created": "Project successfully created",
+  "Nothing found": "Nothing found"
 }
