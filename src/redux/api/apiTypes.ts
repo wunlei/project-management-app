@@ -1,6 +1,8 @@
 export type UserFromServer = { id: string; name: string; login: string };
 export type UserFromClient = { name: string; login: string; password: string };
 
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 export type FileInfo = {
   filename: string;
   fileSize: number;
@@ -10,9 +12,9 @@ export type TaskFromServer = {
   id: string;
   title: string;
   order: number;
-  done: boolean;
+  done?: boolean;
   description: string;
-  userId: string;
+  userId: string | null;
   files: Array<FileInfo>;
 };
 export type TaskFromServerExpanded = TaskFromServer & {
@@ -21,14 +23,15 @@ export type TaskFromServerExpanded = TaskFromServer & {
 };
 export type TaskFromClient = {
   title: string;
-  order?: number;
+  order: number;
   done?: boolean;
   description: string;
   userId?: string;
 };
-export type TaskFromClientExpanded = TaskFromClient & {
+export type UpdateTaskFromClient = TaskFromClient & {
   boardId: string;
   columnId: string;
+  order: number;
 };
 
 export type ColumnFromServer = {
@@ -39,7 +42,8 @@ export type ColumnFromServer = {
 export type ColumnFromServerExpended = ColumnFromServer & {
   tasks: Array<TaskFromServer>;
 };
-export type ColumnFromClient = { title: string; order: number };
+export type ColumnFromClient = { title: string };
+export type UpdateColumnFromClient = ColumnFromClient & { order: number };
 
 export type BoardFromServer = {
   id: string;
@@ -49,6 +53,7 @@ export type BoardFromServer = {
 export type BoardFromServerExpanded = BoardFromServer & {
   columns: Array<ColumnFromServerExpended>;
 };
+export type BoardFromClient = { title: string; description: string };
 
 // Sign -----
 
@@ -81,7 +86,7 @@ export type GetBoardResult = BoardFromServerExpanded;
 export type GetBoardArg = { boardId: string };
 
 export type CreateBoardResult = BoardFromServer;
-export type CreateBoardArg = { body: { title: string; description: string } };
+export type CreateBoardArg = { body: BoardFromClient };
 
 export type DeleteBoardResult = void;
 export type DeleteBoardArg = { boardId: string };
@@ -89,7 +94,7 @@ export type DeleteBoardArg = { boardId: string };
 export type UpdateBoardResult = BoardFromServer;
 export type UpdateBoardArg = {
   boardId: string;
-  body: { title: string; description: string };
+  body: BoardFromClient;
 };
 
 // Columns -----
@@ -113,7 +118,7 @@ export type UpdateColumnResult = ColumnFromServer;
 export type UpdateColumnArg = {
   boardId: string;
   columnId: string;
-  body: ColumnFromClient;
+  body: UpdateColumnFromClient;
 };
 
 // Tasks -----
@@ -135,7 +140,7 @@ export type CreateTaskResult = TaskFromServerExpanded;
 export type CreateTaskArg = {
   boardId: string;
   columnId: string;
-  body: TaskFromClient;
+  body: PartialBy<TaskFromClient, 'order'>;
 };
 
 export type DeleteTaskResult = void;
@@ -150,7 +155,7 @@ export type UpdateTaskArg = {
   boardId: string;
   columnId: string;
   taskId: string;
-  body: TaskFromClientExpanded;
+  body: UpdateTaskFromClient;
 };
 
 // File -----

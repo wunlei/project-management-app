@@ -6,23 +6,6 @@ export const schema = yup.object({
     .string()
     .required('Task title is required')
     .max(30, 'Task title must be at most 30 characters'),
-  picture: yup
-    .mixed<FileList>()
-    .nullable()
-    .test('fileSize', 'Is too large', (value) => {
-      if (value && value[0]) {
-        return value[0].size <= 1000000;
-      } else {
-        return true;
-      }
-    })
-    .test('isIncorrectType', 'You can only pick png/jpg/jpeg', (value) => {
-      if (value && value[0]) {
-        return value[0].type === 'image/jpeg' || value[0].type === 'image/png';
-      } else {
-        return true;
-      }
-    }),
   description: yup
     .string()
     .ensure()
