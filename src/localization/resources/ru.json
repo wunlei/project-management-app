@@ -65,7 +65,7 @@
   "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.": "Канбан — это инфраструктура, обеспечивающая видимость всего процесса и часто используемая в Agile и DevOps для обеспечения непрерывной доставки и улучшения (СI/CD).",
   "Manage your projects easily": "Управляй своими проектами легко",
   "UI design, components implementation and Quality Assurance": "UI дизайн, разработка компонентов и Quality Assurance",
-  "Components implementation": "Разработка компонентов",
+  "Components implementation, validation and localization": "Разработка компонентов, валидация и локализация",
   "BackEnd integration and Drag-and-Drop": "Интеграция с BackEnd и Drag-and-Drop",
   "Get started": "Начать",
   "Column successfully deleted": "Колонка успешно удалена"

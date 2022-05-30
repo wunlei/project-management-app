@@ -11,7 +11,7 @@ export const team = [
     name: 'ninox14',
     avatar: 'https://avatars.githubusercontent.com/u/31549851',
     color: '#61D6FB',
-    text: 'Components implementation',
+    text: 'Components implementation, validation and localization',
   },
   {
     url: 'https://github.com/nosbog',
