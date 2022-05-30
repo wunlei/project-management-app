@@ -38,10 +38,13 @@ function HomePage() {
       >
         <Stack
           maxWidth={510}
-          alignItems="center"
+          alignItems={firstColQueryMatch ? 'center' : 'flex-start'}
           textAlign={firstColQueryMatch ? 'center' : undefined}
         >
-          <Typography variant="h1" fontSize={{ sm: 50, md: 64, xs: 40 }}>
+          <Typography
+            variant="h1"
+            fontSize={{ md: '4rem', sm: '3rem', xs: '2rem' }}
+          >
             {t('Manage your projects easily')}
           </Typography>
           <Typography
@@ -153,7 +156,7 @@ function HomePage() {
               padding={2}
               spacing={2}
               sx={{
-                borderRadius: '15px',
+                borderRadius: 3,
                 backgroundColor: dummyGreyBG,
                 boxShadow: '0px 6px 9px -1px rgba(0, 0, 0, 0.17);',
               }}
@@ -161,13 +164,13 @@ function HomePage() {
               <Box
                 width={120}
                 height={15}
-                sx={{ borderRadius: '15px', backgroundColor: item.color }}
+                sx={{ borderRadius: 3, backgroundColor: item.color }}
               />
               <Stack
                 direction="row"
                 padding={2}
                 spacing={2}
-                sx={{ borderRadius: '15px', backgroundColor: '#FFF' }}
+                sx={{ borderRadius: 3, backgroundColor: 'white' }}
               >
                 <Stack spacing={2}>
                   <Typography fontWeight={700}>{item.name}</Typography>
