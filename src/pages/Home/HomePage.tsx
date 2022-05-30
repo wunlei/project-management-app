@@ -151,63 +151,82 @@ function HomePage() {
         </Stack>
       </Stack>
       <Container sx={{ mt: 6 }}>
-        <Stack
-          flexDirection="row"
-          mt={4}
-          mb={3}
-          gap={3}
-          flexWrap="wrap"
-          justifyContent="center"
-        >
-          {team.map((item, i) => (
-            <Stack
-              key={i}
-              maxWidth={420}
-              padding={2}
-              spacing={2}
-              sx={{
-                borderRadius: 3,
-                backgroundColor: dummyGreyBG,
-                boxShadow: '0px 6px 9px -1px rgba(0, 0, 0, 0.3);',
-              }}
-            >
-              <Box
-                width={120}
-                height={15}
-                sx={{ borderRadius: 3, backgroundColor: item.color }}
-              />
+        <Stack alignItems="center">
+          <Typography
+            variant="h3"
+            sx={{
+              padding: 2,
+              backgroundColor: 'white',
+              borderRadius: 3,
+              boxShadow: '0px 6px 8px -1px rgba(0, 0, 0, 0.115);',
+              maxWidth: 'fit-content',
+            }}
+            textAlign="center"
+          >
+            {t('Our team')}
+          </Typography>
+          <Stack
+            flexDirection="row"
+            mt={4}
+            mb={3}
+            gap={3}
+            flexWrap="wrap"
+            justifyContent="center"
+          >
+            {team.map((item, i) => (
               <Stack
-                direction="row"
+                key={i}
+                maxWidth={420}
                 padding={2}
                 spacing={2}
-                sx={{ borderRadius: 3, backgroundColor: 'white', flexGrow: 1 }}
+                sx={{
+                  borderRadius: 3,
+                  backgroundColor: dummyGreyBG,
+                  boxShadow: '0px 6px 9px -1px rgba(0, 0, 0, 0.3);',
+                }}
               >
-                <Stack spacing={2}>
-                  <Typography fontWeight={700}>{item.name}</Typography>
-                  <Typography>{t(item.text)}</Typography>
-                </Stack>
-                <MuiLink
-                  href={item.url}
+                <Box
+                  width={120}
+                  height={15}
+                  sx={{ borderRadius: 3, backgroundColor: item.color }}
+                />
+                <Stack
+                  direction="row"
+                  padding={2}
+                  spacing={2}
                   sx={{
-                    alignSelf: 'flex-end',
-                    '&:hover img': {
-                      boxShadow: '0px 6px 9px 2px rgba(0, 0, 0, 0.267)',
-                    },
+                    borderRadius: 3,
+                    backgroundColor: 'white',
+                    flexGrow: 1,
                   }}
-                  target={'_blank'}
                 >
-                  <Box
-                    component="img"
-                    src={item.avatar}
-                    alt={`${item.name} avatar`}
-                    width={88}
-                    height={88}
-                    sx={{ borderRadius: '50%', transition: '0.2s linear' }}
-                  />
-                </MuiLink>
+                  <Stack spacing={2}>
+                    <Typography fontWeight={700}>{item.name}</Typography>
+                    <Typography>{t(item.text)}</Typography>
+                  </Stack>
+                  <MuiLink
+                    href={item.url}
+                    sx={{
+                      alignSelf: 'flex-end',
+                      '&:hover img': {
+                        boxShadow: '0px 6px 9px 2px rgba(0, 0, 0, 0.267)',
+                      },
+                    }}
+                    target={'_blank'}
+                  >
+                    <Box
+                      component="img"
+                      src={item.avatar}
+                      alt={`${item.name} avatar`}
+                      width={88}
+                      height={88}
+                      sx={{ borderRadius: '50%', transition: '0.2s linear' }}
+                    />
+                  </MuiLink>
+                </Stack>
               </Stack>
-            </Stack>
-          ))}
+            ))}
+          </Stack>
         </Stack>
       </Container>
     </main>
