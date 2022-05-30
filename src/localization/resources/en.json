@@ -8,6 +8,7 @@
   "Page Not Found": "Page Not Found",
   "Back to Home": "Back to Home",
   "Projects": "Projects",
+  "Home": "Home",
   "Search": "Search",
   "Add Column": "Add Column",
   "Title": "Title",
@@ -60,5 +61,11 @@
   "Edit Project": "Edit project",
   "You are about to permanently delete project. This action cannot be undone.": "You are about to permanently delete project. This action cannot be undone.",
   "Column successfully created": "Column successfully created",
-  "Create new column": "Create new column"
+  "Create new column": "Create new column",
+  "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.": "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.",
+  "Manage your projects easily": "Manage your projects easily",
+  "UI design, components implementation and Quality Assurance": "UI design, components implementation and Quality Assurance",
+  "Components implementation": "Components implementation",
+  "BackEnd integration and Drag-and-Drop": "BackEnd integration and Drag-and-Drop",
+  "Get started": "Get started"
 }

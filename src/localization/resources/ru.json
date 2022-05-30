@@ -1,13 +1,14 @@
 {
   "Save": "Сохранить",
   "Create project": "Создать проект",
-  "Sign In": "Войти",
-  "Sign Up": "Зарегистрироваться",
+  "Sign In": "Вход",
+  "Sign Up": "Регистрация",
   "Sign Out": "Выйти",
   "Profile": "Профиль",
   "Page Not Found": "Страница не найдена",
   "Back to Home": "Вернуться на Главную",
   "Projects": "Проекты",
+  "Home": "Главная",
   "Search": "Поиск",
   "Add Column": "Добавить колонку",
   "Title": "Название",
@@ -60,5 +61,11 @@
   "Edit Project": "Редактировать проект",
   "You are about to permanently delete project. This action cannot be undone.": "Вы собираетесь навсегда удалить проект. Это действие невозможно отменить.",
   "Column successfully created": "Колонка создана успешно",
-  "Create new column": "Создать новую колонку"
+  "Create new column": "Создать новую колонку",
+  "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.": "Канбан — это инфраструктура, обеспечивающая видимость всего процесса и часто используемая в Agile и DevOps для обеспечения непрерывной доставки и улучшения (СI/CD).",
+  "Manage your projects easily": "Управляй своими проектами легко",
+  "UI design, components implementation and Quality Assurance": "UI дизайн, разработка компонентов и Quality Assurance",
+  "Components implementation": "Разработка компонентов",
+  "BackEnd integration and Drag-and-Drop": "Интеграция с BackEnd и Drag-and-Drop",
+  "Get started": "Начать"
 }
