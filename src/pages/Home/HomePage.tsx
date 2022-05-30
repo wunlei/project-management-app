@@ -25,11 +25,15 @@ function HomePage() {
       <Stack
         justifyContent="center"
         alignItems={firstColQueryMatch ? 'center' : undefined}
-        pl={secondColQueryMatch ? (firstColQueryMatch ? 0 : 6) : 2}
+        pl={
+          secondColQueryMatch ? (firstColQueryMatch ? 0 : 6) : { xl: 15, lg: 2 }
+        }
         pb={5}
         sx={{
-          minHeight: firstColQueryMatch ? '90vh' : '110vh',
-          // minWidth: firstColQueryMatch ? '100vw' : undefined,
+          minHeight: firstColQueryMatch
+            ? '90vh'
+            : { xl: '100vh', lg: '110vh', md: '110vh', sm: '110vh' },
+          minWidth: firstColQueryMatch ? '100vw' : undefined,
         }}
       >
         <Stack
@@ -37,7 +41,7 @@ function HomePage() {
           alignItems="center"
           textAlign={firstColQueryMatch ? 'center' : undefined}
         >
-          <Typography variant="h1" fontSize={64}>
+          <Typography variant="h1" fontSize={{ sm: 50, md: 64, xs: 40 }}>
             {t('Manage your projects easily')}
           </Typography>
           <Typography
