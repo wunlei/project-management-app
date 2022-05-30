@@ -35,6 +35,7 @@ const baseQueryWithErrorHandlers: BaseQueryFn<
     if (result.error && result.error.status === 401) {
       api.dispatch(setUserId(null));
       api.dispatch(setToken(null));
+      window.location.reload();
     }
 
     return result;
