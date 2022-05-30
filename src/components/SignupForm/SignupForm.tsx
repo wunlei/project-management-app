@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'redux/hooks';
+import { setToken, setUserId } from 'redux/global/globalSlice';
 import {
   Button,
   Stack,
@@ -8,23 +12,12 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSignInMutation, useSignUpMutation } from 'redux/api/endpoints/sign';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { useTranslation } from 'react-i18next';
 import { UserInputs, userValidationSchema } from 'constants/validation';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
-import { setToken, setUserId } from 'redux/global/globalSlice';
-import { useAppDispatch } from 'redux/hooks';
-
-function getErrorMessage(status: FetchBaseQueryError['status']) {
-  switch (status) {
-    default:
-      return 'Something went wrong!';
-  }
-}
 
 function SignupForm() {
   const { t } = useTranslation();
@@ -126,7 +119,7 @@ function SignupForm() {
         {t('Sign Up')}
       </Typography>
       {errorCode && (
-        <Alert severity="error">{t(getErrorMessage(errorCode))}</Alert>
+        <Alert severity="error">{t('Something went wrong!')}</Alert>
       )}
       <Typography>
         {t('Already have an account?')}{' '}

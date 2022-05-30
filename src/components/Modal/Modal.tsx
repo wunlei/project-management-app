@@ -11,7 +11,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { ModalProps } from './Modal.types';
-import { ReactComponent as CrossIcon } from '../../assets/icons/cross.svg';
+import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
 
 function Modal(props: ModalProps) {
   const {
@@ -67,7 +67,6 @@ function Modal(props: ModalProps) {
         <Button onClick={onClose} color="error" disabled={isLoading}>
           {rejectText || t('Cancel')}
         </Button>
-
         <Button
           onClick={onConfirm}
           variant="outlined"

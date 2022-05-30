@@ -2,25 +2,19 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
-
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
-import grey from '@mui/material/colors/grey';
-
-import { Stack, TextField, Autocomplete } from '@mui/material';
-import Modal from 'components/Modal/Modal';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateTaskFormValues, EditTaskFormProps } from './TaskForms.types';
-import { schema } from './TaskForms.validation';
-
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from './TaskForms.validation';
+import { Stack, TextField, Autocomplete } from '@mui/material';
+import Modal from 'components/Modal/Modal';
+import { CreateTaskFormValues, EditTaskFormProps } from './TaskForms.types';
+import scrollStyle from 'styles/scrollStyle';
 
 function EditTaskFormModal(props: EditTaskFormProps) {
   const { handleClose, open, task } = props;
   const dispatch = useAppDispatch();
-
   const { t } = useTranslation();
 
   const { data: users } = useGetAllUsersQuery();
@@ -164,19 +158,12 @@ function EditTaskFormModal(props: EditTaskFormProps) {
               inputProps={{ maxLength: 500 }}
               disabled={updateTaskResult.isLoading}
               sx={{
-                '.MuiInputBase-inputMultiline': {
-                  scrollbarColor: `${grey[400]} ${grey[200]}`,
-                  scrollbarWidth: 'thin',
-                  '&::-webkit-scrollbar': {
-                    width: '10px',
-                    left: '-10px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    backgroundColor: grey[200],
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: grey[400],
-                  },
+                '& .MuiInputBase-inputMultiline': {
+                  ...scrollStyle,
+                  paddingRight: 1,
+                },
+                '& .MuiInputBase-root': {
+                  paddingRight: 0,
                 },
               }}
               inputRef={ref}

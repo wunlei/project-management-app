@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useTranslation } from 'react-i18next';
 import {
   useGetUserQuery,
   useUpdateUserMutation,
 } from 'redux/api/endpoints/users';
-import { useTranslation } from 'react-i18next';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { userValidationSchema } from 'constants/validation';
@@ -148,8 +148,8 @@ function UpdateUserForm() {
                   : ''
               }
               error={!!error?.message}
-              onBlur={onBlur} // notify when input is touched
-              onChange={onChange} // send value to hook form
+              onBlur={onBlur}
+              onChange={onChange}
               inputRef={ref}
             />
           )}

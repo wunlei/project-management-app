@@ -1,9 +1,9 @@
 import { Outlet, useMatch } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
 import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
-import Stack from '@mui/material/Stack';
-import { team } from 'constants/appConstants';
 import AppAlert from 'components/AppAlert/AppAlert';
+import { team } from 'constants/appConstants';
 
 function App() {
   const isOnBoard = useMatch('/projects/:id');

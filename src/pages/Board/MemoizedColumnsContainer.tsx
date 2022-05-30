@@ -1,7 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { Typography, Stack } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import SuccessColumnsContainer, {
   SuccessColumnsContainerProps,
 } from './SuccessColumnsContainer';

@@ -36,7 +36,7 @@ function HomePage() {
           minHeight: firstColQueryMatch
             ? '90vh'
             : { xl: '100vh', lg: '110vh', md: '110vh', sm: '110vh' },
-          width: firstColQueryMatch ? '100%' : undefined,
+          // width: firstColQueryMatch ? '100%' : undefined,
         }}
       >
         <Stack

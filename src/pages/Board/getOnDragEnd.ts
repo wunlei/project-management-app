@@ -5,19 +5,21 @@ import {
   TaskFromServer,
   UpdateTaskArg,
   UpdateColumnArg,
-} from '../../redux/api/apiTypes';
+} from 'redux/api/apiTypes';
+
+interface GetOnDragEndProps {
+  dataGetBoard?: BoardFromServerExpanded;
+  updateTask: (arg: UpdateTaskArg) => void;
+  updateColumn: (arg: UpdateColumnArg) => void;
+  setDataGetBoard: (state: BoardFromServerExpanded | undefined) => void;
+}
 
 export default function getOnDragEnd({
   dataGetBoard,
   updateTask,
   updateColumn,
   setDataGetBoard,
-}: {
-  dataGetBoard?: BoardFromServerExpanded;
-  updateTask: (arg: UpdateTaskArg) => void;
-  updateColumn: (arg: UpdateColumnArg) => void;
-  setDataGetBoard: (state: BoardFromServerExpanded | undefined) => void;
-}) {
+}: GetOnDragEndProps) {
   return function (result: DropResult) {
     const { destination, source, draggableId, type } = result;
 

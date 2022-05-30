@@ -8,8 +8,8 @@ import UserPage from 'pages/User/UserPage';
 import AuthPage from 'pages/Auth/AuthPage';
 import SignupForm from 'components/SignupForm/SignupForm';
 import SigninForm from 'components/SigninForm/SigninForm';
+import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import PrivateRoute from './PrivateRoute';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { CircularProgress, Backdrop } from '@mui/material';
 
 function AppRouter() {

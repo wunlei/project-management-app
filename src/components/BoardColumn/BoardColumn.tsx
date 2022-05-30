@@ -9,17 +9,18 @@ import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import grey from '@mui/material/colors/grey';
 import scrollStyle from 'styles/scrollStyle';
 
-function BoardColumn({
-  columnData,
-  setIsColumnDeleteConfirmOpen: setIsConfirmationOpen,
-  handleSelectColumnId,
+function BoardColumn(props: BoardColumnProps) {
+  const {
+    columnData,
+    children,
+    draggableProps,
+    dragHandleProps,
+    innerRef,
+    handleCreateTaskModalOpen,
+    handleSelectColumnId,
+    setIsColumnDeleteConfirmOpen,
+  } = props;
 
-  handleCreateTaskModalOpen,
-  children,
-  innerRef,
-  draggableProps,
-  dragHandleProps,
-}: BoardColumnProps) {
   const {
     body: { title },
     columnId,
@@ -79,7 +80,7 @@ function BoardColumn({
             size="small"
             onClick={() => {
               handleSelectColumnId(columnId);
-              setIsConfirmationOpen();
+              setIsColumnDeleteConfirmOpen();
             }}
           >
             <TrashIcon />
