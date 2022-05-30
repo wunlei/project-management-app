@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice';
-import { setUserId } from 'redux/global/globalSlice';
+import { setUserId, setToken } from 'redux/global/globalSlice';
 import * as Types from '../apiTypes';
 
 const api = apiSlice.injectEndpoints({
@@ -40,7 +40,7 @@ const api = apiSlice.injectEndpoints({
 
             if (errorWithStatus.status === 401) {
               dispatch(setUserId(null));
-              localStorage.removeItem('token');
+              dispatch(setToken(null));
 
               throw new Error(`
               Expired token detected.
