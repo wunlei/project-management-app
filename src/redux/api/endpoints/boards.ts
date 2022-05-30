@@ -1,6 +1,8 @@
 import { apiSlice } from '../apiSlice';
-import { setUserId } from 'redux/global/globalSlice';
+import { setUserId, setToken } from 'redux/global/globalSlice';
 import * as Types from '../apiTypes';
+import { baseUrl } from '../apiSlice';
+import getToken from 'utils/api/getToken';
 
 const api = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,24 +14,49 @@ const api = apiSlice.injectEndpoints({
       providesTags: ['BOARDS'],
     }),
     getAllBoardsExpanded: builder.query<Types.GetBoardResult[], void>({
-      async queryFn(args, { dispatch }) {
+      async queryFn(_, { dispatch }) {
         try {
-          const getAllBoardsData = await dispatch(
-            api.endpoints.getAllBoards.initiate(args)
-          ).unwrap();
-
-          const arrOfPromises: Promise<Types.GetBoardResult>[] = [];
-
-          getAllBoardsData.forEach((board) => {
-            const promise = dispatch(
-              api.endpoints.getBoard.initiate({ boardId: board.id })
-            ).unwrap();
-            arrOfPromises.push(promise);
+          const getAllBoardsDataResponse = await fetch(`${baseUrl}/boards`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
 
-          const result = await Promise.all(arrOfPromises);
+          const getAllBoardsData =
+            (await getAllBoardsDataResponse.json()) as Types.GetAllBoardsResult;
 
-          return { data: result };
+          const arrOf_PromiseResponseGetBoard: Promise<Response>[] = [];
+
+          getAllBoardsData.forEach((board) => {
+            const promise = fetch(`${baseUrl}/boards/${board.id}`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            });
+            arrOf_PromiseResponseGetBoard.push(promise);
+          });
+
+          const arrOf_ResponseGetBoard = await Promise.all(
+            arrOf_PromiseResponseGetBoard
+          );
+
+          const arrOf_ResponseToJSGetBoard = arrOf_ResponseGetBoard.map(
+            async (response) =>
+              response.json() as Promise<Types.BoardFromServerExpanded>
+          );
+
+          const arrOf_GetBoard = await Promise.all(arrOf_ResponseToJSGetBoard);
+
+          arrOf_GetBoard.forEach((board) => {
+            board.columns.sort((a, b) => a.order - b.order);
+            board.columns.forEach((column) =>
+              column.tasks.sort((a, b) => a.order - b.order)
+            );
+          });
+
+          return { data: arrOf_GetBoard };
         } catch (error: unknown) {
           if (
             error &&
@@ -40,7 +67,8 @@ const api = apiSlice.injectEndpoints({
 
             if (errorWithStatus.status === 401) {
               dispatch(setUserId(null));
-              localStorage.removeItem('token');
+              dispatch(setToken(null));
+              window.location.reload();
 
               throw new Error(`
               Expired token detected.
@@ -91,7 +119,7 @@ const api = apiSlice.injectEndpoints({
       Types.UpdateBoardArg
     >({
       query: (arg) => ({
-        url: `users/${arg.boardId}`,
+        url: `boards/${arg.boardId}`,
         method: 'PUT',
         body: arg.body,
       }),

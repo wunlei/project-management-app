@@ -1,48 +1,39 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-
-import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
-import { ReactComponent as CrossIcon } from 'assets/icons/cross.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import { Droppable } from 'react-beautiful-dnd';
+import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { BoardColumnProps } from './BoardColumn.types';
+import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import grey from '@mui/material/colors/grey';
+import scrollStyle from 'styles/scrollStyle';
 
-function BoardColumn(props: BoardColumnProps) {
-  const { children, title, boardId, columnId, handleSelectColumnId } = props;
+function BoardColumn({
+  columnData,
+  setIsColumnDeleteConfirmOpen: setIsConfirmationOpen,
+  handleSelectColumnId,
+
+  handleCreateTaskModalOpen,
+  children,
+  innerRef,
+  draggableProps,
+  dragHandleProps,
+}: BoardColumnProps) {
+  const {
+    body: { title },
+    columnId,
+  } = columnData;
 
   const { t } = useTranslation();
-
-  const [columnMenuAnchorEl, setColumnMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
-  const [editMode, isEditMode] = useState<boolean>(false);
-  const isColumnMenuOpen = Boolean(columnMenuAnchorEl);
-
-  const handleColumnMenuClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    setColumnMenuAnchorEl(event.currentTarget);
-  };
-
-  const handleColumnMenuClose = () => {
-    setColumnMenuAnchorEl(null);
-  };
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   const handleTitleEdit = () => {
-    isEditMode(!editMode);
+    setIsEditMode(!isEditMode);
   };
 
   return (
-    <Stack>
+    <Stack ref={innerRef} {...draggableProps} {...dragHandleProps}>
       <Stack
         direction="row"
         alignItems="center"
@@ -56,45 +47,29 @@ function BoardColumn(props: BoardColumnProps) {
           backgroundColor: grey[200],
         }}
       >
-        <div>
-          {editMode ? (
-            <Stack direction="row" alignItems="center">
-              <TextField
-                label={t('Title')}
-                variant="outlined"
-                required
-                defaultValue={title}
-              />
-              <Stack direction="row" height="fit-content">
-                <IconButton color="success" onClick={handleTitleEdit}>
-                  <CheckIcon />
-                </IconButton>
-                <IconButton color="error" onClick={handleTitleEdit}>
-                  <CrossIcon />
-                </IconButton>
-              </Stack>
-            </Stack>
-          ) : (
-            <Typography
-              variant="h5"
-              fontWeight="bold"
-              onClick={handleTitleEdit}
-              sx={{ overflowWrap: 'anywhere' }}
-            >
-              {title}
-            </Typography>
-          )}
-        </div>
+        {isEditMode ? (
+          <TitleEditor handleClose={handleTitleEdit} columnData={columnData} />
+        ) : (
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            onClick={handleTitleEdit}
+            sx={{ overflowWrap: 'anywhere' }}
+          >
+            {title}
+          </Typography>
+        )}
         <Stack
           direction="row"
           alignItems="center"
-          style={{ display: editMode ? 'none' : '' }}
+          style={{ display: isEditMode ? 'none' : '' }}
         >
           <Tooltip title={t('Add Task')} arrow>
             <IconButton
               size="small"
               onClick={() => {
                 handleSelectColumnId(columnId);
+                handleCreateTaskModalOpen();
               }}
             >
               <PlusIcon />
@@ -102,57 +77,43 @@ function BoardColumn(props: BoardColumnProps) {
           </Tooltip>
           <IconButton
             size="small"
-            id="menu-button"
-            aria-controls={isColumnMenuOpen ? 'column-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={isColumnMenuOpen ? 'true' : undefined}
-            onClick={handleColumnMenuClick}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id="column-menu"
-            anchorEl={columnMenuAnchorEl}
-            open={isColumnMenuOpen}
-            onClose={handleColumnMenuClose}
-            MenuListProps={{
-              'aria-labelledby': 'menu-button',
+            onClick={() => {
+              handleSelectColumnId(columnId);
+              setIsConfirmationOpen();
             }}
           >
-            <MenuItem onClick={handleColumnMenuClose}>
-              {t('Delete column')}
-            </MenuItem>
-          </Menu>
+            <TrashIcon />
+          </IconButton>
         </Stack>
       </Stack>
-      <Stack
-        padding={1}
-        spacing={1}
-        alignItems="center"
-        paddingBottom="1rem"
-        width={'280px'}
-        sx={{
-          backgroundColor: grey[200],
-          overflowX: 'hidden',
-          overflowY: 'auto',
-          borderBottomLeftRadius: '0.5rem',
-          borderBottomRightRadius: '0.5rem',
-          minHeight: '2rem',
-          scrollbarColor: `${grey[400]} ${grey[200]}`,
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': {
-            width: '10px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: grey[200],
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: grey[400],
-          },
-        }}
-      >
-        {children}
-      </Stack>
+
+      <Droppable droppableId={columnId} type="task">
+        {(provided) => (
+          <Stack
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            padding={1}
+            spacing={1}
+            alignItems="center"
+            paddingBottom="1rem"
+            width={'280px'}
+            sx={[
+              {
+                backgroundColor: grey[200],
+                overflowX: 'hidden',
+                overflowY: 'auto',
+                borderBottomLeftRadius: '0.5rem',
+                borderBottomRightRadius: '0.5rem',
+                minHeight: '2rem',
+              },
+              ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+            ]}
+          >
+            {children}
+            {provided.placeholder}
+          </Stack>
+        )}
+      </Droppable>
     </Stack>
   );
 }

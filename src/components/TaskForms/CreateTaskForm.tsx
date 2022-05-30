@@ -16,6 +16,7 @@ import { schema } from './TaskForms.validation';
 
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
+import scrollStyle from 'styles/scrollStyle';
 
 function CreateTaskFormModal(props: CreateTaskFormProps) {
   const { handleClose, open, boardId, columnId } = props;
@@ -143,19 +144,12 @@ function CreateTaskFormModal(props: CreateTaskFormProps) {
               inputProps={{ maxLength: 500 }}
               disabled={createTaskResult.isLoading}
               sx={{
-                '.MuiInputBase-inputMultiline': {
-                  scrollbarColor: `${grey[400]} ${grey[200]}`,
-                  scrollbarWidth: 'thin',
-                  '&::-webkit-scrollbar': {
-                    width: '10px',
-                    left: '-10px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    backgroundColor: grey[200],
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: grey[400],
-                  },
+                '& .MuiInputBase-inputMultiline': {
+                  ...scrollStyle,
+                  paddingRight: 1,
+                },
+                '& .MuiInputBase-root': {
+                  paddingRight: 0,
                 },
               }}
               inputRef={ref}

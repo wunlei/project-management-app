@@ -1,8 +1,10 @@
+import { useMatch } from 'react-router-dom';
 import { Link, Stack, Typography } from '@mui/material';
 import { ReactComponent as RsLogo } from 'assets/icons/rs-logo.svg';
 import { FooterProps } from './Footer.types';
 
 function Footer({ data }: FooterProps) {
+  const isOnBoard = useMatch('/projects/:id');
   return (
     <Stack
       component="footer"
@@ -11,6 +13,11 @@ function Footer({ data }: FooterProps) {
       rowGap={2}
       padding={'0.75rem 1rem'}
       sx={{
+        position: isOnBoard ? 'fixed' : 'unset',
+        bottom: isOnBoard ? 0 : 'unset',
+        left: isOnBoard ? 0 : 'unset',
+        backgroundColor: 'white',
+        width: '100%',
         flexDirection: {
           sm: 'row',
         },

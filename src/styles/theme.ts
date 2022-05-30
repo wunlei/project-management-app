@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import scrollStyle from './scrollStyle';
 export const theme = createTheme({
   typography: {
     fontFamily: ['Manrope', 'sans-serif'].join(','),
@@ -54,6 +55,13 @@ export const theme = createTheme({
       styleOverrides: {
         tooltip: {
           fontSize: '0.875rem',
+        },
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          ...scrollStyle,
         },
       },
     },

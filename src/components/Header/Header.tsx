@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -22,10 +22,13 @@ import CreateProjectForm from 'components/CreateProjectForm/CreateProjectForm';
 
 function Header() {
   const { t } = useTranslation();
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.global.token);
+
+  const isOnBoard = useMatch('/projects/:id');
+  const isOnHome = useMatch('/');
+  const isOnProjects = useMatch('/projects');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -45,12 +48,14 @@ function Header() {
   return (
     <HideOnScroll>
       <AppBar
-        position="sticky"
-        elevation={0}
+        position={isOnBoard ? 'fixed' : 'sticky'}
         sx={{
+          top: isOnBoard ? 0 : 'unset',
+          left: isOnBoard ? 0 : 'unset',
           backgroundColor: 'white',
           boxShadow: trigger ? 3 : 0,
         }}
+        elevation={0}
       >
         <CreateProjectForm
           open={isModalOpen}
@@ -72,7 +77,7 @@ function Header() {
                 to="/"
                 underline="hover"
                 sx={{
-                  fontWeight: location.pathname === '/' ? 'bold' : 'inherit',
+                  fontWeight: isOnHome ? 'bold' : 'inherit',
                 }}
               >
                 Home
@@ -82,15 +87,14 @@ function Header() {
                 to="projects"
                 underline="hover"
                 sx={{
-                  fontWeight:
-                    location.pathname === '/projects' ? 'bold' : 'inherit',
+                  fontWeight: isOnProjects ? 'bold' : 'inherit',
                 }}
               >
                 Projects
               </MuiLink>
             </Stack>
           )}
-          {location.pathname === '/projects' && token ? (
+          {isOnProjects && token ? (
             <Button
               startIcon={<PlusIcon />}
               variant="contained"

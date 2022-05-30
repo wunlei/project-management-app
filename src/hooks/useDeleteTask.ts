@@ -6,14 +6,12 @@ import { setAlertState } from 'redux/global/globalSlice';
 import { useDeleteTaskMutation } from 'redux/api/endpoints/tasks';
 
 function useDeleteTask(task: TaskFromServerExpanded | null) {
-  // const { boardId, id: taskId, columnId } = task;
-
   const dispatch = useAppDispatch();
   const [deleteTask, deleteTaskResult] = useDeleteTaskMutation();
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
     useState(false);
 
-  const handleDeleteTask = () => {
+  const handleTaskDelete = () => {
     if (task) {
       deleteTask({
         boardId: task.boardId,
@@ -23,7 +21,7 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
     }
   };
 
-  const handleToggleDeleteDialog = () => {
+  const handleTaskDeleteDialogToggle = () => {
     setIsConfirmationDialogOpen(!isConfirmationDialogOpen);
   };
 
@@ -31,7 +29,7 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
     if (deleteTaskResult.isSuccess) {
       dispatch(
         setAlertState({
-          alertMessage: 'Task deleted successfuly!',
+          alertMessage: 'Task deleted successfully!',
           alertType: 'success',
         })
       );
@@ -40,7 +38,7 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
       dispatch(
         setAlertState({
           alertMessage: 'Something went wrong!',
-          alertType: 'success',
+          alertType: 'error',
         })
       );
     }
@@ -49,8 +47,8 @@ function useDeleteTask(task: TaskFromServerExpanded | null) {
   }, [deleteTaskResult.isError, deleteTaskResult.isSuccess]);
 
   return {
-    handleDeleteTask,
-    handleToggleDeleteDialog,
+    handleTaskDelete,
+    handleTaskDeleteDialogToggle,
     isTaskDeleteDialogOpen: isConfirmationDialogOpen,
     isDeleteTaskLoading: deleteTaskResult.isLoading,
   };
