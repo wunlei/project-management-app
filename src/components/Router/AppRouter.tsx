@@ -1,5 +1,5 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import App from 'components/App/App';
 import BoardPage from 'pages/Board/BoardPage';
 import HomePage from 'pages/Home/HomePage';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
@@ -10,8 +10,10 @@ import SignupForm from 'components/SignupForm/SignupForm';
 import SigninForm from 'components/SigninForm/SigninForm';
 import PrivateRoute from './PrivateRoute';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { CircularProgress } from '@mui/material';
 
 function AppRouter() {
+  const App = React.lazy(() => import('components/App/App'));
   return (
     <BrowserRouter>
       <Routes>
@@ -19,7 +21,23 @@ function AppRouter() {
           path="/"
           element={
             <ErrorBoundary>
-              <App />
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      height: '100vh',
+                      width: '100vw',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <CircularProgress size={100} thickness={5} />
+                  </div>
+                }
+              >
+                <App />
+              </Suspense>
             </ErrorBoundary>
           }
         >
