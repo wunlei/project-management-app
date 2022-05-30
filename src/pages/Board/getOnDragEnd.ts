@@ -5,7 +5,7 @@ import {
   TaskFromServer,
   UpdateTaskArg,
   UpdateColumnArg,
-} from '../../redux/api/apiTypes';
+} from 'redux/api/apiTypes';
 
 export default function getOnDragEnd({
   dataGetBoard,
