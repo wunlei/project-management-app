@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import createTheme from '@mui/material/styles/createTheme';
 import scrollStyle from './scrollStyle';
 export const theme = createTheme({
   typography: {
@@ -30,6 +30,11 @@ export const theme = createTheme({
     },
     error: {
       main: '#A82424',
+    },
+    secondary: {
+      main: '#5BB9FD',
+      light: '#94ebff',
+      dark: '#0089ca',
     },
   },
   components: {

@@ -20,3 +20,9 @@ export const colors = [
   '#90a4ae',
   '#f2716e',
 ];
+
+export const dummyGreyTitle = '#DBDBDB';
+
+export const dummyGreyBG = '#EEEEEE';
+
+export const dummyBlue = '#5BB9FD';
