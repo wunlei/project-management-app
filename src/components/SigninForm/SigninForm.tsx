@@ -25,7 +25,7 @@ function SigninForm() {
     handleSubmit,
     setError,
     clearErrors,
-    formState: { isDirty, errors },
+    formState: { isDirty },
   } = useForm<SigninData>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

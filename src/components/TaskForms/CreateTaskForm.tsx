@@ -2,18 +2,12 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import { useCreateTaskMutation } from 'redux/api/endpoints/tasks';
-
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
-import grey from '@mui/material/colors/grey';
-
 import { Stack, TextField, Autocomplete } from '@mui/material';
 import Modal from 'components/Modal/Modal';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateTaskFormValues, CreateTaskFormProps } from './TaskForms.types';
 import { schema } from './TaskForms.validation';
-
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
 import scrollStyle from 'styles/scrollStyle';
