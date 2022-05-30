@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetAllBoardsExpandedQuery } from 'redux/api/endpoints/boards';
+import { useGetAllBoardsQuery } from 'redux/api/endpoints/boards';
 import useProjectDelete from 'hooks/useProjectDelete';
 import {
   Backdrop,
@@ -18,11 +18,7 @@ import { ProjectCardData } from 'components/ProjectCard/ProjectCard.types';
 function ProjectsPage() {
   const { t } = useTranslation();
 
-  const {
-    currentData: boards,
-    isLoading,
-    isSuccess,
-  } = useGetAllBoardsExpandedQuery();
+  const { currentData: boards, isLoading, isSuccess } = useGetAllBoardsQuery();
 
   const [boardId, setBoardId] = useState<string | null>(null);
   const [projectData, setProjectData] = useState<ProjectCardData | null>(null);
@@ -96,7 +92,7 @@ function ProjectsPage() {
         <Typography variant="h3" fontWeight="bold" paddingLeft={2}>
           {t('Projects')}
         </Typography>
-        <SearchBar boards={boards} />
+        <SearchBar />
         <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">
           {isLoading && <CircularProgress size={80} thickness={5} />}
           {!isSuccess && !isLoading ? (
