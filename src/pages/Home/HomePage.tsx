@@ -29,14 +29,18 @@ function HomePage() {
         justifyContent="center"
         alignItems={firstColQueryMatch ? 'center' : undefined}
         pl={
-          secondColQueryMatch ? (firstColQueryMatch ? 0 : 6) : { xl: 15, lg: 2 }
+          secondColQueryMatch
+            ? firstColQueryMatch
+              ? 0
+              : 6
+            : { xl: 15, lg: 2, md: 2 }
         }
         pb={5}
         sx={{
           minHeight: firstColQueryMatch
             ? '90vh'
             : { xl: '100vh', lg: '110vh', md: '110vh', sm: '110vh' },
-          width: firstColQueryMatch ? '100%' : undefined,
+          // width: firstColQueryMatch ? '100%' : undefined,
         }}
       >
         <Stack

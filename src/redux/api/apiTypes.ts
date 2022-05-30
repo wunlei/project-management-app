@@ -26,7 +26,7 @@ export type TaskFromClient = {
   order: number;
   done?: boolean;
   description: string;
-  userId?: string;
+  userId?: string | null;
 };
 export type UpdateTaskFromClient = TaskFromClient & {
   boardId: string;

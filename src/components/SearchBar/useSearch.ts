@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
-import { setAlertState } from 'redux/global/globalSlice';
-import { useAppDispatch } from 'redux/hooks';
+import { setAlertState, setUsersState } from 'redux/global/globalSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 interface IFilteredValues {
   url: string;
@@ -19,9 +19,9 @@ interface useSearchProps {
 
 function useSearch({ boards, searchQuery }: useSearchProps) {
   const { t } = useTranslation();
-
   const dispatch = useAppDispatch();
   const { currentData: users } = useGetAllUsersQuery();
+  const usersMap = useAppSelector((state) => state.global.users);
 
   const [filteredValues, setFilteredValues] = useState<IFilteredValues[]>([
     {
@@ -31,6 +31,13 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
       boardName: '',
     },
   ]);
+
+  useEffect(() => {
+    if (users) {
+      dispatch(setUsersState(users));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
 
   const handleQueryUpdate = () => {
     if (boards && users) {
@@ -51,7 +58,7 @@ function useSearch({ boards, searchQuery }: useSearchProps) {
 
         for (const column of board.columns) {
           for (const task of column.tasks) {
-            const user = users.find((el) => el.id === task.userId);
+            const user = task.userId ? usersMap[task.userId] : null;
             const username = user?.name || '';
             const userlogin = user?.login || '';
             if (

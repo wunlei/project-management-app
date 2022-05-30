@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useSignInMutation } from 'redux/api/endpoints/sign';
 import { setToken, setUserId } from 'redux/global/globalSlice';
 import { useAppDispatch } from 'redux/hooks';
 import { useTranslation } from 'react-i18next';
-
-import { SigninData, AlertState } from './SigninForm.types';
-
 import {
   Button,
   Stack,
@@ -17,7 +15,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { SigninData, AlertState } from './SigninForm.types';
 
 function SigninForm() {
   const {
@@ -25,7 +23,7 @@ function SigninForm() {
     handleSubmit,
     setError,
     clearErrors,
-    formState: { isDirty, errors },
+    formState: { isDirty },
   } = useForm<SigninData>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -72,7 +70,7 @@ function SigninForm() {
       const token = signInResult.data.token;
       dispatch(setUserId(userId));
       dispatch(setToken(token));
-      navigate('/');
+      navigate('/projects');
     }
     if (signInResult.isError) {
       handleErrors();

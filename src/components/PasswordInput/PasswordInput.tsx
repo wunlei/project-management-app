@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Control, Controller, Path } from 'react-hook-form';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -7,8 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import { ReactComponent as Visibility } from 'assets/icons/eye.svg';
 import { ReactComponent as VisibilityOff } from 'assets/icons/eye-off.svg';
-import { Control, Controller, Path } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 
 interface Props<T> {
   control: Control<T>;
@@ -20,14 +20,15 @@ interface Props<T> {
     event?: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
 }
-
 interface State {
   password: string;
   showPassword: boolean;
 }
+
 /**
  * @name should correspond to `password` key in your form type
  */
+
 function PasswordInput<T>(props: Props<T>) {
   const {
     control,

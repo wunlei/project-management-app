@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from 'redux/hooks';
 import { setAlertState } from 'redux/global/globalSlice';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CreateFormSchema } from './CreateColumnForm.validation';
 import { useCreateColumnMutation } from 'redux/api/endpoints/columns';
-
+import { TextField, Alert } from '@mui/material';
+import Modal from 'components/Modal/Modal';
 import {
   CreateColumnFormInputs,
   CreateColumnFormProps,
 } from './CreateColumnForm.types';
-import { CreateFormSchema } from './CreateColumnForm.validation';
-
-import { TextField, Alert } from '@mui/material';
-import Modal from 'components/Modal/Modal';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 function CreateColumnForm(props: CreateColumnFormProps) {
   const { open, onClose, boardId } = props;

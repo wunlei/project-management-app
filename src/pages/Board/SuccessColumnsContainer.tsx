@@ -1,11 +1,11 @@
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useAppSelector } from 'redux/hooks';
+import { BoardFromServerExpanded } from 'redux/api/apiTypes';
+import { Stack } from '@mui/material';
 import BoardTask from 'components/BoardTask/BoardTask';
 import BoardColumn from 'components/BoardColumn/BoardColumn';
-import { Stack } from '@mui/material';
-import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { BoardColumnProps } from 'components/BoardColumn/BoardColumn.types';
 import { BoardTaskProps } from 'components/BoardTask/BoardTask.types';
-import { useAppSelector } from 'redux/hooks';
 
 export interface SuccessColumnsContainerProps
   extends Pick<

@@ -8,7 +8,7 @@ import getToken from 'utils/api/getToken';
 import UserDeletedLocalStorageError from 'utils/errors/UserDeletedLocalStorageError';
 import { setUserId, setToken } from '../global/globalSlice';
 
-export const baseUrl = 'http://localhost:4000';
+export const baseUrl = 'https://kanban-api-t09.herokuapp.com';
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
