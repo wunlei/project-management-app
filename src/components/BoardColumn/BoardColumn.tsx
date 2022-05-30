@@ -13,6 +13,7 @@ function BoardColumn({
   columnData,
   setIsColumnDeleteConfirmOpen: setIsConfirmationOpen,
   handleSelectColumnId,
+  handleCreateTaskModalOpen,
 }: BoardColumnProps) {
   const {
     body: { title },
@@ -63,6 +64,7 @@ function BoardColumn({
               size="small"
               onClick={() => {
                 handleSelectColumnId(columnId);
+                handleCreateTaskModalOpen();
               }}
             >
               <PlusIcon />
@@ -71,7 +73,8 @@ function BoardColumn({
           <IconButton
             size="small"
             onClick={() => {
-              setIsConfirmationOpen(true);
+              handleSelectColumnId(columnId);
+              setIsConfirmationOpen();
             }}
           >
             <TrashIcon />

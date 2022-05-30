@@ -16,7 +16,7 @@ import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 import { TaskCallback } from 'components/BoardTask/BoardTask.types';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import grey from '@mui/material/colors/grey';
+
 import scrollStyle from 'styles/scrollStyle';
 
 function BoardPage() {
@@ -36,10 +36,15 @@ function BoardPage() {
   };
 
   const [isLoadingAction, setIsLoadingAction] = useState(false);
+  const [selectedColumnId, setSelectedColumnId] = useState('');
 
   const [selectedTask, setSelectedTask] =
     useState<TaskFromServerExpanded | null>(null);
   const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
+
+  const handleSelectColumnId = (columnId: string) => {
+    setSelectedColumnId(columnId);
+  };
 
   // Delete column
   const [isColumnDeleteConfirmOpen, setIsColumnDeleteConfirmOpen] =
@@ -51,7 +56,7 @@ function BoardPage() {
 
   const { handleColumnDelete, deleteColumnResult } = useColumnDelete({
     boardId,
-    columnId,
+    columnId: selectedColumnId,
     handleColumnDeleteSuccess,
   });
 
@@ -84,12 +89,8 @@ function BoardPage() {
   };
 
   // Create Task
-  const {
-    handleSelectColumnId,
-    selectedColumnId,
-    handleTaskCreateModalToggle,
-    isCreateTaskModalOpen,
-  } = useCreateTask();
+  const { handleTaskCreateModalToggle, isCreateTaskModalOpen } =
+    useCreateTask();
 
   useEffect(() => {
     setIsLoadingAction(isDeleteTaskLoading || deleteColumnResult.isLoading);
@@ -164,10 +165,11 @@ function BoardPage() {
                 order: 1,
               },
             }}
-            setIsColumnDeleteConfirmOpen={(value) => {
-              setIsColumnDeleteConfirmOpen(value);
+            setIsColumnDeleteConfirmOpen={() => {
+              setIsColumnDeleteConfirmOpen(true);
             }}
             handleSelectColumnId={handleSelectColumnId}
+            handleCreateTaskModalOpen={handleTaskCreateModalToggle}
           >
             <BoardTask
               title={'Title'}
@@ -187,6 +189,7 @@ function BoardPage() {
         title={t('Delete column')}
         onReject={() => {
           setIsColumnDeleteConfirmOpen(false);
+          handleSelectColumnId('');
         }}
         onConfirm={handleColumnDelete}
       />
