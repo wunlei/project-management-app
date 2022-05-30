@@ -22,14 +22,13 @@ function DummyTask(props: DummyTaskProps) {
           borderRadius: '20px',
         }}
       />
-      <Stack sx={{ width: '100%' }}>
+      <Stack sx={{ width: '100%', alignItems: 'flex-end' }}>
         <Box
           sx={{
             width: 25,
             height: 25,
             backgroundColor: isCircleBlue ? dummyBlue : dummyGreyTitle,
             borderRadius: '50%',
-            justifySelf: 'end',
           }}
         />
       </Stack>

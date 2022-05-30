@@ -51,5 +51,10 @@
   "Description": "Description",
   "Project successfully created": "Project successfully created",
   "Column successfully created": "Column successfully created",
-  "Create new column": "Create new column"
+  "Create new column": "Create new column",
+  "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.": "Kanban is a framework that provides visibility to an entire process and is commonly used for agile and DevOps to drive continuous delivery and improvement.",
+  "Manage your projects easily": "Manage your projects easily",
+  "UI design, components implementation and Quality Assurance": "UI design, components implementation and Quality Assurance",
+  "Components implementation": "Components implementation",
+  "BackEnd integration and Drag-and-Drop": "BackEnd integration and Drag-and-Drop"
 }

@@ -30,6 +30,9 @@ export const theme = createTheme({
     error: {
       main: '#A82424',
     },
+    secondary: {
+      main: '#5BB9FD',
+    },
   },
   components: {
     MuiFormHelperText: {
