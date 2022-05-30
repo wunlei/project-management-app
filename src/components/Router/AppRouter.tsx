@@ -10,7 +10,7 @@ import SignupForm from 'components/SignupForm/SignupForm';
 import SigninForm from 'components/SigninForm/SigninForm';
 import PrivateRoute from './PrivateRoute';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Backdrop } from '@mui/material';
 
 function AppRouter() {
   const App = React.lazy(() => import('components/App/App'));
@@ -23,17 +23,9 @@ function AppRouter() {
             <ErrorBoundary>
               <Suspense
                 fallback={
-                  <div
-                    style={{
-                      height: '100vh',
-                      width: '100vw',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <CircularProgress size={100} thickness={5} />
-                  </div>
+                  <Backdrop open={true}>
+                    <CircularProgress color="secondary" size={100} />
+                  </Backdrop>
                 }
               >
                 <App />
