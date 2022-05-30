@@ -29,7 +29,7 @@ function HomePage() {
         pb={5}
         sx={{
           minHeight: firstColQueryMatch ? '90vh' : '110vh',
-          minWidth: firstColQueryMatch ? '100vw' : undefined,
+          // minWidth: firstColQueryMatch ? '100vw' : undefined,
         }}
       >
         <Stack

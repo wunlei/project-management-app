@@ -26,7 +26,7 @@ import { ReactComponent as MenuIcon } from 'assets/icons/header-menu.svg';
 
 function Header() {
   const { t } = useTranslation();
-  const isOnBoard = useMatch('/projects/:id');
+  const isOnBoard = useMatch('/projects/:boardId');
   const isProject = useMatch('/projects');
   const isMain = useMatch('/');
   const isProfile = useMatch('/user');
@@ -71,10 +71,11 @@ function Header() {
       <AppBar
         position={isOnBoard ? 'fixed' : 'sticky'}
         sx={{
-          top: isOnBoard ? 0 : 'unset',
-          left: isOnBoard ? 0 : 'unset',
+          top: 0,
+          left: 0,
           backgroundColor: 'white',
           boxShadow: scrollTrigger ? 3 : 0,
+          height: '64px',
         }}
         elevation={0}
       >
@@ -139,7 +140,7 @@ function Header() {
                     fontWeight: isMain ? 'bold' : 'inherit',
                   }}
                 >
-                  Home
+                  {t('Home')}
                 </MuiLink>
                 <MuiLink
                   onClick={toggleMobileMenuState(false)}
@@ -151,7 +152,7 @@ function Header() {
                     display: token ? '' : 'none',
                   }}
                 >
-                  Projects
+                  {t('Projects')}
                 </MuiLink>
                 {!token ? (
                   <>
@@ -184,7 +185,7 @@ function Header() {
                         fontWeight: isProfile ? 'bold' : 'inherit',
                       }}
                     >
-                      Profile
+                      {t('Profile')}
                     </MuiLink>
                     <MuiLink
                       underline="hover"
@@ -200,7 +201,7 @@ function Header() {
                         dispatch(setUserId(null));
                       }}
                     >
-                      Sign Out
+                      {t('Sign Out')}
                     </MuiLink>
                   </>
                 )}
@@ -212,7 +213,7 @@ function Header() {
           <Toolbar
             sx={{
               flexDirection: 'row',
-              justifyContent: token ? 'space-between' : 'flex-end',
+              justifyContent: token ? 'space-between' : 'space-between',
             }}
           >
             <Stack direction="row" spacing={1}>
@@ -224,7 +225,7 @@ function Header() {
                   fontWeight: isMain ? 'bold' : 'inherit',
                 }}
               >
-                Home
+                {t('Home')}
               </MuiLink>
 
               <MuiLink
@@ -236,7 +237,7 @@ function Header() {
                   display: token ? '' : 'none',
                 }}
               >
-                Projects
+                {t('Projects')}
               </MuiLink>
             </Stack>
             <Button
