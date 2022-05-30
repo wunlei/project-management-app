@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render with provided data 1`] = `
+<div
+  className="css-rbqpdu-MuiStack-root"
+  onClick={[Function]}
+>
+  <div
+    className="css-1hvyxw4-MuiStack-root"
+  >
+    <h6
+      className="MuiTypography-root MuiTypography-h6 css-mzbhic-MuiTypography-root"
+    />
+    <button
+      aria-label="Delete"
+      aria-labelledby={null}
+      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+      data-mui-internal-clone-element={true}
+      disabled={false}
+      id="menu-button"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseOver={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <svg
+        style={
+          Object {
+            "height": "18px",
+            "width": "18px",
+          }
+        }
+      >
+        trash.svg
+      </svg>
+      <span
+        className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+  <div
+    className="css-1gb3guw-MuiStack-root"
+  >
+    <div
+      className="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vyukf0-MuiAvatar-root"
+    >
+      N
+    </div>
+  </div>
+</div>
+`;
