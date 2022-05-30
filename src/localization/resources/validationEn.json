@@ -1,0 +1,23 @@
+{
+  "Name is required": "Name is required",
+  "Name should be at least 3 characters": "Name should be at least 3 characters",
+  "Name must be at most 30 characters": "Name must be at most 30 characters",
+  "Name must include only letters or punctuation marks": "Name must include only letters or punctuation",
+  "Login is required": "Login is required",
+  "Login should be at least 3 characters": "Login should be at least 3 characters",
+  "Login must be at most 30 characters": "Login must be at most 30 characters",
+  "Login must include only latin letters and digits": "Login must include only latin letters and digits",
+  "Password is required": "Password is required",
+  "Password should be at least 8 characters": "Password should be at least 8 characters",
+  "Password must include at list one digit": "Password must include at list one digit",
+  "Password must include at list one letter": "Password must include at list one letter",
+  "Password must include only latin letters and digits": "Password must include only latin letters and digits",
+  "Incorrect login or password": "Incorrect login or password",
+  "Title is required": "Title is required",
+  "Description must be at most 60 characters": "Description must be at most 60 characters",
+  "Task title is required": "Task title is required",
+  "You must pick a member": "You must pick a member",
+  "Task title must be at most 30 characters": "Task title must be at most 30 characters",
+  "Task description must be at most 500 characters": "Task description must be at most 500 characters",
+  "Title must be at most 30 characters": "Title must be at most 30 characters"
+}

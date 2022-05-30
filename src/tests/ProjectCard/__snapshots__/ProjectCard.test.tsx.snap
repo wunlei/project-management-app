@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render with provided data 1`] = `
+<a
+  className="css-1r4kv-MuiStack-root"
+  href="/1"
+  onClick={[Function]}
+>
+  <div
+    className="css-1wh65h9-MuiStack-root"
+  >
+    <h5
+      className="MuiTypography-root MuiTypography-h5 css-5rh7kk-MuiTypography-root"
+    >
+      My Project
+    </h5>
+    <div
+      className="css-w4z10b-MuiStack-root"
+    >
+      <button
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-lg24u0-MuiButtonBase-root-MuiIconButton-root"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <svg>
+          edit.svg
+        </svg>
+      </button>
+      <button
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorError MuiIconButton-sizeMedium css-10rq2ks-MuiButtonBase-root-MuiIconButton-root"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <svg>
+          trash.svg
+        </svg>
+      </button>
+    </div>
+  </div>
+  <p
+    className="MuiTypography-root MuiTypography-body2 css-15tpwza-MuiTypography-root"
+  >
+    Project description
+  </p>
+</a>
+`;
