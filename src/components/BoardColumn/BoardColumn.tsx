@@ -55,7 +55,7 @@ function BoardColumn(props: BoardColumnProps) {
             variant="h5"
             fontWeight="bold"
             onClick={handleTitleEdit}
-            sx={{ overflowWrap: 'anywhere' }}
+            sx={{ overflowWrap: 'anywhere', cursor: 'text' }}
           >
             {title}
           </Typography>
