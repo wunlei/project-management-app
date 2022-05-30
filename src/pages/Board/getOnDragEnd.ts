@@ -97,6 +97,7 @@ export default function getOnDragEnd({
             description: relatedTask.description,
             title: relatedTask.title,
             order: destination.index + 1,
+            userId: relatedTask.userId,
           },
         });
 
