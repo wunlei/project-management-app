@@ -13,7 +13,7 @@ function App() {
         sx={{
           minHeight: isOnBoard ? 'unset' : '100vh',
           height: isOnBoard ? 'calc(100vh - 17px)' : 'unset',
-          marginTop: isOnBoard ? '8.5px' : 'unset',
+          // marginTop: isOnBoard ? '8.5px' : 'unset',
         }}
         justifyContent="space-between"
       >

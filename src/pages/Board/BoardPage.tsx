@@ -147,8 +147,8 @@ function BoardPage() {
         padding="1rem"
         sx={{
           paddingTop: {
-            xs: '158px',
-            sm: '121px',
+            xs: '166.5px',
+            sm: '129.5px',
           },
           paddingBottom: {
             xs: '94px',
