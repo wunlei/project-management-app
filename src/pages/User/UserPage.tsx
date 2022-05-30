@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { setUserId } from 'redux/global/globalSlice';
+import { setToken, setUserId } from 'redux/global/globalSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteUserMutation } from 'redux/api/endpoints/users';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Box,
+  Backdrop,
   Button,
   CircularProgress,
   Container,
-  Modal,
   Stack,
   Typography,
 } from '@mui/material';
@@ -43,6 +42,7 @@ function UserPage() {
   useEffect(() => {
     if (isDeleteSuccess) {
       dispatch(setUserId(null));
+      dispatch(setToken(null));
       navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,24 +78,23 @@ function UserPage() {
       </Stack>
       <ConfirmationDialog
         open={isDialogOpen}
-        dialogText={'Confirm deleting profile'}
+        title={t('Delete profile')}
+        dialogText={t(
+          'You are about to permanently delete your profile. This action cannot be undone.'
+        )}
         onConfirm={handleDeleteProfile}
         onReject={() => {
           setIsDialogOpen(false);
         }}
       />
-      <Modal open={isDeleteLoading}>
-        <Box
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <CircularProgress color="secondary" size={100} />
-        </Box>
-      </Modal>
+      <Backdrop
+        sx={{
+          zIndex: 2000,
+        }}
+        open={isDeleteLoading}
+      >
+        <CircularProgress color="secondary" size={100} />
+      </Backdrop>
     </Container>
   );
 }

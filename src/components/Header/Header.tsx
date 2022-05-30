@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link, useMatch, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Button,
@@ -16,17 +16,26 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import LangMenu from 'components/LangMenu/LangMenu';
 import HideOnScroll from './HideOnScroll';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { setUserId } from 'redux/global/globalSlice';
+import { setToken, setUserId } from 'redux/global/globalSlice';
+import { useState } from 'react';
+import CreateProjectForm from 'components/CreateProjectForm/CreateProjectForm';
 
 function Header() {
   const { t } = useTranslation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const isOnBoard = useMatch('/projects/:id');
-  const isOnHome = useMatch('/');
-  const isOnProjects = useMatch('/projects');
-
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.global.userId);
+  const token = useAppSelector((state) => state.global.token);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalClickOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -36,32 +45,34 @@ function Header() {
   return (
     <HideOnScroll>
       <AppBar
-        position={isOnBoard ? 'fixed' : 'sticky'}
+        position="sticky"
+        elevation={0}
         sx={{
-          top: isOnBoard ? 0 : 'unset',
-          left: isOnBoard ? 0 : 'unset',
           backgroundColor: 'white',
           boxShadow: trigger ? 3 : 0,
         }}
-        elevation={0}
       >
+        <CreateProjectForm
+          open={isModalOpen}
+          onClose={handleModalClose}
+        ></CreateProjectForm>
         <Toolbar
           sx={{
-            justifyContent: userId ? 'space-between' : 'flex-end',
+            justifyContent: token ? 'space-between' : 'flex-end',
             flexDirection: {
               xs: 'column-reverse',
               sm: 'row',
             },
           }}
         >
-          {userId && (
+          {token && (
             <Stack direction="row" spacing={1}>
               <MuiLink
                 component={Link}
                 to="/"
                 underline="hover"
                 sx={{
-                  fontWeight: isOnHome ? 'bold' : 'inherit',
+                  fontWeight: location.pathname === '/' ? 'bold' : 'inherit',
                 }}
               >
                 Home
@@ -71,21 +82,26 @@ function Header() {
                 to="projects"
                 underline="hover"
                 sx={{
-                  fontWeight: isOnProjects ? 'bold' : 'inherit',
+                  fontWeight:
+                    location.pathname === '/projects' ? 'bold' : 'inherit',
                 }}
               >
                 Projects
               </MuiLink>
             </Stack>
           )}
-          {isOnProjects && userId ? (
-            <Button startIcon={<PlusIcon />} variant="contained">
+          {location.pathname === '/projects' && token ? (
+            <Button
+              startIcon={<PlusIcon />}
+              variant="contained"
+              onClick={handleModalClickOpen}
+            >
               {t('Create project')}
             </Button>
           ) : null}
           <Stack direction="row" spacing={1} alignItems="center">
             <LangMenu />
-            {!userId ? (
+            {!token ? (
               <>
                 <Button variant="outlined" component={Link} to="/signin">
                   {t('Sign In')}
@@ -111,7 +127,7 @@ function Header() {
                     color="primary"
                     aria-label="log-out"
                     onClick={() => {
-                      localStorage.removeItem('token');
+                      dispatch(setToken(null));
                       dispatch(setUserId(null));
                       navigate('/');
                     }}

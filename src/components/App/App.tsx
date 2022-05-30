@@ -3,6 +3,7 @@ import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import Stack from '@mui/material/Stack';
 import { team } from 'constants/appConstants';
+import AppAlert from 'components/AppAlert/AppAlert';
 
 function App() {
   const isOnBoard = useMatch('/projects/:id');
@@ -17,6 +18,7 @@ function App() {
         justifyContent="space-between"
       >
         <Header />
+        <AppAlert />
         <Outlet />
         <Footer data={team} />
       </Stack>

@@ -1,6 +1,8 @@
 export type UserFromServer = { id: string; name: string; login: string };
 export type UserFromClient = { name: string; login: string; password: string };
 
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 export type FileInfo = {
   filename: string;
   fileSize: number;
@@ -10,8 +12,9 @@ export type TaskFromServer = {
   id: string;
   title: string;
   order: number;
+  done?: boolean;
   description: string;
-  userId: string;
+  userId: string | null;
   files: Array<FileInfo>;
 };
 export type TaskFromServerExpanded = TaskFromServer & {
@@ -20,6 +23,8 @@ export type TaskFromServerExpanded = TaskFromServer & {
 };
 export type TaskFromClient = {
   title: string;
+  order: number;
+  done?: boolean;
   description: string;
   userId?: string;
 };
@@ -52,7 +57,7 @@ export type BoardFromClient = { title: string; description: string };
 
 // Sign -----
 
-export type SignInResult = { token: string };
+export type SignInResult = { token: string; id: string };
 export type SignInArg = { body: { login: string; password: string } };
 
 export type SignUpResult = UserFromServer;
@@ -135,7 +140,7 @@ export type CreateTaskResult = TaskFromServerExpanded;
 export type CreateTaskArg = {
   boardId: string;
   columnId: string;
-  body: TaskFromClient;
+  body: PartialBy<TaskFromClient, 'order'>;
 };
 
 export type DeleteTaskResult = void;

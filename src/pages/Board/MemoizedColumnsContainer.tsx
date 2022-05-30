@@ -2,22 +2,34 @@ import React from 'react';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import SuccessColumnsContainer from './SuccessColumnsContainer';
-import ServerError from '../../utils/errors/ServerError';
+import SuccessColumnsContainer, {
+  SuccessColumnsContainerProps,
+} from './SuccessColumnsContainer';
 
-function ColumnsContainer({
-  dataGetBoard,
-  isErrorGetBoard,
-  isFetchingGetBoard,
-}: {
+interface ColumnsContainerProps
+  extends Pick<
+    SuccessColumnsContainerProps,
+    | 'setIsColumnDeleteConfirmOpen'
+    | 'handleSelectColumnId'
+    | 'handleCreateTaskModalOpen'
+    | 'handleTaskEditModalOpen'
+    | 'handleTaskDeleteConfirmOpen'
+  > {
   dataGetBoard: BoardFromServerExpanded | undefined;
   isErrorGetBoard: boolean;
   isFetchingGetBoard: boolean;
-}) {
+  boardId: string;
+}
+
+function ColumnsContainer(props: ColumnsContainerProps) {
+  const { dataGetBoard, isErrorGetBoard, isFetchingGetBoard, ...restProps } =
+    props;
   const { t } = useTranslation();
 
   if (dataGetBoard && dataGetBoard.columns.length !== 0) {
-    return <SuccessColumnsContainer dataGetBoard={dataGetBoard} />;
+    return (
+      <SuccessColumnsContainer {...restProps} dataGetBoard={dataGetBoard} />
+    );
   } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
     return (
       <Typography fontSize="2rem" color="primary.light">
@@ -25,13 +37,13 @@ function ColumnsContainer({
       </Typography>
     );
   } else if (isErrorGetBoard && !isFetchingGetBoard) {
-    throw new ServerError();
-  } else {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </div>
+      <Typography fontSize="2rem" color="primary.light">
+        {t('Something went wrong!')}
+      </Typography>
     );
+  } else {
+    return <CircularProgress color="secondary" size={100} />;
   }
 }
 

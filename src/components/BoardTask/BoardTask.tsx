@@ -1,44 +1,30 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
-import { ReactComponent as ClipIcon } from 'assets/icons/paperclip.svg';
-import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg';
+import { Avatar, IconButton, Stack, Typography, Tooltip } from '@mui/material';
 import { BoardTaskProps } from './BoardTask.types';
-import grey from '@mui/material/colors/grey';
+import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
 
-function BoardTask({
-  task: { title, userId },
-  draggableProps,
-  dragHandleProps,
-  innerRef,
-  isDragging,
-}: BoardTaskProps) {
-  // ... 'done' prop doesn't exist in the BE
-  const isDone = true;
-  // ...
+function BoardTask(props: BoardTaskProps) {
+  const {
+    user,
+    handleTaskDeleteConfirmOpen,
+    handleTaskEditModalOpen,
+    task,
+    draggableProps,
+    dragHandleProps,
+    innerRef,
+    isDragging,
+  } = props;
+
+  const { title } = task;
 
   const { t } = useTranslation();
 
-  const hasFile = true;
-  const [taskMenuAnchorEl, setTaskMenuAnchorEl] = useState<null | HTMLElement>(
-    null
-  );
-  const isTaskMenuOpen = Boolean(taskMenuAnchorEl);
-
-  const handleTaskMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setTaskMenuAnchorEl(event.currentTarget);
+  const handleOpenTaskEditModal = () => {
+    handleTaskEditModalOpen(task);
   };
-  const handleClose = () => {
-    setTaskMenuAnchorEl(null);
+
+  const handleOpenTaskDeleteDialog = () => {
+    handleTaskDeleteConfirmOpen(task);
   };
 
   return (
@@ -57,78 +43,54 @@ function BoardTask({
       }}
       width="250px"
       margin="5px"
+      onClick={handleOpenTaskEditModal}
     >
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="flex-start"
         padding={1.5}
-        paddingRight={1}
       >
-        <Stack direction="row" spacing={1}>
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ overflowWrap: 'anywhere' }}
-          >
-            {title}
-          </Typography>
-          {isDone && (
-            <SvgIcon sx={{ color: 'success.main' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
-        </Stack>
-        <div>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ overflowWrap: 'anywhere' }}
+        >
+          {title}
+        </Typography>
+        <Tooltip title={t('Delete')} arrow>
           <IconButton
             id="menu-button"
-            aria-controls={isTaskMenuOpen ? 'card-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={isTaskMenuOpen ? 'true' : undefined}
-            onClick={handleTaskMenuClick}
-          >
-            <MenuIcon style={{ width: '18px', height: '18px' }} />
-          </IconButton>
-          <Menu
-            id="card-menu"
-            anchorEl={taskMenuAnchorEl}
-            open={isTaskMenuOpen}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'menu-button',
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenTaskDeleteDialog();
             }}
+            size="small"
           >
-            <MenuItem onClick={handleClose}>{t('Open')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Edit')}</MenuItem>
-            <MenuItem onClick={handleClose}>{t('Delete')}</MenuItem>
-          </Menu>
-        </div>
+            <DeleteIcon style={{ width: '18px', height: '18px' }} />
+          </IconButton>
+        </Tooltip>
       </Stack>
-
       <Stack
         direction="row"
         alignItems="flex-end"
-        justifyContent={hasFile ? 'space-between' : 'flex-end'}
+        justifyContent="flex-end"
         spacing={1}
         padding={1.5}
         paddingTop={0}
       >
-        {hasFile && (
-          <SvgIcon
+        {user && (
+          <Avatar
             sx={{
-              width: 20,
-              height: 20,
-              color: grey[700],
+              bgcolor: 'secondary.main',
+              width: '30px',
+              height: '30px',
+              textTransform: 'capitalize',
             }}
           >
-            <ClipIcon />
-          </SvgIcon>
+            {user[0]}
+          </Avatar>
         )}
-        <Avatar
-          sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
-        >
-          {userId}
-        </Avatar>
       </Stack>
     </Stack>
   );
