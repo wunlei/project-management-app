@@ -6,13 +6,13 @@ import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
 function BoardTask(props: BoardTaskProps) {
   const {
     user,
-    handleTaskDeleteConfirmOpen,
-    handleTaskEditModalOpen,
     task,
+    isDragging,
     draggableProps,
     dragHandleProps,
     innerRef,
-    isDragging,
+    handleTaskDeleteConfirmOpen,
+    handleTaskEditModalOpen,
   } = props;
 
   const { title } = task;

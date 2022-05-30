@@ -4,13 +4,9 @@ import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import { ReactComponent as EditIcon } from 'assets/icons/edit.svg';
 import { ProjectCardProps } from './ProjectCard.types';
 
-export default function ProjectCard({
-  title,
-  description,
-  boardId,
-  onDelete,
-  onEdit,
-}: ProjectCardProps) {
+export default function ProjectCard(props: ProjectCardProps) {
+  const { title, description, boardId, onDelete, onEdit } = props;
+
   return (
     <Stack
       padding={2}

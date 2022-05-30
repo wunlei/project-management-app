@@ -33,7 +33,7 @@ function LangMenu() {
   }, [currLang, i18n]);
 
   return (
-    <div>
+    <>
       <Button
         id="lang-menu-button"
         aria-controls={open ? 'lang-menu' : undefined}
@@ -72,7 +72,7 @@ function LangMenu() {
           RU
         </MenuItem>
       </Menu>
-    </div>
+    </>
   );
 }
 

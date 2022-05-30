@@ -17,6 +17,7 @@ i18n.use(initReactI18next).init({
     },
   },
   fallbackLng: 'en',
+  lng: localStorage.getItem('language') || 'en',
   ns: ['translation', 'validation'],
   defaultNS: 'translation',
   keySeparator: false,
