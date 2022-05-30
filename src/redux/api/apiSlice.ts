@@ -42,6 +42,7 @@ const baseQueryWithErrorHandlers: BaseQueryFn<
     if (error instanceof UserDeletedLocalStorageError) {
       api.dispatch(setUserId(null));
       api.dispatch(setToken(null));
+      window.location.reload();
       throw new UserDeletedLocalStorageError();
     }
     throw new Error('Arbitrary error');

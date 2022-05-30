@@ -41,6 +41,7 @@ const api = apiSlice.injectEndpoints({
             if (errorWithStatus.status === 401) {
               dispatch(setUserId(null));
               dispatch(setToken(null));
+              window.location.reload();
 
               throw new Error(`
               Expired token detected.
