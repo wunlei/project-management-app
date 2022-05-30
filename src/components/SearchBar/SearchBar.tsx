@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Menu,
@@ -10,8 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useTranslation } from 'react-i18next';
-import { SearchBarProps } from './SearchBar.types';
+import { useGetAllBoardsExpandedQuery } from 'redux/api/endpoints/boards';
 import useSearch from 'components/SearchBar/useSearch';
 import grey from '@mui/material/colors/grey';
 
@@ -30,21 +30,24 @@ function getMenuItemIcon(type: string) {
   }
 }
 
-function SearchBar({ boards }: SearchBarProps) {
+function SearchBar() {
+  const { t } = useTranslation();
+
+  const { currentData: boards, refetch } = useGetAllBoardsExpandedQuery();
+
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
-
-  const isMenuOpen = Boolean(menuAnchorEl);
-  const menuRefEl = useRef<HTMLInputElement>(null);
-
-  const { t } = useTranslation();
   const { filteredValues, handleQueryUpdate } = useSearch({
     boards,
     searchQuery,
   });
 
+  const isMenuOpen = Boolean(menuAnchorEl);
+  const menuRefEl = useRef<HTMLInputElement>(null);
+
   const handleSearchClick = () => {
     if (searchQuery) {
+      refetch();
       handleQueryUpdate();
       setMenuAnchorEl(menuRefEl.current);
     }
@@ -57,6 +60,7 @@ function SearchBar({ boards }: SearchBarProps) {
   const handleKeyUp = (e: React.KeyboardEvent) => {
     if (e.code === 'Enter') {
       if (searchQuery) {
+        refetch();
         handleQueryUpdate();
         setMenuAnchorEl(menuRefEl.current);
       }

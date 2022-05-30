@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Droppable } from 'react-beautiful-dnd';
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { BoardColumnProps } from './BoardColumn.types';
 import TitleEditor from 'components/BoardColumn/TitleEditor/TitleEditor';
@@ -9,10 +10,15 @@ import grey from '@mui/material/colors/grey';
 import scrollStyle from 'styles/scrollStyle';
 
 function BoardColumn({
-  children,
   columnData,
   setIsColumnDeleteConfirmOpen: setIsConfirmationOpen,
   handleSelectColumnId,
+
+  handleCreateTaskModalOpen,
+  children,
+  innerRef,
+  draggableProps,
+  dragHandleProps,
 }: BoardColumnProps) {
   const {
     body: { title },
@@ -27,7 +33,7 @@ function BoardColumn({
   };
 
   return (
-    <Stack>
+    <Stack ref={innerRef} {...draggableProps} {...dragHandleProps}>
       <Stack
         direction="row"
         alignItems="center"
@@ -63,6 +69,7 @@ function BoardColumn({
               size="small"
               onClick={() => {
                 handleSelectColumnId(columnId);
+                handleCreateTaskModalOpen();
               }}
             >
               <PlusIcon />
@@ -71,33 +78,42 @@ function BoardColumn({
           <IconButton
             size="small"
             onClick={() => {
-              setIsConfirmationOpen(true);
+              handleSelectColumnId(columnId);
+              setIsConfirmationOpen();
             }}
           >
             <TrashIcon />
           </IconButton>
         </Stack>
       </Stack>
-      <Stack
-        padding={1}
-        spacing={1}
-        alignItems="center"
-        paddingBottom="1rem"
-        width={'280px'}
-        sx={[
-          {
-            backgroundColor: grey[200],
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            borderBottomLeftRadius: '0.5rem',
-            borderBottomRightRadius: '0.5rem',
-            minHeight: '2rem',
-          },
-          ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
-        ]}
-      >
-        {children}
-      </Stack>
+
+      <Droppable droppableId={columnId} type="task">
+        {(provided) => (
+          <Stack
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            padding={1}
+            spacing={1}
+            alignItems="center"
+            paddingBottom="1rem"
+            width={'280px'}
+            sx={[
+              {
+                backgroundColor: grey[200],
+                overflowX: 'hidden',
+                overflowY: 'auto',
+                borderBottomLeftRadius: '0.5rem',
+                borderBottomRightRadius: '0.5rem',
+                minHeight: '2rem',
+              },
+              ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
+            ]}
+          >
+            {children}
+            {provided.placeholder}
+          </Stack>
+        )}
+      </Droppable>
     </Stack>
   );
 }

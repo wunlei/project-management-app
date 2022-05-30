@@ -1,38 +1,49 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button, IconButton, Stack, Typography } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
+import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
+import { useGetBoardQuery } from 'redux/api/endpoints/boards';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { useUpdateTaskMutation } from 'redux/api/endpoints/tasks';
+import { useUpdateColumnMutation } from 'redux/api/endpoints/columns';
+import { BoardFromServerExpanded } from 'redux/api/apiTypes';
+import getOnDragEnd from './getOnDragEnd';
+import MemoizedColumnsContainer from './MemoizedColumnsContainer';
 import useCreateTask from 'hooks/useCreateTask';
 import useEditTask from 'hooks/useEditTask';
 import useDeleteTask from 'hooks/useDeleteTask';
 import useColumnDelete from 'hooks/useColumnDelete';
-import BoardTask from 'components/BoardTask/BoardTask';
-import BoardColumn from 'components/BoardColumn/BoardColumn';
 import CreateColumnForm from 'components/CreateColumnFrom/CreateColumnForm';
 import EditTaskFormModal from 'components/TaskForms/EditTaskForm';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog';
 import CreateTaskFormModal from 'components/TaskForms/CreateTaskForm';
 import { TaskFromServerExpanded } from 'redux/api/apiTypes';
 import { TaskCallback } from 'components/BoardTask/BoardTask.types';
-import { ReactComponent as ArrowIcon } from 'assets/icons/arrow-left-circle.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
-import grey from '@mui/material/colors/grey';
-import scrollStyle from 'styles/scrollStyle';
+import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
+import { useAppDispatch } from 'redux/hooks';
+import { setUsersState } from 'redux/global/globalSlice';
 
 function BoardPage() {
   const { t } = useTranslation();
-  const columns = [1];
-  const boardId = '7bc29317-6a28-4e2c-883e-341d8057dd64';
-  const columnId = 'c38f6f8b-d28b-4da5-81de-c34f9d319318';
-  const task = {
-    id: '2c83ad14-9703-4d44-a654-32758f71e957',
-    title: 'asdsad',
-    order: 12,
-    description: ' ',
-    userId: '3d0b6961-4f27-485e-8626-d028e7b1d147',
-    files: [],
-    boardId,
-    columnId,
+  const dispatch = useAppDispatch();
+  const { boardId } = useParams();
+  if (!boardId) {
+    throw new Error('boardId (url param) is absent');
+  }
+
+  const [selectedColumnId, setSelectedColumnId] = useState('');
+
+  const handleSelectColumnId = (columnId: string) => {
+    setSelectedColumnId(columnId);
   };
 
   const [isLoadingAction, setIsLoadingAction] = useState(false);
@@ -51,7 +62,7 @@ function BoardPage() {
 
   const { handleColumnDelete, deleteColumnResult } = useColumnDelete({
     boardId,
-    columnId,
+    columnId: selectedColumnId,
     handleColumnDeleteSuccess,
   });
 
@@ -84,100 +95,148 @@ function BoardPage() {
   };
 
   // Create Task
-  const {
-    handleSelectColumnId,
-    selectedColumnId,
-    handleTaskCreateModalToggle,
-    isCreateTaskModalOpen,
-  } = useCreateTask();
+  const { handleTaskCreateModalToggle, isCreateTaskModalOpen } =
+    useCreateTask();
 
   useEffect(() => {
     setIsLoadingAction(isDeleteTaskLoading || deleteColumnResult.isLoading);
   }, [isDeleteTaskLoading, deleteColumnResult.isLoading]);
 
+  // D-n-D
+
+  const [updateColumn] = useUpdateColumnMutation();
+  const [updateTask] = useUpdateTaskMutation();
+
+  const {
+    currentData: currentDataGetBoard,
+    isError: isErrorGetBoard,
+    isFetching: isFetchingGetBoard,
+    isLoading: isLoadingGetBoard,
+  } = useGetBoardQuery({ boardId });
+
+  const [dataGetBoard, setDataGetBoard] = useState<
+    undefined | BoardFromServerExpanded
+  >(currentDataGetBoard);
+
+  const onDragEnd = getOnDragEnd({
+    dataGetBoard,
+    updateTask,
+    updateColumn,
+    setDataGetBoard,
+  });
+
+  //users
+
+  const { data: users } = useGetAllUsersQuery();
+
+  useEffect(() => {
+    if (users) {
+      dispatch(setUsersState(users));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
+
+  useEffect(() => {
+    setDataGetBoard(currentDataGetBoard);
+  }, [currentDataGetBoard]);
+
   return (
-    <Stack
-      component="main"
-      spacing={1}
-      padding="1rem"
-      paddingTop="0"
-      sx={{ overflow: 'hidden' }}
-      flex={1}
-    >
+    <DragDropContext onDragEnd={onDragEnd}>
       <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        component="nav"
-        flexWrap="wrap"
+        component="main"
+        padding="1rem"
         sx={{
-          padding: 1,
-          borderBottomWidth: '1px',
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'primary.main',
-        }}
-      >
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Link to={'/projects'}>
-            <IconButton color="primary">
-              <ArrowIcon />
-            </IconButton>
-          </Link>
-          <Typography variant="h4">{'Project Title'}</Typography>
-        </Stack>
-        <Button
-          variant="contained"
-          startIcon={<PlusIcon />}
-          onClick={() => {
-            setIsCreateColumnModalOpen(true);
-          }}
-        >
-          {t('Add Column')}
-        </Button>
-      </Stack>
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={[
-          {
-            opacity: isLoadingAction ? 0.5 : 1,
-            pointerEvents: isLoadingAction ? 'none' : 'auto',
-            flexGrow: 1,
-            overflowY: 'hidden',
+          paddingTop: {
+            xs: '165px',
+            sm: '120px',
           },
-          ...(Array.isArray(scrollStyle) ? scrollStyle : [scrollStyle]),
-        ]}
+          paddingBottom: {
+            xs: '94px',
+            sm: '54px',
+          },
+        }}
+        height={'calc(100vh - 17px)'}
+        flex={1}
       >
-        {columns.length === 0 ? (
-          <Stack width="100%" textAlign="center">
-            <Typography fontSize="2rem" color="primary.light">
-              {t('No columns yet')}
-            </Typography>
-          </Stack>
-        ) : (
-          <BoardColumn
-            columnData={{
-              boardId,
-              columnId,
-              body: {
-                title: 'ColumnTitle',
-                order: 1,
+        <Backdrop
+          sx={{
+            zIndex: 2000,
+          }}
+          open={isLoadingGetBoard || isLoadingAction}
+        >
+          <CircularProgress color="secondary" size={100} />
+        </Backdrop>
+
+        {dataGetBoard && (
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            component="nav"
+            flexWrap="wrap"
+            sx={{
+              position: 'fixed',
+              top: '64px',
+              left: 0,
+              width: '100%',
+              padding: '0.5rem 0.625rem',
+              backgroundColor: 'white',
+              borderBottomWidth: '1px',
+              borderBottomStyle: 'solid',
+              borderBottomColor: 'primary.main',
+              flexDirection: {
+                xs: 'column',
+                sm: 'row',
               },
             }}
-            setIsColumnDeleteConfirmOpen={(value) => {
-              setIsColumnDeleteConfirmOpen(value);
-            }}
-            handleSelectColumnId={handleSelectColumnId}
           >
-            <BoardTask
-              title={'Title'}
-              user={'W'}
-              task={task}
-              handleOpenEditModal={handleTaskEditModalOpen}
-              handleOpenDeleteConfirmation={handleTaskDeleteConfirmOpen}
-            />
-          </BoardColumn>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Link to={'/projects'}>
+                <IconButton color="primary">
+                  <ArrowIcon />
+                </IconButton>
+              </Link>
+              <Typography
+                title={dataGetBoard.title}
+                variant="h4"
+                sx={{
+                  maxWidth: {
+                    xs: '250px',
+                    sm: '380px',
+                  },
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {dataGetBoard.title}
+              </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Button
+                variant="contained"
+                startIcon={<PlusIcon />}
+                onClick={() => {
+                  setIsCreateColumnModalOpen(true);
+                }}
+              >
+                {t('Add Column')}
+              </Button>
+            </Stack>
+          </Stack>
         )}
+        <MemoizedColumnsContainer
+          dataGetBoard={dataGetBoard}
+          isErrorGetBoard={isErrorGetBoard}
+          isFetchingGetBoard={isFetchingGetBoard}
+          boardId={boardId}
+          setIsColumnDeleteConfirmOpen={() => {
+            setIsColumnDeleteConfirmOpen(true);
+          }}
+          handleSelectColumnId={handleSelectColumnId}
+          handleTaskEditModalOpen={handleTaskEditModalOpen}
+          handleTaskDeleteConfirmOpen={handleTaskDeleteConfirmOpen}
+          handleCreateTaskModalOpen={handleTaskCreateModalToggle}
+        />
       </Stack>
       <ConfirmationDialog
         open={isColumnDeleteConfirmOpen}
@@ -221,7 +280,7 @@ function BoardPage() {
         columnId={selectedColumnId}
         boardId={boardId}
       />
-    </Stack>
+    </DragDropContext>
   );
 }
 

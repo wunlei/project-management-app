@@ -5,25 +5,33 @@ import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
 
 function BoardTask(props: BoardTaskProps) {
   const {
-    title,
     user,
+    handleTaskDeleteConfirmOpen,
+    handleTaskEditModalOpen,
     task,
-    handleOpenDeleteConfirmation,
-    handleOpenEditModal,
+    draggableProps,
+    dragHandleProps,
+    innerRef,
+    isDragging,
   } = props;
+
+  const { title } = task;
 
   const { t } = useTranslation();
 
   const handleOpenTaskEditModal = () => {
-    handleOpenEditModal(task);
+    handleTaskEditModalOpen(task);
   };
 
   const handleOpenTaskDeleteDialog = () => {
-    handleOpenDeleteConfirmation(task);
+    handleTaskDeleteConfirmOpen(task);
   };
 
   return (
     <Stack
+      {...draggableProps}
+      {...dragHandleProps}
+      ref={innerRef}
       bgcolor="white"
       borderRadius={1}
       sx={{
@@ -31,6 +39,7 @@ function BoardTask(props: BoardTaskProps) {
           cursor: 'pointer',
           boxShadow: 2,
         },
+        boxShadow: isDragging ? 2 : 'unset',
       }}
       width="250px"
       margin="5px"
@@ -72,9 +81,14 @@ function BoardTask(props: BoardTaskProps) {
       >
         {user && (
           <Avatar
-            sx={{ bgcolor: 'secondary.main', width: '30px', height: '30px' }}
+            sx={{
+              bgcolor: 'secondary.main',
+              width: '30px',
+              height: '30px',
+              textTransform: 'capitalize',
+            }}
           >
-            {user}
+            {user[0]}
           </Avatar>
         )}
       </Stack>

@@ -1,6 +1,8 @@
+import UserDeletedLocalStorageError from 'utils/errors/UserDeletedLocalStorageError';
+
 export default function getToken() {
   const token = localStorage.getItem('token');
-  if (!token) throw new Error('Token is missing in local storage');
+  if (!token) throw new UserDeletedLocalStorageError();
 
   return token;
 }

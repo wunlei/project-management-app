@@ -1,5 +1,5 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import App from 'components/App/App';
 import BoardPage from 'pages/Board/BoardPage';
 import HomePage from 'pages/Home/HomePage';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
@@ -9,12 +9,30 @@ import AuthPage from 'pages/Auth/AuthPage';
 import SignupForm from 'components/SignupForm/SignupForm';
 import SigninForm from 'components/SigninForm/SigninForm';
 import PrivateRoute from './PrivateRoute';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { CircularProgress, Backdrop } from '@mui/material';
 
 function AppRouter() {
+  const App = React.lazy(() => import('components/App/App'));
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route
+          path="/"
+          element={
+            <ErrorBoundary>
+              <Suspense
+                fallback={
+                  <Backdrop open={true}>
+                    <CircularProgress color="secondary" size={100} />
+                  </Backdrop>
+                }
+              >
+                <App />
+              </Suspense>
+            </ErrorBoundary>
+          }
+        >
           <Route index element={<HomePage />}></Route>
           <Route element={<PrivateRoute />}>
             <Route path="projects" element={<ProjectsPage />}></Route>
@@ -23,7 +41,13 @@ function AppRouter() {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route element={<AuthPage />}>
+        <Route
+          element={
+            <ErrorBoundary>
+              <AuthPage />
+            </ErrorBoundary>
+          }
+        >
           <Route path="signup" element={<SignupForm />} />
           <Route path="signin" element={<SigninForm />} />
         </Route>
