@@ -29,7 +29,11 @@ function HomePage() {
         justifyContent="center"
         alignItems={firstColQueryMatch ? 'center' : undefined}
         pl={
-          secondColQueryMatch ? (firstColQueryMatch ? 0 : 6) : { xl: 15, lg: 2 }
+          secondColQueryMatch
+            ? firstColQueryMatch
+              ? 0
+              : 6
+            : { xl: 15, lg: 2, md: 2 }
         }
         pb={5}
         sx={{
