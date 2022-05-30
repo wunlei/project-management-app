@@ -5,7 +5,6 @@ import { Stack } from '@mui/material';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
 import { BoardColumnProps } from 'components/BoardColumn/BoardColumn.types';
 import { BoardTaskProps } from 'components/BoardTask/BoardTask.types';
-import { useGetAllUsersQuery } from 'redux/api/endpoints/users';
 import { useAppSelector } from 'redux/hooks';
 
 export interface SuccessColumnsContainerProps

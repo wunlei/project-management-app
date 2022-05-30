@@ -1,6 +1,6 @@
 import React from 'react';
 import { BoardFromServerExpanded } from 'redux/api/apiTypes';
-import { Typography, CircularProgress } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SuccessColumnsContainer, {
   SuccessColumnsContainerProps,
@@ -32,18 +32,22 @@ function ColumnsContainer(props: ColumnsContainerProps) {
     );
   } else if (dataGetBoard && dataGetBoard.columns.length === 0) {
     return (
-      <Typography fontSize="2rem" color="primary.light">
-        {t('No columns yet')}
-      </Typography>
+      <Stack textAlign="center">
+        <Typography fontSize="2rem" color="primary.light">
+          {t('No columns yet')}
+        </Typography>
+      </Stack>
     );
   } else if (isErrorGetBoard && !isFetchingGetBoard) {
     return (
-      <Typography fontSize="2rem" color="primary.light">
-        {t('Something went wrong!')}
-      </Typography>
+      <Stack textAlign="center">
+        <Typography fontSize="2rem" color="primary.light">
+          {t('Something went wrong!')}
+        </Typography>
+      </Stack>
     );
   } else {
-    return <CircularProgress color="secondary" size={100} />;
+    return <Stack></Stack>;
   }
 }
 

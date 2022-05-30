@@ -40,15 +40,6 @@ function BoardPage() {
     throw new Error('boardId (url param) is absent');
   }
 
-  const { data: users } = useGetAllUsersQuery();
-
-  useEffect(() => {
-    if (users) {
-      dispatch(setUsersState(users));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [users]);
-
   const [selectedColumnId, setSelectedColumnId] = useState('');
 
   const handleSelectColumnId = (columnId: string) => {
@@ -134,6 +125,17 @@ function BoardPage() {
     setDataGetBoard,
   });
 
+  //users
+
+  const { data: users } = useGetAllUsersQuery();
+
+  useEffect(() => {
+    if (users) {
+      dispatch(setUsersState(users));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
+
   useEffect(() => {
     setDataGetBoard(currentDataGetBoard);
   }, [currentDataGetBoard]);
@@ -160,7 +162,7 @@ function BoardPage() {
           sx={{
             zIndex: 2000,
           }}
-          open={isLoadingGetBoard}
+          open={isLoadingGetBoard || isLoadingAction}
         >
           <CircularProgress color="secondary" size={100} />
         </Backdrop>
