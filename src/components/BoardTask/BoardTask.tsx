@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, Stack, Typography, Tooltip } from '@mui/material';
 import { BoardTaskProps } from './BoardTask.types';
 import { ReactComponent as DeleteIcon } from 'assets/icons/trash.svg';
+import getColorCode from 'utils/getColorCode';
 
 function BoardTask(props: BoardTaskProps) {
   const {
@@ -18,6 +19,8 @@ function BoardTask(props: BoardTaskProps) {
   const { title } = task;
 
   const { t } = useTranslation();
+
+  const avatarColor = getColorCode(user);
 
   const handleOpenTaskEditModal = () => {
     handleTaskEditModalOpen(task);
@@ -82,7 +85,12 @@ function BoardTask(props: BoardTaskProps) {
         {user && (
           <Avatar
             sx={{
-              bgcolor: 'secondary.main',
+              bgcolor: 'transparent',
+              color: 'black',
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderColor: avatarColor,
+              // fontWeight: '600',
               width: '30px',
               height: '30px',
               textTransform: 'capitalize',

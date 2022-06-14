@@ -62,6 +62,7 @@ function SuccessColumnsContainer(props: SuccessColumnsContainerProps) {
                       order: column.order,
                     },
                   }}
+                  tasksCount={column.tasks.length}
                   setIsColumnDeleteConfirmOpen={setIsColumnDeleteConfirmOpen}
                   handleSelectColumnId={handleSelectColumnId}
                   handleCreateTaskModalOpen={handleCreateTaskModalOpen}

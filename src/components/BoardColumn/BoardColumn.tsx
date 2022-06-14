@@ -8,10 +8,12 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import grey from '@mui/material/colors/grey';
 import scrollStyle from 'styles/scrollStyle';
+import getColorCode from 'utils/getColorCode';
 
 function BoardColumn(props: BoardColumnProps) {
   const {
     columnData,
+    tasksCount,
     children,
     draggableProps,
     dragHandleProps,
@@ -20,6 +22,8 @@ function BoardColumn(props: BoardColumnProps) {
     handleSelectColumnId,
     setIsColumnDeleteConfirmOpen,
   } = props;
+
+  const badgeColor = getColorCode(columnData.body.title);
 
   const {
     body: { title },
@@ -42,12 +46,24 @@ function BoardColumn(props: BoardColumnProps) {
         padding={1}
         paddingLeft={2}
         maxWidth="280px"
+        spacing={0.5}
         sx={{
           borderTopLeftRadius: '0.5rem',
           borderTopRightRadius: '0.5rem',
           backgroundColor: grey[200],
         }}
       >
+        {tasksCount > 0 && (
+          <Typography
+            borderRadius="1rem"
+            padding="0 0.5rem"
+            bgcolor={badgeColor}
+            variant="body2"
+          >
+            {tasksCount}
+          </Typography>
+        )}
+
         {isEditMode ? (
           <TitleEditor handleClose={handleTitleEdit} columnData={columnData} />
         ) : (

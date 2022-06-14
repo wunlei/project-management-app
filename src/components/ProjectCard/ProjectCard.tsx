@@ -3,9 +3,12 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg';
 import { ReactComponent as EditIcon } from 'assets/icons/edit.svg';
 import { ProjectCardProps } from './ProjectCard.types';
+import getColorCode from 'utils/getColorCode';
 
 export default function ProjectCard(props: ProjectCardProps) {
   const { title, description, boardId, onDelete, onEdit } = props;
+
+  const boardColor = getColorCode(title);
 
   return (
     <Stack
@@ -19,7 +22,7 @@ export default function ProjectCard(props: ProjectCardProps) {
         textDecoration: 'none',
         borderWidth: '2px',
         borderStyle: 'solid',
-        borderColor: 'secondary.main',
+        borderColor: boardColor,
         borderLeftWidth: '7px',
         maxWidth: '300px',
         width: '100%',

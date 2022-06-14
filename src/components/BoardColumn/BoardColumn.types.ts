@@ -7,6 +7,7 @@ import {
 export interface BoardColumnProps {
   children?: React.ReactNode;
   columnData: UpdateColumnArg;
+  tasksCount: number;
   draggableProps?: DraggableProvidedDraggableProps;
   dragHandleProps?: DraggableProvidedDragHandleProps | undefined;
   innerRef?: () => void;
